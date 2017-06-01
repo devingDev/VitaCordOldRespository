@@ -6,7 +6,7 @@ VitaPad::VitaPad(){
 }
 
 VitaPad::VitaPad(bool initstuff){
-	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
+	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG_WIDE);
 	sceCtrlPeekBufferPositive(0, &vitapad, 1);
 	left_analog_calibration_x = vitapad.lx;
 	left_analog_calibration_y = vitapad.ly;
