@@ -108,6 +108,18 @@ uint64_t osGetTimeMS(void){
 	return (sceKernelGetProcessTimeWide() / 1000);
 }
 
+void logSD(std::string logData){
+	
+	const char * data = logData.c_str();
+	
+	int f = sceIoOpen("ux0:data/vitacord-log.txt", SCE_O_WRONLY | SCE_O_APPEND | SCE_O_CREAT, 0777);
+    
+    sceIoWrite(f, data, strlen(data));
+    
+    sceIoClose(f);
+	
+}
+
 vita2d_pgf *pgf;
 
 VitaPad vitaPad;
@@ -169,9 +181,9 @@ size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
 	//psvDebugScreenPrintf("\nIncoming START \n");
 	//psvDebugScreenPrintf(data.c_str());
 	//psvDebugScreenPrintf("\nIncoming END \n");
-	debugNetPrintf(DEBUG,"WRITECALLBACK DATA START\n");
-	debugNetPrintf(DEBUG,data.c_str());
-	debugNetPrintf(DEBUG,"WRITECALLBACK DATA END\n");
+	//debugNetPrintf(DEBUG,"WRITECALLBACK DATA START\n");
+	//debugNetPrintf(DEBUG,data.c_str());
+	//debugNetPrintf(DEBUG,"WRITECALLBACK DATA END\n");
     return size*nmemb; //tell curl how many bytes we handled
 }
 
@@ -189,11 +201,11 @@ long curlGet(std::string url){
 	curl = curl_easy_init();
 	if(curl) {
 		
-			debugNetPrintf(DEBUG,"Curl Get init success\n");
+			//debugNetPrintf(DEBUG,"Curl Get init success\n");
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 		
-			debugNetPrintf(DEBUG,url.c_str());
-			debugNetPrintf(DEBUG,"\n");
+			//debugNetPrintf(DEBUG,url.c_str());
+			//debugNetPrintf(DEBUG,"\n");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
 		
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
@@ -225,11 +237,11 @@ long curlGet(std::string url){
 			//fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
 
 			/* always cleanup */ 
-			debugNetPrintf(DEBUG,"Curl Get  FAIL\n");
+			//debugNetPrintf(DEBUG,"Curl Get  FAIL\n");
 			
 		}else{
 			
-			debugNetPrintf(DEBUG,"Curl Get  success\n");
+			//debugNetPrintf(DEBUG,"Curl Get  success\n");
 			//psvDebugScreenPrintf("curl_easy_perform == CURLE_OK => Wroked! \n\n");
 			//psvDebugScreenPrintf("Response : %s\n\n\n" , data.c_str());
 		}
@@ -237,7 +249,7 @@ long curlGet(std::string url){
 		
 	}else{
 		
-		debugNetPrintf(DEBUG,"Curlget init fail  FAIL\n");
+		//debugNetPrintf(DEBUG,"Curlget init fail  FAIL\n");
 	}
 	curl_easy_cleanup(curl);
 	
@@ -286,12 +298,12 @@ long curlPost(std::string url , std::string postData){
 			//psvDebugScreenPrintf("Error : %s\n\n\n" , curl_easy_strerror(res));
 			//fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
 
-			debugNetPrintf(DEBUG,"Curl Post  fail\n");
+			//debugNetPrintf(DEBUG,"Curl Post  fail\n");
 			/* always cleanup */ 
 			
 		}else{
 			
-			debugNetPrintf(DEBUG,"Curl Post  success\n");
+			//debugNetPrintf(DEBUG,"Curl Post  success\n");
 			//psvDebugScreenPrintf("curl_easy_perform == CURLE_OK => Wroked! \n\n");
 			//psvDebugScreenPrintf("Response : %s\n\n\n" , data.c_str());
 		}
@@ -514,14 +526,55 @@ void loginDiscord(){
 		//logged in!
 		loggedIn = true;
 		
-		debugNetPrintf(DEBUG,"parse json tokenlogin\n");
+		logSD("Success loginDiscord 1 : \n");
+		logSD(data);
+		logSD("\n");
+		//debugNetPrintf(DEBUG,"parse json tokenlogin\n");
 		try{
 			nlohmann::json j_complete = nlohmann::json::parse(data);
-			debugNetPrintf(DEBUG,"check login token Json empty?\n");
+			//debugNetPrintf(DEBUG,"check login token Json empty?\n");
 			if(!j_complete.is_null()){
-				if(!j_complete["token"].is_null()){
+
+				//{"mfa": true, "token": null, "ticket": "WzMxOTg1MjgzODEyNzc5NjIyNSwibG9naW4iXQ.DBG_ig.8MbsFEkRtHrSnIEJs3mqS1kvP5U"}
+			
+				if(!j_complete["mfa"].is_null()){
+					if(!j_complete["ticket"].is_null()){
+						
+						std::string ticket = j_complete["ticket"].get<std::string>();
+						
+						std::string code2fa = "";
+						code2fa = vitaIME.getUserText("Auth 2FA Code");
+						
+						postdata = "{ \"code\":\"" + code2fa + "\" , \"ticket\":\"" + ticket + "\" }";
+						httpcode = curlPost( "https://discordapp.com/api/v6/auth/mfa/totp" , postdata );
+						
+						if(httpcode == 200){
+							
+							logSD("Success loginDiscord 2 : \n");
+							logSD(data);
+							logSD("\n");
+							
+							nlohmann::json j_complete2 = nlohmann::json::parse(data);
+							if(!j_complete2.is_null()){
+								if(!j_complete2["token"].is_null()){
+									userToken = j_complete2["token"].get<std::string>();
+									
+									authorizationHeader = "Authorization: " + userToken;
+									
+								}
+							}
+							
+						}
+						
+					}
 					
-					debugNetPrintf(DEBUG,"Curl Get  success\n");
+					
+					
+					
+					
+				}else if(!j_complete["token"].is_null()){
+					
+					//debugNetPrintf(DEBUG,"Curl Get  success\n");
 					userToken = j_complete["token"].get<std::string>();
 			
 					authorizationHeader = "Authorization: " + userToken;
@@ -631,7 +684,7 @@ void getGuilds(){
 				guildsAmount = j_complete.size();
 				
 				
-							debugNetPrintf(DEBUG, std::to_string(guildsAmount).c_str());
+							//debugNetPrintf(DEBUG, std::to_string(guildsAmount).c_str());
 				
 				for(int i = 0; i < guildsAmount; i++){
 					
@@ -639,38 +692,38 @@ void getGuilds(){
 					
 					if(!j_complete[i].is_null()){
 						
-							debugNetPrintf(DEBUG,"new guild owner");
+							//debugNetPrintf(DEBUG,"new guild owner");
 						if(!j_complete[i]["owner"].is_null()){
 							guilds[i].owner = j_complete[i]["owner"].get<bool>();
 						}else{
 							guilds[i].owner = false;
 						}
 						
-							debugNetPrintf(DEBUG,"new guild permissions");
+							//debugNetPrintf(DEBUG,"new guild permissions");
 						if(!j_complete[i]["permissions"].is_null()){
 							guilds[i].permissions = j_complete[i]["permissions"].get<long>();
 						}else{
 							guilds[i].permissions = 0;
 						}
 						
-							debugNetPrintf(DEBUG,"new guild icon");
+							//debugNetPrintf(DEBUG,"new guild icon");
 						if(!j_complete[i]["icon"].is_null()){
 							guilds[i].icon = j_complete[i]["icon"].get<std::string>();
 						}else{
 							guilds[i].icon = "";
 						}
 						
-							debugNetPrintf(DEBUG,"new guild id");
+							//debugNetPrintf(DEBUG,"new guild id");
 						if(!j_complete[i]["id"].is_null()){
 							guilds[i].id = j_complete[i]["id"].get<std::string>();
 						}else{
 							guilds[i].id = "";
 						}
 						
-							debugNetPrintf(DEBUG,"new guild name");
+							//debugNetPrintf(DEBUG,"new guild name");
 						if(!j_complete[i]["name"].is_null()){
 							guilds[i].name = j_complete[i]["name"].get<std::string>();
-							debugNetPrintf(DEBUG,guilds[i].name.c_str());
+							//debugNetPrintf(DEBUG,guilds[i].name.c_str());
 						}else{
 							guilds[i].name = "";
 						}
@@ -858,6 +911,9 @@ void joinFirstTextChannel(){
 	
 }
 
+
+
+
 extern "C"
 {
     unsigned int sleep(unsigned int seconds)
@@ -884,69 +940,105 @@ void pthread_setup(void)
 
 int main(int argc, char *argv[]) {
 	
-	////psvDebugScreenPrintf("HTTP Sample v.1.0 by barooney\n\n");
-	int ret;
-	ret=debugNetInit(ip_server,port_server,DEBUG);
-	debugNetPrintf(DEBUG,"\n\n\n\n\n\n\nVITACORD - Test debug level %d\n",ret);
+	logSD("Started App\n");
 	
+	////psvDebugScreenPrintf("HTTP Sample v.1.0 by barooney\n\n");
+	//int ret;
+	//ret=debugNetInit(ip_server,port_server,DEBUG);
+	//debugNetPrintf(DEBUG,"\n\n\n\n\n\n\nVITACORD - Test debug level %d\n",ret);
+	
+	logSD("Init vita2d\n");
     vita2d_init();
+	logSD("vita2d set_clear_color\n");
 	vita2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
+	logSD("loading pgf default\n");
 	pgf = vita2d_load_default_pgf();
 	
+	logSD("vita2d startdrawing\n");
 	vita2d_start_drawing();
+	logSD("vita2d clear\n");
 	vita2d_clear_screen();
+	logSD("vita2d drawtext\n");
 	vita2d_pgf_draw_text(pgf, 0, 16, RGBA8(0,255,0,255), 0.75f, "VitaCord by Me :P");
+	logSD("vita2d enddrawing\n");
 	vita2d_end_drawing();
+	logSD("vita2d swapbuffers\n");
 	vita2d_swap_buffers();
 	
 	//get token from user
 	//then set auth
 	
 
-	debugNetPrintf(DEBUG,"Net Init\n");
+	//debugNetPrintf(DEBUG,"Net Init\n");
+	logSD("Init net\n");
 	netInit();
-	debugNetPrintf(DEBUG,"Http Init\n");
+	//debugNetPrintf(DEBUG,"Http Init\n");
+	logSD("Init http\n");
 	httpInit();
 	
 	
+	logSD("Init curl_global\n");
 	curl_global_init(CURL_GLOBAL_ALL);
 	
+	logSD("Starting login loop\n");
 	while(!loggedIn){
+		
+		logSD("Started App\n");
+		logSD("Ask for useremail\n");
 		useremail = vitaIME.getUserText("Discord Email");
+		logSD("Ask for userpassword\n");
 		userpassword = vitaIME.getUserText("Discord Password");
-		debugNetPrintf(DEBUG,"Login Discord()\n");
+		//debugNetPrintf(DEBUG,"Login Discord()\n");
+		logSD("Try login\n");
 		loginDiscord();
+		logSD(data);
+		logSD("\n");
 	}
+	logSD("Ended login loop\n");
 	
 	
-	debugNetPrintf(DEBUG,data.c_str());
+	//debugNetPrintf(DEBUG,data.c_str());
 	//psvDebugScreenInit();	
-	debugNetPrintf(DEBUG,"\n");
-	debugNetPrintf(DEBUG,userToken.c_str());
-	debugNetPrintf(DEBUG,"\n");
-	debugNetPrintf(DEBUG,authorizationHeader.c_str());
-	debugNetPrintf(DEBUG,"\n");
-	debugNetPrintf(DEBUG,"GetGuilds()\n");
+	//debugNetPrintf(DEBUG,"\n");
+	//debugNetPrintf(DEBUG,userToken.c_str());
+	//debugNetPrintf(DEBUG,"\n");
+	//debugNetPrintf(DEBUG,authorizationHeader.c_str());
+	//debugNetPrintf(DEBUG,"\n");
+	//debugNetPrintf(DEBUG,"GetGuilds()\n");
+	logSD("Get guilds\n");
 	getGuilds();
-	debugNetPrintf(DEBUG,data.c_str());
-	debugNetPrintf(DEBUG,"GetChannels()\n");
+	logSD(data);
+	logSD("\n");
+	//debugNetPrintf(DEBUG,data.c_str());
+	//debugNetPrintf(DEBUG,"GetChannels()\n");
+	logSD("Get channels\n");
 	getChannels();
-	debugNetPrintf(DEBUG,data.c_str());
-	debugNetPrintf(DEBUG,"JoinFirstTextChannel()\n");
+	logSD(data);
+	logSD("\n");
+	//debugNetPrintf(DEBUG,data.c_str());
+	//debugNetPrintf(DEBUG,"JoinFirstTextChannel()\n");
+	logSD("joinFirstTextChannel()\n");
 	joinFirstTextChannel();
-	debugNetPrintf(DEBUG,data.c_str());
+	//debugNetPrintf(DEBUG,data.c_str());
 	//getMessagesFromChannel();	
 
-	debugNetPrintf(DEBUG,"Main While Loop while(inApp)\n",ret);
+	//debugNetPrintf(DEBUG,"Main While Loop while(inApp)\n",ret);
+	
+	logSD("Starting app loop----------\n");
 	while(inApp){
+		logSD("App loop start\n");
 		//sceKernelDelayThread(1*250*1000); // SLEEP FOR NOW DEBUG REASONS ; ELSE TOO FAST
 		sceKernelDelayThread(1*10*1000);
 
 		
+		logSD("vitapad read\n");
 		vitaPad.Read();
 		
 		currentTimeMS = osGetTimeMS();
 		if(inChannel){
+			
+			logSD("_____inchannel\n");
+			logSD("printmessages\n");
 			vita2d_start_drawing();
 			vita2d_clear_screen();
 			printMessages();
@@ -956,6 +1048,7 @@ int main(int argc, char *argv[]) {
 
 			
 			if(vitaPad.circle){
+				logSD("press circle\n");
 				inGuild = true;
 				inChannel = false;
 				inMain = false;
@@ -964,6 +1057,8 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
 				
+				logSD("press cross\n");
+				logSD("sendmessage\n");
 				userMessage = vitaIME.getUserText("Message : ");
 				sendMessage();
 				
@@ -974,23 +1069,31 @@ int main(int argc, char *argv[]) {
 				
 			}else if(vitaPad.righttrigger){
 				
+				logSD("press rtrigger\n");
 				scrollY += 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}else if(vitaPad.lefttrigger){
 				
+				logSD("press ltrigger\n");
 				scrollY -= 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}
 			
 			if(currentTimeMS - lastFetchTimeMS > fetchDelayMS ){
+				
+				logSD("---getmessages\n");
 				getMessagesFromChannel();
+				logSD(data);
+				logSD("\n");
 				
 			}
 			
 		}else if(inGuild){
 			// show channels
+			logSD("_____inguild\n");
+			logSD("printchannelsinguild\n");
 			vita2d_start_drawing();
 			vita2d_clear_screen();
 			printChannelsInGuild();
@@ -998,6 +1101,7 @@ int main(int argc, char *argv[]) {
 			vita2d_swap_buffers();
 			
 			if(vitaPad.circle){
+				logSD("press circle\n");
 				inChannel = false;
 				inGuild = false;
 				inMain = true;
@@ -1010,7 +1114,9 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
 				
+				logSD("press cross\n");
 				if(guilds[currentGuild].channels[cursorChannel].type == "text"){
+					logSD("join guild\n");
 					inChannel = true;
 					inGuild = false;
 					inMain = false;
@@ -1021,11 +1127,14 @@ int main(int argc, char *argv[]) {
 					currentChannel = cursorChannel;
 					currentGuild = cursorGuild;
 				
+					logSD("currentGuild " + std::to_string(currentGuild) + "\n");
+					logSD("currentChannel " + std::to_string(currentChannel) + "\n");
 				}
 				
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.up){
 				
+				logSD("press up\n");
 				cursorChannel--;
 				if(cursorChannel < 0){
 					cursorChannel = guilds[currentGuild].channels.size() - 1;
@@ -1034,6 +1143,7 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.down){
 				
+				logSD("press down\n");
 				cursorChannel++;
 				if(cursorChannel >= guilds[currentGuild].channels.size()){
 					cursorChannel = 0;
@@ -1042,11 +1152,13 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.righttrigger){
 				
+				logSD("press rtrigger\n");
 				scrollY += 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}else if(vitaPad.lefttrigger){
 				
+				logSD("press ltrigger\n");
 				scrollY -= 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
@@ -1055,6 +1167,8 @@ int main(int argc, char *argv[]) {
 			
 		}else if(inMain){
 			// show guilds ( servers )
+			logSD("_____inmain\n");
+			logSD("printguilds\n");
 			vita2d_start_drawing();
 			vita2d_clear_screen();
 			printGuilds();
@@ -1062,6 +1176,7 @@ int main(int argc, char *argv[]) {
 			vita2d_swap_buffers();
 			if(vitaPad.circle){
 				
+				logSD("press circle\n");
 				// dont quit ^^
 				//inChannel = false;
 				//inGuild = false;
@@ -1070,19 +1185,24 @@ int main(int argc, char *argv[]) {
 				
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
+				
+				logSD("presscross\n");
 				inChannel = false;
 				inGuild = true;
 				inMain = false;
+				
 				
 				
 				scrollX = scrollY = 0;
 				
 				currentChannel = cursorChannel;
 				currentGuild = cursorGuild;
+				logSD("currentGuild " + std::to_string(currentGuild) + "\n");
 				
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.up){
 				
+				logSD("press up\n");
 				cursorGuild--;
 				if(cursorGuild < 0){
 					cursorGuild = guildsAmount - 1;
@@ -1091,6 +1211,7 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.down){
 				
+				logSD("press down\n");
 				cursorGuild++;
 				if(cursorGuild >= guildsAmount){
 					cursorGuild = 0;
@@ -1099,11 +1220,13 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.righttrigger){
 				
+				logSD("press rtrigger\n");
 				scrollY += 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}else if(vitaPad.lefttrigger){
 				
+				logSD("press ltrigger\n");
 				scrollY -= 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
@@ -1116,21 +1239,25 @@ int main(int argc, char *argv[]) {
 		
 	}
 	
+	logSD("Exited inapp loop\n");
 	
-	debugNetPrintf(DEBUG,"curl global cleanup\n");
+	//debugNetPrintf(DEBUG,"curl global cleanup\n");
+	logSD("curl global cleanup\n");
 	curl_global_cleanup();
 
 	
-	debugNetPrintf(DEBUG,"Http Term\n");
+	//debugNetPrintf(DEBUG,"Http Term\n");
+	logSD("term http\n");
 	httpTerm();
-	debugNetPrintf(DEBUG,"Net Term\n");
+	//debugNetPrintf(DEBUG,"Net Term\n");
+	logSD("term net\n");
 	netTerm();
 
-	debugNetPrintf(DEBUG,"Debugnetfinish()\n");
-	debugNetFinish();
+	//debugNetPrintf(DEBUG,"Debugnetfinish()\n");
+	//debugNetFinish();
 	//psvDebugScreenPrintf("This app will close in 10 seconds!\n");
 	sceKernelDelayThread(5*1000*1000);
-
+	
 	sceKernelExitProcess(0);
 	return 0;
 }
