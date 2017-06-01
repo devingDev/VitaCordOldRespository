@@ -77,6 +77,8 @@ int currentGuild = 0;
 int currentChannel = 0;
 	int cursorGuild = 0;
 	int cursorChannel = 0;
+	long sleepTimeInputNormal = 1*125*1000; // 125 ms
+	long sleepTimeInputScroll = 1*25*100; // 2.5 ms or 2500 microseconds
 
 std::string useremail = "" , userpassword = "";
 
@@ -788,6 +790,9 @@ void printChannelsInGuild(){
 		if(cursorChannel == i)
 			printThis += " > ";
 		printThis += guilds[currentGuild].channels[i].name;
+		if(guilds[currentGuild].channels[i].type != "text"){
+			printThis += " (VOICE)";
+		}
 		vita2d_pgf_draw_text(pgf, scrollX + 16, scrollY + (32 + 16 * i), RGBA8(0,255,0,255), 0.75f, printThis.c_str());
 		//psvDebugScreenPrintf(printThis.c_str());
 	}
@@ -956,7 +961,7 @@ int main(int argc, char *argv[]) {
 				inMain = false;
 				scrollX = scrollY = 0;
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
 				
 				userMessage = vitaIME.getUserText("Message : ");
@@ -965,12 +970,17 @@ int main(int argc, char *argv[]) {
 				
 				scrollX = scrollY = 0;
 				
-				sceKernelDelayThread(1*150*1000);
+				sceKernelDelayThread(sleepTimeInputNormal);
 				
-			}else{
+			}else if(vitaPad.righttrigger){
 				
-				scrollX = 127 - vitaPad.lx;
-				scrollY = 127 - vitaPad.ly;
+				scrollY += 3;
+				sceKernelDelayThread(sleepTimeInputScroll);
+				
+			}else if(vitaPad.lefttrigger){
+				
+				scrollY -= 3;
+				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}
 			
@@ -997,19 +1007,23 @@ int main(int argc, char *argv[]) {
 				
 				cursorChannel = 0;
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
-				inChannel = true;
-				inGuild = false;
-				inMain = false;
 				
+				if(guilds[currentGuild].channels[cursorChannel].type == "text"){
+					inChannel = true;
+					inGuild = false;
+					inMain = false;
+					
+					
+					scrollX = scrollY = 0;
+					
+					currentChannel = cursorChannel;
+					currentGuild = cursorGuild;
 				
-				scrollX = scrollY = 0;
+				}
 				
-				currentChannel = cursorChannel;
-				currentGuild = cursorGuild;
-				
-				sceKernelDelayThread(1*150*1000); // 150 ms
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.up){
 				
 				cursorChannel--;
@@ -1017,7 +1031,7 @@ int main(int argc, char *argv[]) {
 					cursorChannel = guilds[currentGuild].channels.size() - 1;
 				}
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.down){
 				
 				cursorChannel++;
@@ -1025,15 +1039,20 @@ int main(int argc, char *argv[]) {
 					cursorChannel = 0;
 				}
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
-			}else{
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
+			}else if(vitaPad.righttrigger){
 				
-				debugNetPrintf(DEBUG , "VitaPAD CLAX : %d , CLAY : %d \n" , vitaPad.left_analog_x , vitaPad.left_analog_y);
-				debugNetPrintf(DEBUG , "VitaPAD LAX : %d , LAY : %d \n" , vitaPad.lx , vitaPad.ly);
-				scrollX = 127 - vitaPad.lx;
-				scrollY = 127 - vitaPad.ly;
+				scrollY += 3;
+				sceKernelDelayThread(sleepTimeInputScroll);
+				
+			}else if(vitaPad.lefttrigger){
+				
+				scrollY -= 3;
+				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}
+			
+			
 		}else if(inMain){
 			// show guilds ( servers )
 			vita2d_start_drawing();
@@ -1042,12 +1061,14 @@ int main(int argc, char *argv[]) {
 			vita2d_end_drawing();
 			vita2d_swap_buffers();
 			if(vitaPad.circle){
-				inChannel = false;
-				inGuild = false;
-				inMain = false;
-				inApp = false;
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
+				// dont quit ^^
+				//inChannel = false;
+				//inGuild = false;
+				//inMain = false;
+				//inApp = false;
+				
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
 				inChannel = false;
 				inGuild = true;
@@ -1059,7 +1080,7 @@ int main(int argc, char *argv[]) {
 				currentChannel = cursorChannel;
 				currentGuild = cursorGuild;
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.up){
 				
 				cursorGuild--;
@@ -1067,7 +1088,7 @@ int main(int argc, char *argv[]) {
 					cursorGuild = guildsAmount - 1;
 				}
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.down){
 				
 				cursorGuild++;
@@ -1075,13 +1096,20 @@ int main(int argc, char *argv[]) {
 					cursorGuild = 0;
 				}
 				
-				sceKernelDelayThread(1*150*1000); // 150 ms
-			}else{
+				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
+			}else if(vitaPad.righttrigger){
 				
-				scrollX = 127 - vitaPad.lx;
-				scrollY = 127 - vitaPad.ly;
+				scrollY += 3;
+				sceKernelDelayThread(sleepTimeInputScroll);
+				
+			}else if(vitaPad.lefttrigger){
+				
+				scrollY -= 3;
+				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}
+			
+			
 		}
 		
 
