@@ -458,7 +458,7 @@ void processJsonWebhook(){
 		headerchunk = curl_slist_append(headerchunk, "Accept: */*");
 		headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
 		headerchunk = curl_slist_append(headerchunk, userAgentHeader);
-		headerchunk = curl_slist_append(headerchunk, "Authorization: MjA2MTI3ODg4MzA5NjgyMTc2.C8rDVg.UETH3GU08GicgYNjFb8TlOckqoA");
+		headerchunk = curl_slist_append(headerchunk, authorizationHeader.c_str());
 		headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com");
 		
 		std::string ContentLengthS = "Content-Length: " + std::to_string(strlen(postdata.c_str()));
