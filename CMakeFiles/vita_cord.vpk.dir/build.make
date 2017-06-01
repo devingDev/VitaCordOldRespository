@@ -59,7 +59,7 @@ CMakeFiles/vita_cord.vpk: vita_cord.vpk_param.sfo
 
 vita_cord.vpk_param.sfo:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jonnydepp/programming/vita/vitacord2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating param.sfo for vita_cord.vpk"
-	/usr/local/vitasdk/bin/vita-mksfoex -s TITLE_ID=VTCD00001 VitaCord vita_cord.vpk_param.sfo
+	/usr/local/vitasdk/bin/vita-mksfoex -s APP_VER=1.00 -s TITLE_ID=VTCD00001 VitaCord vita_cord.vpk_param.sfo
 
 vita_cord.vpk: CMakeFiles/vita_cord.vpk
 vita_cord.vpk: vita_cord.vpk_param.sfo
