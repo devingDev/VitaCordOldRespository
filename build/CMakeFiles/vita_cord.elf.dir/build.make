@@ -57,52 +57,52 @@ include CMakeFiles/vita_cord.elf.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/vita_cord.elf.dir/flags.make
 
-CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
-CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj: ../src/log.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/log.cpp
+CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
+CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj: ../src/DiscordApp.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.cpp
 
-CMakeFiles/vita_cord.elf.dir/src/log.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vita_cord.elf.dir/src/log.cpp.i"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonnydepp/programming/vita/vitacord2/src/log.cpp > CMakeFiles/vita_cord.elf.dir/src/log.cpp.i
+CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.i"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.cpp > CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.i
 
-CMakeFiles/vita_cord.elf.dir/src/log.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vita_cord.elf.dir/src/log.cpp.s"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonnydepp/programming/vita/vitacord2/src/log.cpp -o CMakeFiles/vita_cord.elf.dir/src/log.cpp.s
+CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.s"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.cpp -o CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.s
 
-CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires:
+CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.requires:
 
-.PHONY : CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.requires
 
-CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires
-	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides.build
-.PHONY : CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides
+CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.provides: CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.provides.build
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.provides
 
-CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj
+CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj
 
 
-CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
-CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/main.cpp
+CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
+CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj: ../src/Discord.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/Discord.cpp
 
-CMakeFiles/vita_cord.elf.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vita_cord.elf.dir/src/main.cpp.i"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonnydepp/programming/vita/vitacord2/src/main.cpp > CMakeFiles/vita_cord.elf.dir/src/main.cpp.i
+CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.i"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonnydepp/programming/vita/vitacord2/src/Discord.cpp > CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.i
 
-CMakeFiles/vita_cord.elf.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vita_cord.elf.dir/src/main.cpp.s"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonnydepp/programming/vita/vitacord2/src/main.cpp -o CMakeFiles/vita_cord.elf.dir/src/main.cpp.s
+CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonnydepp/programming/vita/vitacord2/src/Discord.cpp -o CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s
 
-CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires:
+CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.requires:
 
-.PHONY : CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.requires
 
-CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires
-	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides.build
-.PHONY : CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides
+CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides: CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides.build
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides
 
-CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj
+CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj
 
 
 CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
@@ -129,33 +129,57 @@ CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj.provides: CMakeFiles/vita_cord.
 CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj
 
 
-CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
-CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj: ../src/Discord.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/Discord.cpp
+CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
+CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj: ../src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/main.cpp
 
-CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.i"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonnydepp/programming/vita/vitacord2/src/Discord.cpp > CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.i
+CMakeFiles/vita_cord.elf.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vita_cord.elf.dir/src/main.cpp.i"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonnydepp/programming/vita/vitacord2/src/main.cpp > CMakeFiles/vita_cord.elf.dir/src/main.cpp.i
 
-CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s"
-	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonnydepp/programming/vita/vitacord2/src/Discord.cpp -o CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s
+CMakeFiles/vita_cord.elf.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vita_cord.elf.dir/src/main.cpp.s"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonnydepp/programming/vita/vitacord2/src/main.cpp -o CMakeFiles/vita_cord.elf.dir/src/main.cpp.s
 
-CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.requires:
+CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires:
 
-.PHONY : CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.requires
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires
 
-CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides: CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.requires
-	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides.build
-.PHONY : CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides
+CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides.build
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides
 
-CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj
+CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj
+
+
+CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
+CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj: ../src/log.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/log.cpp
+
+CMakeFiles/vita_cord.elf.dir/src/log.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vita_cord.elf.dir/src/log.cpp.i"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonnydepp/programming/vita/vitacord2/src/log.cpp > CMakeFiles/vita_cord.elf.dir/src/log.cpp.i
+
+CMakeFiles/vita_cord.elf.dir/src/log.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vita_cord.elf.dir/src/log.cpp.s"
+	/usr/local/vitasdk/bin/arm-vita-eabi-g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonnydepp/programming/vita/vitacord2/src/log.cpp -o CMakeFiles/vita_cord.elf.dir/src/log.cpp.s
+
+CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires:
+
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires
+
+CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides.build
+.PHONY : CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides
+
+CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.provides.build: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj
 
 
 CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
 CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj: ../src/VitaIME.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj"
 	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/VitaIME.cpp
 
 CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.i: cmake_force
@@ -179,7 +203,7 @@ CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj.provides.build: CMakeFiles/vita
 
 CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
 CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj: ../src/VitaPad.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj"
 	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/VitaPad.cpp
 
 CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.i: cmake_force
@@ -203,7 +227,7 @@ CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj.provides.build: CMakeFiles/vita
 
 CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj: CMakeFiles/vita_cord.elf.dir/flags.make
 CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj: ../src/VitaTouch.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj"
 	/usr/local/vitasdk/bin/arm-vita-eabi-g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj -c /home/jonnydepp/programming/vita/vitacord2/src/VitaTouch.cpp
 
 CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.i: cmake_force
@@ -227,10 +251,11 @@ CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj.provides.build: CMakeFiles/vi
 
 # Object files for target vita_cord.elf
 vita_cord_elf_OBJECTS = \
-"CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj" \
-"CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj" \
-"CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj" \
+"CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj" \
 "CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj" \
+"CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj" \
+"CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj" \
+"CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj" \
 "CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj" \
 "CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj" \
 "CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj"
@@ -238,10 +263,11 @@ vita_cord_elf_OBJECTS = \
 # External object files for target vita_cord.elf
 vita_cord_elf_EXTERNAL_OBJECTS =
 
-vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj
-vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj
-vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj
+vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj
 vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj
+vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj
+vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj
+vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj
 vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj
 vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj
 vita_cord.elf: CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj
@@ -250,7 +276,7 @@ vita_cord.elf: /usr/local/vitasdk/arm-vita-eabi/lib/libcurl.a
 vita_cord.elf: /usr/local/vitasdk/arm-vita-eabi/lib/libssl.a
 vita_cord.elf: /usr/local/vitasdk/arm-vita-eabi/lib/libcrypto.a
 vita_cord.elf: CMakeFiles/vita_cord.elf.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable vita_cord.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable vita_cord.elf"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/vita_cord.elf.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -258,10 +284,11 @@ CMakeFiles/vita_cord.elf.dir/build: vita_cord.elf
 
 .PHONY : CMakeFiles/vita_cord.elf.dir/build
 
-CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires
-CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires
-CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj.requires
+CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj.requires
 CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj.requires
+CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj.requires
+CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj.requires
+CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj.requires
 CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj.requires
 CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj.requires
 CMakeFiles/vita_cord.elf.dir/requires: CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj.requires

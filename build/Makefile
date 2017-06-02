@@ -176,6 +176,33 @@ src/Discord.cpp.s:
 	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s
 .PHONY : src/Discord.cpp.s
 
+src/DiscordApp.obj: src/DiscordApp.cpp.obj
+
+.PHONY : src/DiscordApp.obj
+
+# target to build an object file
+src/DiscordApp.cpp.obj:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj
+.PHONY : src/DiscordApp.cpp.obj
+
+src/DiscordApp.i: src/DiscordApp.cpp.i
+
+.PHONY : src/DiscordApp.i
+
+# target to preprocess a source file
+src/DiscordApp.cpp.i:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.i
+.PHONY : src/DiscordApp.cpp.i
+
+src/DiscordApp.s: src/DiscordApp.cpp.s
+
+.PHONY : src/DiscordApp.s
+
+# target to generate assembly for a file
+src/DiscordApp.cpp.s:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.s
+.PHONY : src/DiscordApp.cpp.s
+
 src/VitaIME.obj: src/VitaIME.cpp.obj
 
 .PHONY : src/VitaIME.obj
@@ -352,6 +379,9 @@ help:
 	@echo "... src/Discord.obj"
 	@echo "... src/Discord.i"
 	@echo "... src/Discord.s"
+	@echo "... src/DiscordApp.obj"
+	@echo "... src/DiscordApp.i"
+	@echo "... src/DiscordApp.s"
 	@echo "... src/VitaIME.obj"
 	@echo "... src/VitaIME.i"
 	@echo "... src/VitaIME.s"
