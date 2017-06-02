@@ -149,6 +149,33 @@ vita_cord.elf/fast:
 	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/build
 .PHONY : vita_cord.elf/fast
 
+src/Discord.obj: src/Discord.cpp.obj
+
+.PHONY : src/Discord.obj
+
+# target to build an object file
+src/Discord.cpp.obj:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj
+.PHONY : src/Discord.cpp.obj
+
+src/Discord.i: src/Discord.cpp.i
+
+.PHONY : src/Discord.i
+
+# target to preprocess a source file
+src/Discord.cpp.i:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.i
+.PHONY : src/Discord.cpp.i
+
+src/Discord.s: src/Discord.cpp.s
+
+.PHONY : src/Discord.s
+
+# target to generate assembly for a file
+src/Discord.cpp.s:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.s
+.PHONY : src/Discord.cpp.s
+
 src/VitaIME.obj: src/VitaIME.cpp.obj
 
 .PHONY : src/VitaIME.obj
@@ -176,6 +203,33 @@ src/VitaIME.cpp.s:
 	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.s
 .PHONY : src/VitaIME.cpp.s
 
+src/VitaNet.obj: src/VitaNet.cpp.obj
+
+.PHONY : src/VitaNet.obj
+
+# target to build an object file
+src/VitaNet.cpp.obj:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj
+.PHONY : src/VitaNet.cpp.obj
+
+src/VitaNet.i: src/VitaNet.cpp.i
+
+.PHONY : src/VitaNet.i
+
+# target to preprocess a source file
+src/VitaNet.cpp.i:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.i
+.PHONY : src/VitaNet.cpp.i
+
+src/VitaNet.s: src/VitaNet.cpp.s
+
+.PHONY : src/VitaNet.s
+
+# target to generate assembly for a file
+src/VitaNet.cpp.s:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.s
+.PHONY : src/VitaNet.cpp.s
+
 src/VitaPad.obj: src/VitaPad.cpp.obj
 
 .PHONY : src/VitaPad.obj
@@ -202,6 +256,60 @@ src/VitaPad.s: src/VitaPad.cpp.s
 src/VitaPad.cpp.s:
 	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.s
 .PHONY : src/VitaPad.cpp.s
+
+src/VitaTouch.obj: src/VitaTouch.cpp.obj
+
+.PHONY : src/VitaTouch.obj
+
+# target to build an object file
+src/VitaTouch.cpp.obj:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj
+.PHONY : src/VitaTouch.cpp.obj
+
+src/VitaTouch.i: src/VitaTouch.cpp.i
+
+.PHONY : src/VitaTouch.i
+
+# target to preprocess a source file
+src/VitaTouch.cpp.i:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.i
+.PHONY : src/VitaTouch.cpp.i
+
+src/VitaTouch.s: src/VitaTouch.cpp.s
+
+.PHONY : src/VitaTouch.s
+
+# target to generate assembly for a file
+src/VitaTouch.cpp.s:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.s
+.PHONY : src/VitaTouch.cpp.s
+
+src/log.obj: src/log.cpp.obj
+
+.PHONY : src/log.obj
+
+# target to build an object file
+src/log.cpp.obj:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj
+.PHONY : src/log.cpp.obj
+
+src/log.i: src/log.cpp.i
+
+.PHONY : src/log.i
+
+# target to preprocess a source file
+src/log.cpp.i:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/log.cpp.i
+.PHONY : src/log.cpp.i
+
+src/log.s: src/log.cpp.s
+
+.PHONY : src/log.s
+
+# target to generate assembly for a file
+src/log.cpp.s:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/log.cpp.s
+.PHONY : src/log.cpp.s
 
 src/main.obj: src/main.cpp.obj
 
@@ -241,12 +349,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... vita_cord.self"
 	@echo "... vita_cord.elf"
+	@echo "... src/Discord.obj"
+	@echo "... src/Discord.i"
+	@echo "... src/Discord.s"
 	@echo "... src/VitaIME.obj"
 	@echo "... src/VitaIME.i"
 	@echo "... src/VitaIME.s"
+	@echo "... src/VitaNet.obj"
+	@echo "... src/VitaNet.i"
+	@echo "... src/VitaNet.s"
 	@echo "... src/VitaPad.obj"
 	@echo "... src/VitaPad.i"
 	@echo "... src/VitaPad.s"
+	@echo "... src/VitaTouch.obj"
+	@echo "... src/VitaTouch.i"
+	@echo "... src/VitaTouch.s"
+	@echo "... src/log.obj"
+	@echo "... src/log.i"
+	@echo "... src/log.s"
 	@echo "... src/main.obj"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

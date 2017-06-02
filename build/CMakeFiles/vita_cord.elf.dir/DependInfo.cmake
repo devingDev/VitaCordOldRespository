@@ -4,8 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/jonnydepp/programming/vita/vitacord2/src/Discord.cpp" "/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj"
   "/home/jonnydepp/programming/vita/vitacord2/src/VitaIME.cpp" "/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj"
+  "/home/jonnydepp/programming/vita/vitacord2/src/VitaNet.cpp" "/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj"
   "/home/jonnydepp/programming/vita/vitacord2/src/VitaPad.cpp" "/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj"
+  "/home/jonnydepp/programming/vita/vitacord2/src/VitaTouch.cpp" "/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj"
+  "/home/jonnydepp/programming/vita/vitacord2/src/log.cpp" "/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj"
   "/home/jonnydepp/programming/vita/vitacord2/src/main.cpp" "/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

@@ -1,7 +1,11 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj"
   "CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj"
-  "CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj"
+  "CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj"
+  "CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj"
   "CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj"
+  "CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj"
+  "CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj"
   "vita_cord.elf.pdb"
   "vita_cord.elf"
 )
