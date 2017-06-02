@@ -2,7 +2,7 @@
 #include "log.hpp"
 
 Discord::Discord(){
-	vitaNet.init();
+	
 }
 
 Discord::~Discord(){
@@ -17,7 +17,7 @@ short Discord::login(std::string mail , std::string pass){
 	
 	std::string loginUrl = "https://discordapp.com/api/auth/login";
 	std::string postData = "{ \"email\":\"" + email + "\" , \"password\":\"" + password + "\" }";
-	http_response loginresponse = curlDiscordPost(loginUrl , postData , token);
+	VitaNet::http_response loginresponse = vitaNet.curlDiscordPost(loginUrl , postData , token);
 	logSD("Login response:");
 	logSD(loginresponse.body);
 	if(loginresponse.httpcode == 200){
@@ -53,8 +53,8 @@ short Discord::submit2facode(std::string code){
 	logSD("Submit 2FA Attempt");
 	code2fa = code;
 
-	postdata = "{ \"code\":\"" + code2fa + "\" , \"ticket\":\"" + ticket + "\" }";
-	http_response submit2facoderesponse = curlDiscordPost( "https://discordapp.com/api/v6/auth/mfa/totp" , postdata , token);
+	std::string postData = "{ \"code\":\"" + code2fa + "\" , \"ticket\":\"" + ticket + "\" }";
+	VitaNet::http_response submit2facoderesponse = vitaNet.curlDiscordPost( "https://discordapp.com/api/v6/auth/mfa/totp" , postData , token);
 	logSD("Submit 2FA Response:");
 	logSD(submit2facoderesponse.body);
 	if(submit2facoderesponse.httpcode == 200){

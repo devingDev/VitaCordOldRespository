@@ -16,9 +16,9 @@ size_t VitaNet::writeCallback(char* contents, size_t size, size_t nmemb, void* u
     return size*nmemb; //tell curl how many bytes we handled
 }
 
-http_response VitaNet::curlDiscordGet(std::string url , std::string authtoken){
+VitaNet::http_response VitaNet::curlDiscordGet(std::string url , std::string authtoken){
 	
-	http_response resp;
+	VitaNet::http_response resp;
 	std::string authorizationHeader = "Authorization: " + authtoken;
 	
 	//DBG
@@ -30,7 +30,7 @@ http_response VitaNet::curlDiscordGet(std::string url , std::string authtoken){
 	if(curl) {
 		
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curl, CURLOPT_USERAGENT, userAgent);
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 10L);
@@ -43,7 +43,7 @@ http_response VitaNet::curlDiscordGet(std::string url , std::string authtoken){
 		struct curl_slist *headerchunk = NULL;
 		headerchunk = curl_slist_append(headerchunk, "Accept: */*");
 		headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
-		headerchunk = curl_slist_append(headerchunk, userAgentHeader);
+		headerchunk = curl_slist_append(headerchunk, "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 		headerchunk = curl_slist_append(headerchunk, authorizationHeader.c_str());
 		headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com");
 		headerchunk = curl_slist_append(headerchunk, "Content-Length: 0");
@@ -69,9 +69,10 @@ http_response VitaNet::curlDiscordGet(std::string url , std::string authtoken){
 	
 	return resp;
 }
-http_response VitaNet::curlDiscordPost(std::string url , std::string postdata , std::string authtoken){
+
+VitaNet::http_response VitaNet::curlDiscordPost(std::string url , std::string postdata , std::string authtoken){
 	
-	http_response resp;
+	VitaNet::http_response resp;
 	std::string authorizationHeader = "Authorization: " + authtoken;
 	
 	CURL *curl;
@@ -80,7 +81,7 @@ http_response VitaNet::curlDiscordPost(std::string url , std::string postdata , 
 	if(curl) {
 		curl_easy_setopt(curl, CURLOPT_POST, 1L);
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curl, CURLOPT_USERAGENT, userAgent);
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &resp.body);
 		curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &writeCallback);
@@ -93,7 +94,7 @@ http_response VitaNet::curlDiscordPost(std::string url , std::string postdata , 
 		struct curl_slist *headerchunk = NULL;
 		headerchunk = curl_slist_append(headerchunk, "Accept: */*");
 		headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
-		headerchunk = curl_slist_append(headerchunk, userAgentHeader);
+		headerchunk = curl_slist_append(headerchunk, "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 		headerchunk = curl_slist_append(headerchunk, authorizationHeader.c_str());
 		headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com");
 		std::string ContentLengthS = "Content-Length: " + std::to_string(strlen(postdata.c_str()));

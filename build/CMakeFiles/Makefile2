@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/jonnydepp/programming/vita/vitacord2/build
 CMakeFiles/vita_cord.vpk.dir/all: CMakeFiles/vita_cord.self.dir/all
 	$(MAKE) -f CMakeFiles/vita_cord.vpk.dir/build.make CMakeFiles/vita_cord.vpk.dir/depend
 	$(MAKE) -f CMakeFiles/vita_cord.vpk.dir/build.make CMakeFiles/vita_cord.vpk.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=11,12 "Built target vita_cord.vpk"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=12,13 "Built target vita_cord.vpk"
 .PHONY : CMakeFiles/vita_cord.vpk.dir/all
 
 # Include target in all.
@@ -76,7 +76,7 @@ all: CMakeFiles/vita_cord.vpk.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/vita_cord.vpk.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 13
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/vita_cord.vpk.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 0
 .PHONY : CMakeFiles/vita_cord.vpk.dir/rule
@@ -103,7 +103,7 @@ clean: CMakeFiles/vita_cord.vpk.dir/clean
 CMakeFiles/vita_cord.self.dir/all: CMakeFiles/vita_cord.elf.dir/all
 	$(MAKE) -f CMakeFiles/vita_cord.self.dir/build.make CMakeFiles/vita_cord.self.dir/depend
 	$(MAKE) -f CMakeFiles/vita_cord.self.dir/build.make CMakeFiles/vita_cord.self.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=9,10 "Built target vita_cord.self"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=10,11 "Built target vita_cord.self"
 .PHONY : CMakeFiles/vita_cord.self.dir/all
 
 # Include target in all.
@@ -113,7 +113,7 @@ all: CMakeFiles/vita_cord.self.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/vita_cord.self.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 10
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/vita_cord.self.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 0
 .PHONY : CMakeFiles/vita_cord.self.dir/rule
@@ -140,7 +140,7 @@ clean: CMakeFiles/vita_cord.self.dir/clean
 CMakeFiles/vita_cord.elf.dir/all:
 	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/depend
 	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target vita_cord.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target vita_cord.elf"
 .PHONY : CMakeFiles/vita_cord.elf.dir/all
 
 # Include target in all.
@@ -150,7 +150,7 @@ all: CMakeFiles/vita_cord.elf.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/vita_cord.elf.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 9
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/vita_cord.elf.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles 0
 .PHONY : CMakeFiles/vita_cord.elf.dir/rule

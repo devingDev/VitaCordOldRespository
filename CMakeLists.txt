@@ -28,10 +28,11 @@ include_directories(
 )
 
 add_executable(${SHORT_NAME}.elf
-  src/log.cpp
-  src/main.cpp
-  src/VitaNet.cpp
+  src/DiscordApp.cpp
   src/Discord.cpp
+  src/VitaNet.cpp
+  src/main.cpp
+  src/log.cpp
   src/VitaIME.cpp
   src/VitaPad.cpp
   src/VitaTouch.cpp

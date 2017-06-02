@@ -5,6 +5,8 @@
 #include <vector>
 #include "VitaNet.hpp"
 
+#include "json.hpp"
+
 class Discord{
 	public:
 		Discord();

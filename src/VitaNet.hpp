@@ -21,7 +21,6 @@ class VitaNet{
 		}http_response;
 		VitaNet();
 		~VitaNet();
-		size_t writeCallback(char* contents, size_t size, size_t nmemb, void* userp);
 		http_response curlDiscordGet(std::string url , std::string authtoken);
 		http_response curlDiscordPost(std::string url , std::string postdata , std::string authtoken);
 
@@ -30,6 +29,7 @@ class VitaNet{
 	private:
 		void init(); 
 		void terminate();
+		size_t writeCallback(char* contents, size_t size, size_t nmemb, void* userp);
 		
 		
 };
