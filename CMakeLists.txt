@@ -28,9 +28,13 @@ include_directories(
 )
 
 add_executable(${SHORT_NAME}.elf
+  src/log.cpp
   src/main.cpp
-  src/VitaPad.cpp
+  src/VitaNet.cpp
+  src/Discord.cpp
   src/VitaIME.cpp
+  src/VitaPad.cpp
+  src/VitaTouch.cpp
 )
 
 target_link_libraries(${SHORT_NAME}.elf
@@ -38,12 +42,13 @@ target_link_libraries(${SHORT_NAME}.elf
 
   debugnet
   vita2d
+  SceNet_stub
   ScePgf_stub
   ScePvf_stub
   SceGxm_stub
-  SceNet_stub
-  SceCtrl_stub
   SceHttp_stub
+  SceCtrl_stub
+  SceTouch_stub
   SceNetCtl_stub
   SceAppUtil_stub
   SceDisplay_stub
@@ -67,6 +72,7 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   NAME ${VITA_APP_NAME}
   FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
   FILE sce_sys/icon0.png sce_sys/icon0.png
+  FILE sce_sys/pic0.png sce_sys/pic0.png
   FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
   FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
   FILE sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml

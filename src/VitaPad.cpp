@@ -3,6 +3,10 @@
 #include "VitaPad.hpp"
 
 VitaPad::VitaPad(){
+	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG_WIDE);
+	sceCtrlPeekBufferPositive(0, &vitapad, 1);
+	left_analog_calibration_x = vitapad.lx;
+	left_analog_calibration_y = vitapad.ly;
 }
 
 VitaPad::VitaPad(bool initstuff){
