@@ -14,10 +14,10 @@ include("${VITASDK}/share/vita.cmake" REQUIRED)
 
 set(VITA_APP_NAME "VitaCord")
 set(VITA_TITLEID  "VTCD00001")
-#set(VITA_VERSION  "1.00")
+set(VITA_VERSION  "01.05")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fpermissive -std=gnu11 -Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fpermissive -std=c++11 -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fpermissive -std=gnu11 -Wall -flto")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fpermissive -std=c++11 -Wall -flto")
 
 
 find_package(CURL REQUIRED)
@@ -34,8 +34,10 @@ add_executable(${SHORT_NAME}.elf
 )
 
 target_link_libraries(${SHORT_NAME}.elf
-  vita2d
+
+
   debugnet
+  vita2d
   ScePgf_stub
   ScePvf_stub
   SceGxm_stub
@@ -50,7 +52,6 @@ target_link_libraries(${SHORT_NAME}.elf
   SceCommonDialog_stub
   ${CURL_LIBRARIES}
   ${OPENSSL_LIBRARIES}
-
   c
   m
   z
@@ -64,6 +65,7 @@ vita_create_self(${SHORT_NAME}.self ${SHORT_NAME}.elf)
 vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
+  FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
   FILE sce_sys/icon0.png sce_sys/icon0.png
   FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
   FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
