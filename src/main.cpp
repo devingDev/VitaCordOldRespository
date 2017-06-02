@@ -32,7 +32,9 @@
 #define ip_server "192.168.1.85"
 #define port_server 18194
 
-
+	vita2d_texture *backgroundImage;
+	
+	
 struct messageauthor{
 	std::string username;
 	std::string discriminator;
@@ -743,14 +745,6 @@ void getGuilds(){
 	
 }
 
-
-void curlUsersMe(){
-	
-
-	
-}
-
-
 void sendMessage(){
 	
 	postdata = "{ \"content\":\"" + userMessage + "\" }";
@@ -914,6 +908,7 @@ void joinFirstTextChannel(){
 
 
 
+
 extern "C"
 {
     unsigned int sleep(unsigned int seconds)
@@ -954,12 +949,16 @@ int main(int argc, char *argv[]) {
 	logSD("loading pgf default\n");
 	pgf = vita2d_load_default_pgf();
 	
+	
+	std::string bgPath = "app0:assets/images/Vitacord-Background-8BIT.png";
+	backgroundImage = vita2d_load_PNG_file(bgPath.c_str());
+	
 	logSD("vita2d startdrawing\n");
 	vita2d_start_drawing();
 	logSD("vita2d clear\n");
 	vita2d_clear_screen();
 	logSD("vita2d drawtext\n");
-	vita2d_pgf_draw_text(pgf, 0, 16, RGBA8(0,255,0,255), 0.75f, "VitaCord by Me :P");
+	vita2d_pgf_draw_text(pgf, 0, 16, RGBA8(0,255,0,255), 0.75f, "Discord");
 	logSD("vita2d enddrawing\n");
 	vita2d_end_drawing();
 	logSD("vita2d swapbuffers\n");
@@ -1024,23 +1023,25 @@ int main(int argc, char *argv[]) {
 
 	//debugNetPrintf(DEBUG,"Main While Loop while(inApp)\n",ret);
 	
+	
+	
 	logSD("Starting app loop----------\n");
 	while(inApp){
-		logSD("App loop start\n");
+		
 		//sceKernelDelayThread(1*250*1000); // SLEEP FOR NOW DEBUG REASONS ; ELSE TOO FAST
 		sceKernelDelayThread(1*10*1000);
 
 		
-		logSD("vitapad read\n");
+		
 		vitaPad.Read();
 		
 		currentTimeMS = osGetTimeMS();
 		if(inChannel){
 			
-			logSD("_____inchannel\n");
-			logSD("printmessages\n");
+			
 			vita2d_start_drawing();
 			vita2d_clear_screen();
+			vita2d_draw_texture(backgroundImage , 0 , 0);
 			printMessages();
 			vita2d_end_drawing();
 			vita2d_swap_buffers();
@@ -1048,7 +1049,7 @@ int main(int argc, char *argv[]) {
 
 			
 			if(vitaPad.circle){
-				logSD("press circle\n");
+				
 				inGuild = true;
 				inChannel = false;
 				inMain = false;
@@ -1057,8 +1058,6 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
 				
-				logSD("press cross\n");
-				logSD("sendmessage\n");
 				userMessage = vitaIME.getUserText("Message : ");
 				sendMessage();
 				
@@ -1069,13 +1068,13 @@ int main(int argc, char *argv[]) {
 				
 			}else if(vitaPad.righttrigger){
 				
-				logSD("press rtrigger\n");
+				
 				scrollY += 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}else if(vitaPad.lefttrigger){
 				
-				logSD("press ltrigger\n");
+				
 				scrollY -= 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
@@ -1083,25 +1082,22 @@ int main(int argc, char *argv[]) {
 			
 			if(currentTimeMS - lastFetchTimeMS > fetchDelayMS ){
 				
-				logSD("---getmessages\n");
+				
 				getMessagesFromChannel();
-				logSD(data);
-				logSD("\n");
 				
 			}
 			
 		}else if(inGuild){
-			// show channels
-			logSD("_____inguild\n");
-			logSD("printchannelsinguild\n");
+			
 			vita2d_start_drawing();
 			vita2d_clear_screen();
+			vita2d_draw_texture(backgroundImage , 0 , 0);
 			printChannelsInGuild();
 			vita2d_end_drawing();
 			vita2d_swap_buffers();
 			
 			if(vitaPad.circle){
-				logSD("press circle\n");
+				
 				inChannel = false;
 				inGuild = false;
 				inMain = true;
@@ -1114,9 +1110,9 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
 				
-				logSD("press cross\n");
+				
 				if(guilds[currentGuild].channels[cursorChannel].type == "text"){
-					logSD("join guild\n");
+					
 					inChannel = true;
 					inGuild = false;
 					inMain = false;
@@ -1126,15 +1122,13 @@ int main(int argc, char *argv[]) {
 					
 					currentChannel = cursorChannel;
 					currentGuild = cursorGuild;
-				
-					logSD("currentGuild " + std::to_string(currentGuild) + "\n");
-					logSD("currentChannel " + std::to_string(currentChannel) + "\n");
+					
 				}
 				
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.up){
 				
-				logSD("press up\n");
+				
 				cursorChannel--;
 				if(cursorChannel < 0){
 					cursorChannel = guilds[currentGuild].channels.size() - 1;
@@ -1143,7 +1137,7 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.down){
 				
-				logSD("press down\n");
+				
 				cursorChannel++;
 				if(cursorChannel >= guilds[currentGuild].channels.size()){
 					cursorChannel = 0;
@@ -1152,13 +1146,13 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.righttrigger){
 				
-				logSD("press rtrigger\n");
+				
 				scrollY += 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}else if(vitaPad.lefttrigger){
 				
-				logSD("press ltrigger\n");
+				
 				scrollY -= 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
@@ -1167,16 +1161,16 @@ int main(int argc, char *argv[]) {
 			
 		}else if(inMain){
 			// show guilds ( servers )
-			logSD("_____inmain\n");
-			logSD("printguilds\n");
+			
 			vita2d_start_drawing();
 			vita2d_clear_screen();
+			vita2d_draw_texture(backgroundImage , 0 , 0);
 			printGuilds();
 			vita2d_end_drawing();
 			vita2d_swap_buffers();
 			if(vitaPad.circle){
 				
-				logSD("press circle\n");
+				
 				// dont quit ^^
 				//inChannel = false;
 				//inGuild = false;
@@ -1186,7 +1180,7 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.cross){
 				
-				logSD("presscross\n");
+				
 				inChannel = false;
 				inGuild = true;
 				inMain = false;
@@ -1197,12 +1191,12 @@ int main(int argc, char *argv[]) {
 				
 				currentChannel = cursorChannel;
 				currentGuild = cursorGuild;
-				logSD("currentGuild " + std::to_string(currentGuild) + "\n");
+				
 				
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.up){
 				
-				logSD("press up\n");
+				
 				cursorGuild--;
 				if(cursorGuild < 0){
 					cursorGuild = guildsAmount - 1;
@@ -1211,7 +1205,7 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.down){
 				
-				logSD("press down\n");
+				
 				cursorGuild++;
 				if(cursorGuild >= guildsAmount){
 					cursorGuild = 0;
@@ -1220,13 +1214,13 @@ int main(int argc, char *argv[]) {
 				sceKernelDelayThread(sleepTimeInputNormal); // 150 ms
 			}else if(vitaPad.righttrigger){
 				
-				logSD("press rtrigger\n");
+				
 				scrollY += 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
 			}else if(vitaPad.lefttrigger){
 				
-				logSD("press ltrigger\n");
+				
 				scrollY -= 3;
 				sceKernelDelayThread(sleepTimeInputScroll);
 				
@@ -1240,6 +1234,9 @@ int main(int argc, char *argv[]) {
 	}
 	
 	logSD("Exited inapp loop\n");
+	
+	vita2d_fini();
+	vita2d_free_texture(backgroundImage);
 	
 	//debugNetPrintf(DEBUG,"curl global cleanup\n");
 	logSD("curl global cleanup\n");

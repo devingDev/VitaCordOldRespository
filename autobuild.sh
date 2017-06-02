@@ -1,9 +1,8 @@
-rm -rf CMakeFiles/
-rm CMakeCache.txt
-rm cmake_install.cmake
-rm MakeFile
-rm vita_cord*
-
-cmake ./
-
+rm -rf build
+mkdir build
+cd build
+cmake ..
 make
+cd ..
+
+

@@ -18,3 +18,13 @@ Navigation : UP , DOWN , CROSS (enter/start new message) , CIRCLE (back) , R/L (
 Credits for helping me: Rinnegatamante , xyz , noname120 , davee and many more I don't remember
 Feel free to add comments!
 
+
+CHANGELOG:
+
+1.03 added 2FA
+
+1.02 added logging to file for error reporting
+
+1.01 added scrolling , disable voice channels
+
+1.00 initial release

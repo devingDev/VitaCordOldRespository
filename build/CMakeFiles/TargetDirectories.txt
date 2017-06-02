@@ -1,0 +1,5 @@
+/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.vpk.dir
+/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/rebuild_cache.dir
+/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/edit_cache.dir
+/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.self.dir
+/home/jonnydepp/programming/vita/vitacord2/build/CMakeFiles/vita_cord.elf.dir
