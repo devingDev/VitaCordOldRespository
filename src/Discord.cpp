@@ -9,8 +9,70 @@ Discord::~Discord(){
 		//?
 }
 
-
-short Discord::login(std::string mail , std::string pass){
+void fetchUserData(){
+	
+	std::string userDataUrl = "https://discordapp.com/api/auth/login";
+	VitaNet::http_response userdataresponse = vitaNet.curlDiscordGet(loginUrl , token);
+	if(userdataresponse.httpcode == 200){
+		// check if Two-Factor-Authentication is activated and needs further user action
+		nlohmann::json j_complete = nlohmann::json::parse(userdataresponse.body);
+		if(!j_complete.is_null()){
+			if(!j_complete["username"].is_null()){
+				username = j_complete["username"].get<std::string>();
+			}
+			if(!j_complete["verified"].is_null()){
+				verified = j_complete["verified"].get<bool>();
+			}
+			if(!j_complete["mfa_enabled"].is_null()){
+				mfa_enabled = j_complete["mfa_enabled"].get<bool>();
+			}
+			if(!j_complete["id"].is_null()){
+				id = j_complete["id"].get<std::string>();
+			}
+			if(!j_complete["phone"].is_null()){
+				phone = j_complete["phone"].get<std::string>();
+			}
+			if(!j_complete["avatar"].is_null()){
+				avatar = j_complete["avatar"].get<std::string>();
+			}
+			if(!j_complete["discriminator"].is_null()){
+				discriminator = j_complete["discriminator"].get<std::string>();
+			}
+		}
+		
+		
+	}
+	
+}
+void loadData(){
+	loadingData = true;
+	
+}
+void getGuilds(){
+	std::string guildUrl = "https://discordapp.com/api/users/@me/guilds";
+}
+void getChannels(){
+	
+}
+std::string Discord::getUsername(){
+	return username;
+}
+std::string Discord::getEmail(){
+	return email;
+}
+std::string Discord::getPassword(){
+	return password;
+}
+void Discord::setEmail(std::string mail){
+	email = mail;
+}
+void Discord::setPassword(std::string pass){
+	password = pass;
+}
+long Discord::login(){
+	return login(email , password);
+}
+long Discord::login(std::string mail , std::string pass){
 	logSD("Login attempt");
 	email = mail;
 	password = pass;
@@ -31,10 +93,13 @@ short Discord::login(std::string mail , std::string pass){
 						twoFactorAuthEnabled = true;
 						ticket = j_complete["ticket"].get<std::string>();
 						logSD("Need 2FA Code");
+						loginresponse.httpcode = 200000; // NEED MFA
 					}
 				}else if(!j_complete["token"].is_null()){
 					// Logged in !
 					token = j_complete["token"].get<std::string>();
+					loggedin = true;
+					fetchUserData();
 				}
 				
 			}
@@ -47,9 +112,10 @@ short Discord::login(std::string mail , std::string pass){
 		// login failed >_>
 		
 	}
+	return loginresponse.httpcode;
 	
 }
-short Discord::submit2facode(std::string code){
+long Discord::submit2facode(std::string code){
 	logSD("Submit 2FA Attempt");
 	code2fa = code;
 
@@ -63,10 +129,13 @@ short Discord::submit2facode(std::string code){
 		if(!j_complete2.is_null()){
 			if(!j_complete2["token"].is_null()){
 				token = j_complete2["token"].get<std::string>();
+				loggedin = true;
+				fetchUserData();
 			}
 		}
 		
 	}
+	return submit2facoderesponse.httpcode;
 	
 }
 std::string Discord::getToken(){

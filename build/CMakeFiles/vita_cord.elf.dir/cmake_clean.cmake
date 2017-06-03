@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/vita_cord.elf.dir/src/VitaGUI.cpp.obj"
   "CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj"
   "CMakeFiles/vita_cord.elf.dir/src/Discord.cpp.obj"
   "CMakeFiles/vita_cord.elf.dir/src/VitaNet.cpp.obj"

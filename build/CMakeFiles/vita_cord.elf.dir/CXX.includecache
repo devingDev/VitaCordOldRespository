@@ -27,6 +27,8 @@ DiscordApp.hpp
 /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.hpp
 
 /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.hpp
+psp2/kernel/processmgr.h
+-
 VitaTouch.hpp
 /home/jonnydepp/programming/vita/vitacord2/src/VitaTouch.hpp
 VitaPad.hpp
@@ -35,6 +37,28 @@ VitaIME.hpp
 /home/jonnydepp/programming/vita/vitacord2/src/VitaIME.hpp
 Discord.hpp
 /home/jonnydepp/programming/vita/vitacord2/src/Discord.hpp
+VitaGUI.hpp
+/home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.hpp
+
+/home/jonnydepp/programming/vita/vitacord2/src/GUIElements.hpp
+vita2d.h
+-
+string
+-
+
+/home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.cpp
+VitaGUI.hpp
+/home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.hpp
+
+/home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.hpp
+vita2d.h
+-
+GUIElements.hpp
+/home/jonnydepp/programming/vita/vitacord2/src/GUIElements.hpp
+vector
+-
+string
+-
 
 /home/jonnydepp/programming/vita/vitacord2/src/VitaIME.cpp
 stdio.h
@@ -127,6 +151,8 @@ psp2/touch.h
 -
 string.h
 -
+mathtools.hpp
+/home/jonnydepp/programming/vita/vitacord2/src/mathtools.hpp
 
 /home/jonnydepp/programming/vita/vitacord2/src/json.hpp
 algorithm
@@ -197,4 +223,6 @@ string.h
 /home/jonnydepp/programming/vita/vitacord2/src/main.cpp
 DiscordApp.hpp
 /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.hpp
+
+/home/jonnydepp/programming/vita/vitacord2/src/mathtools.hpp
 

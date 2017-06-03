@@ -11,11 +11,18 @@ CMakeFiles/vita_cord.elf.dir/src/DiscordApp.cpp.obj
  /home/jonnydepp/programming/vita/vitacord2/src/Discord.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.cpp
  /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.hpp
+ /home/jonnydepp/programming/vita/vitacord2/src/GUIElements.hpp
+ /home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaIME.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaNet.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaPad.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaTouch.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/json.hpp
+ /home/jonnydepp/programming/vita/vitacord2/src/mathtools.hpp
+CMakeFiles/vita_cord.elf.dir/src/VitaGUI.cpp.obj
+ /home/jonnydepp/programming/vita/vitacord2/src/GUIElements.hpp
+ /home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.cpp
+ /home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.hpp
 CMakeFiles/vita_cord.elf.dir/src/VitaIME.cpp.obj
  /home/jonnydepp/programming/vita/vitacord2/src/VitaIME.cpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaIME.hpp
@@ -29,15 +36,19 @@ CMakeFiles/vita_cord.elf.dir/src/VitaPad.cpp.obj
 CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.obj
  /home/jonnydepp/programming/vita/vitacord2/src/VitaTouch.cpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaTouch.hpp
+ /home/jonnydepp/programming/vita/vitacord2/src/mathtools.hpp
 CMakeFiles/vita_cord.elf.dir/src/log.cpp.obj
  /home/jonnydepp/programming/vita/vitacord2/src/log.cpp
  /home/jonnydepp/programming/vita/vitacord2/src/log.hpp
 CMakeFiles/vita_cord.elf.dir/src/main.cpp.obj
  /home/jonnydepp/programming/vita/vitacord2/src/Discord.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/DiscordApp.hpp
+ /home/jonnydepp/programming/vita/vitacord2/src/GUIElements.hpp
+ /home/jonnydepp/programming/vita/vitacord2/src/VitaGUI.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaIME.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaNet.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaPad.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/VitaTouch.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/json.hpp
  /home/jonnydepp/programming/vita/vitacord2/src/main.cpp
+ /home/jonnydepp/programming/vita/vitacord2/src/mathtools.hpp
