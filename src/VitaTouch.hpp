@@ -14,13 +14,17 @@ class VitaTouch{
 		void readTouch();
 		SceTouchData touch_old[SCE_TOUCH_PORT_MAX_NUM];
 		SceTouchData touch[SCE_TOUCH_PORT_MAX_NUM];
-		vector2 getTouchPoint();
-		vector2 lastTouchPoint;
+		vector2 getClickPoint();
+		vector2 lastClickPoint;
+		bool clicking;
+		bool scrolling;
+		int scrollDirX ;
+		int scrollDirY;
 
 	private:
 		void initTouch();
 		
-		vector2 emptyTouchPoint;
+		vector2 emptyClickPoint;
 		
 };
 

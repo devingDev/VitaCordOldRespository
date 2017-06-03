@@ -3,6 +3,12 @@
 #include <pthread.h>
 #include "json.hpp"
 
+#include <psp2/kernel/processmgr.h>
+
+uint64_t Discord::osGetTimeMS(){
+	return (sceKernelGetProcessTimeWide() / 1000);
+}
+
 Discord::Discord(){
 	loadedGuilds = false;
 	loadingData = false;
@@ -11,27 +17,95 @@ Discord::Discord(){
 Discord::~Discord(){
 		//?
 }
+void Discord::getChannelMessages(int channelIndex){
+	currentChannel = channelIndex;
+	std::string channelMessagesUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id + "/messages";
+	VitaNet::http_response channelmessagesresponse = vitaNet.curlDiscordGet(channelMessagesUrl , token);
+	if(channelmessagesresponse.httpcode == 200){
+		nlohmann::json j_complete = nlohmann::json::parse(channelmessagesresponse.body);
+		int messagesAmount = j_complete.size();
+		
+		
+		if(!j_complete.is_null()){
+			guilds[currentGuild].channels[currentChannel].messages.clear();
+			
+			for( int i = 0 ; i < messagesAmount ; i++){
+				guilds[currentGuild].channels[currentChannel].messages.push_back(message());
+				
+				if(!j_complete[i].is_null()){
+					
+					if(!j_complete[i]["timestamp"].is_null()){
+						guilds[currentGuild].channels[currentChannel].messages[i].timestamp = j_complete[i]["timestamp"].get<std::string>();
+					}else{
+						guilds[currentGuild].channels[currentChannel].messages[i].timestamp = "";
+					}
+					
+					if(!j_complete[i]["id"].is_null()){
+						guilds[currentGuild].channels[currentChannel].messages[i].id = j_complete[i]["id"].get<std::string>();
+					}else{
+						guilds[currentGuild].channels[currentChannel].messages[i].id = "";
+					}
+					
+					if(!j_complete[i]["content"].is_null()){
+						guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
+					}else{
+						guilds[currentGuild].channels[currentChannel].messages[i].content = "";
+					}
+					// author :
+					if(!j_complete[i]["author"]["username"].is_null()){
+						guilds[currentGuild].channels[currentChannel].messages[i].author.username = j_complete[i]["author"]["username"].get<std::string>();
+					}else{
+						guilds[currentGuild].channels[currentChannel].messages[i].author.username = "";
+					}
+					
+					if(!j_complete[i]["author"]["discriminator"].is_null()){
+						guilds[currentGuild].channels[currentChannel].messages[i].author.discriminator = j_complete[i]["author"]["discriminator"].get<std::string>();
+					}else{
+						guilds[currentGuild].channels[currentChannel].messages[i].author.discriminator = "";
+					}
+					
+					if(!j_complete[i]["author"]["id"].is_null()){
+						guilds[currentGuild].channels[currentChannel].messages[i].author.id = j_complete[i]["author"]["id"].get<std::string>();
+					}else{
+						guilds[currentGuild].channels[currentChannel].messages[i].author.id = "";
+					}
+					
+					if(!j_complete[i]["author"]["avatar"].is_null()){
+						guilds[currentGuild].channels[currentChannel].messages[i].author.avatar = j_complete[i]["author"]["avatar"].get<std::string>();
+					}else{
+						guilds[currentGuild].channels[currentChannel].messages[i].author.avatar = "";
+					}
+
+				}
+			}
+		}
+	
+		lastFetchTimeMS = osGetTimeMS();
+		
+	}
+	
+}
+void Discord::JoinGuild(int gIndex){
+	currentGuild = gIndex;
+}
+void Discord::JoinChannel(int cIndex){
+	currentChannel = cIndex;
+	getChannelMessages(currentChannel);
+}
+void Discord::setToken(std::string tok){
+	token = tok;
+}
 
 
 void * Discord::thread_loadData(void *arg){
 	
 	Discord *discordPtr = reinterpret_cast<Discord *>(arg);
-	
-	logSD("start of thread_loadData()");
-	
-	logSD("set loadingData = true");
+	logSD("start of thread_loadData");
 	discordPtr->loadingData = true;
-	logSD("next is while");
 	while(discordPtr->loadingData){
-		logSD("in loop");
 		if(!discordPtr->loadedGuilds){
-			
-			logSD("!loadedGuilds");
 			std::string guildsUrl = "https://discordapp.com/api/users/@me/guilds";
-			logSD("guildsUrl"  + guildsUrl);
 			VitaNet::http_response guildsresponse = discordPtr->vitaNet.curlDiscordGet(guildsUrl , token);
-			
-			logSD("guildsresponse : " + guildsresponse.body);
 			if(guildsresponse.httpcode == 200){
 				try{
 					nlohmann::json j_complete = nlohmann::json::parse(guildsresponse.body);
@@ -95,7 +169,6 @@ void * Discord::thread_loadData(void *arg){
 			for(int i = 0; i < discordPtr->guildsAmount ; i++){
 				std::string channelUrl = "https://discordapp.com/api/guilds/" + discordPtr->guilds[i].id + "/channels";
 				VitaNet::http_response channelresponse = discordPtr->vitaNet.curlDiscordGet(channelUrl , token);
-				logSD("channelresponse : " + channelresponse.body);
 				if(channelresponse.httpcode == 200){
 					try{
 						nlohmann::json j_complete = nlohmann::json::parse(channelresponse.body);
@@ -176,7 +249,7 @@ void Discord::loadData(){
 	
 }
 
-void Discord::fetchUserData(){
+long Discord::fetchUserData(){
 	
 	logSD("Fetching userdata");
 	std::string userDataUrl = "https://discordapp.com/api/users/@me";
@@ -212,6 +285,8 @@ void Discord::fetchUserData(){
 		
 	}
 	
+	return userdataresponse.httpcode;
+	
 }
 
 void Discord::getGuilds(){
@@ -242,6 +317,17 @@ long Discord::login(std::string mail , std::string pass){
 	logSD("Login attempt");
 	email = mail;
 	password = pass;
+	
+	if(token.length() > 20){
+		if(fetchUserData() == 200){
+			loggedin = true;
+			return 200;
+		}else{
+			token = "";
+		}
+		
+	}
+	
 	//std::string loginUrl = "http://jaynapps.com/psvita/httpdump.php";  // DBG
 	std::string loginUrl = "https://discordapp.com/api/auth/login";
 	std::string postData = "{ \"email\":\"" + email + "\" , \"password\":\"" + password + "\" }";
