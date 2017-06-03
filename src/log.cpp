@@ -8,3 +8,4 @@ void logSD(std::string logData){
     sceIoWrite(f, data, strlen(data));
     sceIoClose(f);
 }
+

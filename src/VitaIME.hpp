@@ -38,3 +38,4 @@ class VitaIME{
 };
 
 #endif
+
