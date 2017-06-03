@@ -28,10 +28,11 @@ include_directories(
 )
 
 add_executable(${SHORT_NAME}.elf
+  src/easyencryptor.cpp
+  src/DiscordApp.cpp
   src/VitaNet.cpp
   src/Discord.cpp
   src/VitaGUI.cpp
-  src/DiscordApp.cpp
   src/main.cpp
   src/log.cpp
   src/VitaIME.cpp
@@ -75,6 +76,7 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
   FILE assets/images/Vitacord-LoginForm-8BIT.png assets/images/Vitacord-LoginForm-8BIT.png
   FILE assets/images/Vitacord-Loading-8BIT.png assets/images/Vitacord-Loading-8BIT.png
+  FILE assets/images/Vitacord-GuildsBG-8BIT.png assets/images/Vitacord-GuildsBG-8BIT.png
   FILE sce_sys/icon0.png sce_sys/icon0.png
   FILE sce_sys/pic0.png sce_sys/pic0.png
   FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png

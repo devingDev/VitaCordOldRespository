@@ -50,6 +50,7 @@ class Discord{
 		~Discord();
 		void setEmail(std::string mail);
 		void setPassword(std::string pass);
+		void setToken(std::string tok);
 		long login();
 		long login(std::string mail , std::string pass);
 		long submit2facode(std::string code);
@@ -67,7 +68,11 @@ class Discord{
 			reinterpret_cast<Discord*>(object)->thread_loadData(object);
 			return 0;
 		}
-		
+		void JoinGuild(int gIndex);
+		uint64_t osGetTimeMS();
+		void JoinChannel(int cIndex);
+		int currentGuild = 0;
+		int currentChannel = 0;
 		
 	
 	private:
@@ -78,13 +83,15 @@ class Discord{
 		user client;
 		bool loggedin;
 		bool loadedGuilds ;
-		void fetchUserData();
+		long fetchUserData();
 		void getGuilds();
 		void getChannels();
+		void getChannelMessages(int guildIndex);
 		void *thread_loadData(void *arg);
 		
-	
-	
+		uint64_t lastFetchTimeMS;
+		uint64_t fetchTimeMS = 4000; // 4 seconds refreshing
+		uint64_t currentTimeMS;
 	
 };
 

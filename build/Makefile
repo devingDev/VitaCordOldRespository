@@ -338,6 +338,33 @@ src/VitaTouch.cpp.s:
 	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/VitaTouch.cpp.s
 .PHONY : src/VitaTouch.cpp.s
 
+src/easyencryptor.obj: src/easyencryptor.cpp.obj
+
+.PHONY : src/easyencryptor.obj
+
+# target to build an object file
+src/easyencryptor.cpp.obj:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/easyencryptor.cpp.obj
+.PHONY : src/easyencryptor.cpp.obj
+
+src/easyencryptor.i: src/easyencryptor.cpp.i
+
+.PHONY : src/easyencryptor.i
+
+# target to preprocess a source file
+src/easyencryptor.cpp.i:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/easyencryptor.cpp.i
+.PHONY : src/easyencryptor.cpp.i
+
+src/easyencryptor.s: src/easyencryptor.cpp.s
+
+.PHONY : src/easyencryptor.s
+
+# target to generate assembly for a file
+src/easyencryptor.cpp.s:
+	$(MAKE) -f CMakeFiles/vita_cord.elf.dir/build.make CMakeFiles/vita_cord.elf.dir/src/easyencryptor.cpp.s
+.PHONY : src/easyencryptor.cpp.s
+
 src/log.obj: src/log.cpp.obj
 
 .PHONY : src/log.obj
@@ -424,6 +451,9 @@ help:
 	@echo "... src/VitaTouch.obj"
 	@echo "... src/VitaTouch.i"
 	@echo "... src/VitaTouch.s"
+	@echo "... src/easyencryptor.obj"
+	@echo "... src/easyencryptor.i"
+	@echo "... src/easyencryptor.s"
 	@echo "... src/log.obj"
 	@echo "... src/log.i"
 	@echo "... src/log.s"

@@ -1,4 +1,5 @@
 #include "VitaGUI.hpp"
+#include "log.hpp"
 
 
 
@@ -10,6 +11,7 @@ VitaGUI::VitaGUI(){
 	backgroundImage = vita2d_load_PNG_file(bgPath.c_str());
 	loginFormImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-LoginForm-8BIT.png");
 	loadingImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-Loading-8BIT.png");
+	guildsBGImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-GuildsBG-8BIT.png");
 	
 	inputbox emailI;
 	emailI.x = 420;
@@ -43,7 +45,13 @@ VitaGUI::~VitaGUI(){
 	vita2d_free_texture(loadingImage);
 	vita2d_free_pgf(pgf);
 }
+void VitaGUI::updateBoxes(){
+	
+	
+}
+
 void VitaGUI::Draw(){
+
 	vita2d_start_drawing();
 	vita2d_clear_screen();
 
@@ -56,10 +64,34 @@ void VitaGUI::Draw(){
 		
 	}else if(state == 1){
 		vita2d_draw_texture( backgroundImage , 0 , 0);
-		vita2d_draw_texture_rotate(loadingImage, 0 , 0, loadingImageAngle);
-		vita2d_pgf_draw_text(pgf, 300, 277, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
+		//vita2d_draw_texture_rotate(loginFormImage, 128 , 64, loadingImageAngle);
+		vita2d_draw_texture_rotate(loadingImage, 416 , 208, loadingImageAngle);
+		vita2d_pgf_draw_text(pgf, 150, 300, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
 		loadingImageAngle ++;
 	}else if(state == 2){
+		setGuildBoxes();
+		for(int i = 0 ; i < guildBoxes.size() ; i++){
+			vita2d_draw_texture( guildsBGImage , guildScrollX + 128 , guildScrollY + i * 128);
+			vita2d_pgf_draw_text(pgf, guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[i].name.c_str());
+		}
+		
+		
+	}else if(state == 3){
+		setChannelBoxes();
+		
+		for(int i = 0 ; i < channelBoxes.size() ; i++){
+			vita2d_draw_texture( guildsBGImage , channelScrollX + 128 , channelScrollY + i * 128);
+			vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
+			vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
+		}
+		
+	}else if(state == 4){
+		setMessageBoxes();
+		
+		for(int i = 0 ; i < messageBoxes.size() ; i++){
+			vita2d_draw_texture( guildsBGImage , messageScrollX + 128 , messageScrollY + i * 128);
+			vita2d_pgf_draw_text(pgf, messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+		}
 		
 	}else if(state == 9){
 		int i = 0;
@@ -73,6 +105,35 @@ void VitaGUI::Draw(){
 	vita2d_swap_buffers();
 }
 
+int VitaGUI::scroll(int x , int y){
+	if(state == 2){
+		guildScrollX = 0;
+		guildScrollY += y;
+		if(guildScrollY < guildScrollYMin)
+			guildScrollY = guildScrollYMin;
+		else if(guildScrollY > guildScrollYMax )
+			guildScrollY = guildScrollYMax;
+		return 0;
+	}else if(state == 3){
+		channelScrollX = 0;
+		channelScrollY += y;
+		if(channelScrollY < channelScrollYMin)
+			channelScrollY = channelScrollYMin;
+		else if(channelScrollY > channelScrollYMax )
+			channelScrollY = channelScrollYMax;
+		return 0;
+	}else if(state==4){
+		messageScrollX = 0;
+		messageScrollY += y;
+		if(messageScrollY < messageScrollYMin)
+			messageScrollY = messageScrollYMin;
+		else if(messageScrollY > messageScrollYMax )
+			messageScrollY = messageScrollYMax;
+		return 0;
+	}
+	return -1;
+}
+
 int VitaGUI::click(int x , int y){
 	if(state == 0){
 		for(int i = 0 ; i < loginInputs.size() ; i++){
@@ -82,6 +143,24 @@ int VitaGUI::click(int x , int y){
 				}
 			}
 		}
+	}else if(state == 2){
+		for(int i = 0 ; i < guildBoxes.size() ; i++){
+			if( x  > guildBoxes[i].x && x  < guildBoxes[i].x + guildBoxes[i].w){
+				if( y > guildBoxes[i].y && y  < guildBoxes[i].y + guildBoxes[i].h){
+					return i;
+				}
+			}
+		}
+	}else if(state == 3){
+		for(int i = 0 ; i < channelBoxes.size() ; i++){
+			if( x  > channelBoxes[i].x && x  < channelBoxes[i].x + channelBoxes[i].w){
+				if( y  > channelBoxes[i].y && y  < channelBoxes[i].y + channelBoxes[i].h){
+					return i;
+				}
+			}
+		}
+	}else if(state == 4){
+		
 	}
 	return -1;
 }
@@ -108,4 +187,44 @@ int VitaGUI::GetState(){
 }
 void VitaGUI::SetState(int s){
 	state = s;
+}
+
+void VitaGUI::passDiscordPointer(Discord *ptr){
+	discordPtr = ptr;
+}
+void VitaGUI::setGuildBoxes(){
+	guildBoxes.clear();
+	for(int i = 0; i < discordPtr->guilds.size() ; i++){
+		box boxG;
+		boxG.x = guildScrollX + 128;
+		boxG.y = guildScrollY + i * 128;
+		boxG.w = 832;
+		boxG.h = 128;
+		guildBoxes.push_back(boxG);
+	}
+	guildScrollYMin = -((discordPtr->guilds.size()-1)*128 +64);
+}
+void VitaGUI::setChannelBoxes(){
+	channelBoxes.clear();
+	for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels.size() ; i++){
+		box boxC;
+		boxC.x = channelScrollX + 128;
+		boxC.y = channelScrollY + i * 128;
+		boxC.w = 832;
+		boxC.h = 128;
+		channelBoxes.push_back(boxC);
+	}
+	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels.size()-1)*128 +64);
+}
+void VitaGUI::setMessageBoxes(){
+	messageBoxes.clear();
+	for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size() ; i++){
+		box boxC;
+		boxC.x = messageScrollX + 128;
+		boxC.y = messageScrollY + i * 128;
+		boxC.w = 832;
+		boxC.h = 128;
+		messageBoxes.push_back(boxC);
+	}
+	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 +64) ;
 }

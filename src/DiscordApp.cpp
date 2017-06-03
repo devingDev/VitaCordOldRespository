@@ -1,9 +1,11 @@
 #include "DiscordApp.hpp"
 #include "log.hpp"
+#include "easyencryptor.hpp"
 #include <psp2/io/fcntl.h>
 
 
 void DiscordApp::loadUserDataFromFile(){
+	std::string enckey = "Toastie";
 	logSD("sceioopen");
 	int fh = sceIoOpen("ux0:data/vitacord-userdata.txt", SCE_O_RDONLY , 0777);
 	logSD("getfilesize");
@@ -26,8 +28,8 @@ void DiscordApp::loadUserDataFromFile(){
 	logSD("declare strings");
 	
 	std::string parserString = std::string( buffer , readbytes);
-	std::string email = ""  , password = "";
-	bool getmail= true , getpass = false;
+	std::string email = ""  , password = "" , token = "";
+	bool getmail= true , getpass = false, gettoken = false;
 	int i = 0;
 	logSD("declare strings");
 	for(int i = 0 ; i < parserString.length() ; i++){
@@ -38,8 +40,11 @@ void DiscordApp::loadUserDataFromFile(){
 				getmail = false;
 				getpass = true;
 			}else if(getpass){
-				logSD("newline . end of parsing");
+				logSD("newline . switching to token");
 				getpass = false;
+				gettoken = true;
+			}else if(gettoken){
+				gettoken = false;
 				i = 9999;
 				break;
 			}
@@ -49,26 +54,39 @@ void DiscordApp::loadUserDataFromFile(){
 			logSD("NIL character");
 		}else{
 			if(getmail){
-				logSD("add to mail : " + parserString[i]);
 				email += parserString[i];
 			}else if(getpass){
-				logSD("add to pass : " + parserString[i]);
 				password += parserString[i];
+			}else if(gettoken){
+				token += parserString[i];
 			}
 		}
 		
 	}
+	
+	email = decrypt(email);
+	password = decrypt(password);
+	token = decrypt(token);
+	
 	logSD("set mail");
 	discord.setEmail(email);
 	logSD("set pass");
 	discord.setPassword(password);
+	logSD("set token");
+	discord.setToken(token);
 	
 	vitaGUI.loginTexts[0] = discord.getEmail();
 	vitaGUI.loginTexts[1] = discord.getPassword();
 }
 
-void DiscordApp::saveUserDataToFile(std::string mail , std::string pass){
-	std::string userdata = mail + "\n" + pass + "\n";
+void DiscordApp::saveUserDataToFile(std::string mail , std::string pass , std::string _tok){
+	
+	
+	mail = encrypt(mail);
+	pass = encrypt(pass);
+	_tok = encrypt(_tok);
+	
+	std::string userdata = mail + "\n" + pass + "\n" + _tok + "\n";
 	int fh = sceIoOpen("ux0:data/vitacord-userdata.txt", SCE_O_WRONLY | SCE_O_CREAT, 0777);
 	sceIoWrite(fh, userdata.c_str(), strlen(userdata.c_str()));
 }
@@ -78,13 +96,25 @@ void DiscordApp::Start(){
 	
 	logSD("____App started!_____");
 	
+	logSD("load userdata file");
 	loadUserDataFromFile();
-	
+	logSD("pass discord pointer to vitaGUI");
+	vitaGUI.passDiscordPointer( &discord );
+	logSD("start program loop");
 	for(;;){
 		vitaGUI.Draw();
 		vitaPad.Read();
 		vitaTouch.readTouch();
-		clicked = vitaGUI.click(vitaTouch.lastTouchPoint.x , vitaTouch.lastTouchPoint.y);
+		if(vitaTouch.clicking){
+			clicked = vitaGUI.click(vitaTouch.lastClickPoint.x , vitaTouch.lastClickPoint.y);
+		}else{
+			clicked = -1;
+		}
+		if(vitaTouch.scrolling){
+			scrolled = vitaGUI.scroll(vitaTouch.scrollDirX , vitaTouch.scrollDirY);
+		}else{
+			scrolled = -1;
+		}
 		vitaState = vitaGUI.GetState();
 		if(vitaState == 0){
 			switch(clicked){
@@ -103,8 +133,8 @@ void DiscordApp::Start(){
 					int loginR = discord.login();
 					if(loginR  == 200){
 						logSD("Login Success");
-						vitaGUI.loadingString = "Wait a second " + discord.getUsername();
-						saveUserDataToFile(discord.getEmail() , discord.getPassword());
+						vitaGUI.loadingString = "Loading your stuff , " + discord.getUsername();
+						saveUserDataToFile(discord.getEmail() , discord.getPassword() , discord.getToken());
 						discord.loadData();
 						logSD("Loaded data");
 						vitaGUI.SetState(1);
@@ -112,7 +142,7 @@ void DiscordApp::Start(){
 						if( discord.submit2facode(vitaIME.getUserText("Enter your 2Factor Auth Code!")) == 200){
 							logSD("Login (2FA) Success");
 							vitaGUI.loadingString = "Wait a second " + discord.getUsername();
-							saveUserDataToFile(discord.getEmail() , discord.getPassword());
+							saveUserDataToFile(discord.getEmail() , discord.getPassword() , discord.getToken());
 							discord.loadData();
 							logSD("Loaded data");
 							vitaGUI.SetState(1);
@@ -125,18 +155,60 @@ void DiscordApp::Start(){
 				
 			}
 		}else if(vitaState == 1){
-			
-			logSD("vitaState == 1");
 			if(discord.loadingData){
 
-				logSD("discord.loadingData == true");
 			}else{
-				logSD("discord.loadingData == false");
 				vitaGUI.SetState(2);
-				logSD("vitaGui state = 2");
+				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}
-			logSD("vitastate 1 end");
 		}else if(vitaState == 2){
+
+			switch(clicked){
+				case -1:
+					break;
+				default:
+					discord.JoinGuild(clicked);
+					vitaGUI.SetState(3);
+					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					break;
+				
+			}
+		}else if(vitaState == 3){
+			if(vitaPad.circle){
+				vitaGUI.SetState(2);
+				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+			}
+			switch(clicked){
+				case -1:
+					break;
+				default:
+					discord.JoinChannel(clicked);
+					vitaGUI.SetState(4);
+					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					break;
+				
+			}
+			
+		}else if(vitaState == 4){
+			if(vitaPad.cross){
+				std::string userMessage = vitaIME.getUserText("Message");
+				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+			}else if(vitaPad.circle){
+				vitaGUI.SetState(3);
+				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+			}
+			
+			switch(clicked){
+				case -1:
+					break;
+				default:
+					discord.JoinChannel(clicked);
+					vitaGUI.SetState(4);
+					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					break;
+				
+			}
+			
 			
 		}
 		
