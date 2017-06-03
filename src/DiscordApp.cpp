@@ -192,10 +192,13 @@ void DiscordApp::Start(){
 		}else if(vitaState == 4){
 			if(vitaPad.cross){
 				std::string userMessage = vitaIME.getUserText("Message");
+				discord.sendMessage(userMessage);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}else if(vitaPad.circle){
 				vitaGUI.SetState(3);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+			}else{
+				
 			}
 			
 			switch(clicked){
@@ -208,7 +211,7 @@ void DiscordApp::Start(){
 					break;
 				
 			}
-			
+			discord.refreshMessages();
 			
 		}
 		
