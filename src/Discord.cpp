@@ -1,18 +1,166 @@
 #include "Discord.hpp"
 #include "log.hpp"
+#include <pthread.h>
+#include "json.hpp"
 
 Discord::Discord(){
-	
+	loadedGuilds = false;
+	loadingData = false;
 }
 
 Discord::~Discord(){
 		//?
 }
 
-void fetchUserData(){
+
+void * Discord::thread_loadData(void *arg){
+	
+	loadingData = true;
+	while(loadingData){
+		if(!loadedGuilds){
+			std::string guildsUrl = "https://discordapp.com/api/users/@me/guilds";
+			VitaNet::http_response userdataresponse = vitaNet.curlDiscordGet(guildsUrl , token);
+			
+			if(userdataresponse.httpcode == 200){
+				try{
+					nlohmann::json j_complete = nlohmann::json::parse(userdataresponse.body);
+					if(!j_complete.is_null()){
+						guilds.clear();
+						guildsAmount = j_complete.size();
+						for(int i = 0; i < guildsAmount; i++){
+							
+							guilds.push_back(guild());
+							
+							if(!j_complete[i].is_null()){
+								
+								
+								if(!j_complete[i]["owner"].is_null()){
+									guilds[i].owner = j_complete[i]["owner"].get<bool>();
+								}else{
+									guilds[i].owner = false;
+								}
+								
+								if(!j_complete[i]["permissions"].is_null()){
+									guilds[i].permissions = j_complete[i]["permissions"].get<long>();
+								}else{
+									guilds[i].permissions = 0;
+								}
+								
+								if(!j_complete[i]["icon"].is_null()){
+									guilds[i].icon = j_complete[i]["icon"].get<std::string>();
+								}else{
+									guilds[i].icon = "";
+								}
+								
+								if(!j_complete[i]["id"].is_null()){
+									guilds[i].id = j_complete[i]["id"].get<std::string>();
+								}else{
+									guilds[i].id = "";
+								}
+								
+								if(!j_complete[i]["name"].is_null()){
+									guilds[i].name = j_complete[i]["name"].get<std::string>();
+									
+								}else{
+									guilds[i].name = "";
+								}
+								
+								
+								
+							}
+							
+							
+						}
+						loadedGuilds = true;
+					}
+				}catch(const std::exception& e){
+					
+				}
+				
+			}else{
+				loadingData = false;
+			}
+		}else{
+			for(int i = 0; i < guildsAmount ; i++){
+				std::string channelUrl = "https://discordapp.com/api/guilds/" + guilds[i].id + "/channels";
+				VitaNet::http_response channelresponse = vitaNet.curlDiscordGet(channelUrl , token);
+				if(channelresponse.httpcode == 200){
+					try{
+						nlohmann::json j_complete = nlohmann::json::parse(channelresponse.body);
+						if(!j_complete.is_null()){
+							int channelsAmount = j_complete.size();
+							for(int c = 0; c < channelsAmount; c++){
+								
+								guilds[i].channels.push_back(channel());
+								
+								if(!j_complete[c].is_null()){
+									
+									if(!j_complete[c]["type"].is_null()){
+										guilds[i].channels[c].type = j_complete[c]["type"].get<std::string>();
+									}else{
+										guilds[i].channels[c].type = "";
+									}
+									
+									if(!j_complete[c]["id"].is_null()){
+										guilds[i].channels[c].id = j_complete[c]["id"].get<std::string>();
+									}else{
+										guilds[i].channels[c].id = "";
+									}
+									
+									if(!j_complete[c]["name"].is_null()){
+										guilds[i].channels[c].name = j_complete[c]["name"].get<std::string>();
+									}else{
+										guilds[i].channels[c].name = "name unavailable";
+									}
+									
+									if(!j_complete[c]["topic"].is_null()){
+										guilds[i].channels[c].topic = j_complete[c]["topic"].get<std::string>();
+									}else{
+										guilds[i].channels[c].topic = "";
+									}
+								
+									if(!j_complete[c]["is_private"].is_null()){
+										guilds[i].channels[c].is_private = j_complete[c]["is_private"].get<bool>();
+									}else{
+										guilds[i].channels[c].is_private = false;
+									}
+									
+									if(!j_complete[c]["last_message_id"].is_null()){
+										guilds[i].channels[c].last_message_id = j_complete[c]["last_message_id"].get<std::string>();
+									}else{
+										guilds[i].channels[c].last_message_id = false;
+									}
+									
+									
+									
+								}
+								
+							}
+						
+						}
+					}catch(const std::exception& e){
+				
+					}
+				}
+				
+			}
+			
+			loadingData = false;
+		}
+	}
+}
+
+void Discord::loadData(){
+	loadingData = true;
+	pthread_t loadDataThread;
+	pthread_create(&loadDataThread, NULL, &Discord::loadData_wrapper, 0);
+	
+}
+
+void Discord::fetchUserData(){
 	
 	std::string userDataUrl = "https://discordapp.com/api/auth/login";
-	VitaNet::http_response userdataresponse = vitaNet.curlDiscordGet(loginUrl , token);
+	VitaNet::http_response userdataresponse = vitaNet.curlDiscordGet(userDataUrl , token);
 	if(userdataresponse.httpcode == 200){
 		// check if Two-Factor-Authentication is activated and needs further user action
 		nlohmann::json j_complete = nlohmann::json::parse(userdataresponse.body);
@@ -44,14 +192,11 @@ void fetchUserData(){
 	}
 	
 }
-void loadData(){
-	loadingData = true;
-	
-}
-void getGuilds(){
+
+void Discord::getGuilds(){
 	std::string guildUrl = "https://discordapp.com/api/users/@me/guilds";
 }
-void getChannels(){
+void Discord::getChannels(){
 	
 }
 std::string Discord::getUsername(){

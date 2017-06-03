@@ -101,9 +101,9 @@ void VitaGUI::RemoveRectangle(int index){
 	
 }
 
-int GetState(){
+int VitaGUI::GetState(){
 	return state;
 }
-void SetState(int s){
+void VitaGUI::SetState(int s){
 	state = s;
 }

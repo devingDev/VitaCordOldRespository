@@ -18,11 +18,19 @@ class VitaNet{
 			long httpcode;
 			std::string header;
 			std::string body;
-		}http_response;
+		} http_response;
+		
+		typedef struct{
+			std::string url;
+			std::string postdata;
+			std::string authtoken;
+		} thread_request;
+		
 		VitaNet();
 		~VitaNet();
 		http_response curlDiscordGet(std::string url , std::string authtoken);
 		http_response curlDiscordPost(std::string url , std::string postdata , std::string authtoken);
+
 
 
 	
