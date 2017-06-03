@@ -188,7 +188,7 @@ std::string VitaIME::getUserText(char title[] , char showtext[]){
         vita2d_swap_buffers();
         sceDisplayWaitVblankStart();
     }
-	
+	return userTextString;
 }
 
 
