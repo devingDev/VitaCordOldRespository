@@ -16,11 +16,19 @@ Discord::~Discord(){
 void * Discord::thread_loadData(void *arg){
 	
 	logSD("start of thread_loadData()");
+	
+	logSD("set loadingData = true");
 	loadingData = true;
+	logSD("next is while");
 	while(loadingData){
+		logSD("in loop");
 		if(!loadedGuilds){
+			
+			logSD("!loadedGuilds");
 			std::string guildsUrl = "https://discordapp.com/api/users/@me/guilds";
+			logSD("guildsUrl"  + guildsUrl);
 			VitaNet::http_response guildsresponse = vitaNet.curlDiscordGet(guildsUrl , token);
+			
 			logSD("guildsresponse : " + guildsresponse.body);
 			if(guildsresponse.httpcode == 200){
 				try{
@@ -75,7 +83,7 @@ void * Discord::thread_loadData(void *arg){
 						loadedGuilds = true;
 					}
 				}catch(const std::exception& e){
-					
+					loadingData = false;
 				}
 				
 			}else{

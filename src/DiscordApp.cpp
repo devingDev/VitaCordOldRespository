@@ -48,11 +48,17 @@ void DiscordApp::Start(){
 				
 			}
 		}else if(vitaState == 1){
+			sceKernelDelayThread(SLEEP_CLICK_EXTENDED);//DBG sleep
+			logSD("vitaState == 1");
 			if(discord.loadingData){
-				
+
+				logSD("discord.loadingData == true");
 			}else{
+				logSD("discord.loadingData == false");
 				vitaGUI.SetState(2);
+				logSD("vitaGui state = 2");
 			}
+			logSD("vitastate 1 end");
 		}else if(vitaState == 2){
 			
 		}
