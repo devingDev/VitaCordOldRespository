@@ -15,6 +15,8 @@ class DiscordApp{
 	
 	public:
 		void Start();
+		void loadUserDataFromFile();
+		void saveUserDataToFile(std::string m , std::string p);
 		
 	private:
 		VitaGUI vitaGUI;

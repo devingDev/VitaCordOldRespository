@@ -40,6 +40,7 @@ VitaGUI::~VitaGUI(){
 	vita2d_fini();
 	vita2d_free_texture(backgroundImage);
 	vita2d_free_texture(loginFormImage);
+	vita2d_free_texture(loadingImage);
 	vita2d_free_pgf(pgf);
 }
 void VitaGUI::Draw(){
@@ -55,7 +56,7 @@ void VitaGUI::Draw(){
 		
 	}else if(state == 1){
 		vita2d_draw_texture( backgroundImage , 0 , 0);
-		vita2d_draw_texture_rotate(loadingImage, 480 , 277, loadingImageAngle);
+		vita2d_draw_texture_rotate(loadingImage, 0 , 0, loadingImageAngle);
 		vita2d_pgf_draw_text(pgf, 300, 277, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
 		loadingImageAngle ++;
 	}else if(state == 2){

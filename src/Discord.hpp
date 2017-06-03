@@ -72,7 +72,7 @@ class Discord{
 	
 	private:
 		VitaNet vitaNet;
-		std::string email, password , code2fa , token , ticket , username , id , avatar , discriminator , phone;
+		std::string email = "", password = "", code2fa , token , ticket , username , id , avatar , discriminator , phone;
 		bool verified, mfa_enabled; // mfa == twofactor its the same
 		bool twoFactorAuthEnabled;
 		user client;
