@@ -18,3 +18,4 @@ std::string decrypt(std::string msg)
 	return output;
 	
 }
+

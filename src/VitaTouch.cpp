@@ -53,3 +53,6 @@ vector2 VitaTouch::getClickPoint(){
 	return lastClickPoint;
 }
 
+
+
+

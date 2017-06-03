@@ -184,3 +184,6 @@ void VitaNet::terminate(){
 	sceNetTerm();
 	sceSysmoduleUnloadModule(SCE_SYSMODULE_NET);
 }
+
+
+

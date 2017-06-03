@@ -832,3 +832,4 @@ int main(int argc, char *argv[]) {
 	sceKernelExitProcess(0);
 	return 0;
 }
+

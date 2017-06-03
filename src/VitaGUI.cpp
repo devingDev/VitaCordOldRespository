@@ -228,3 +228,4 @@ void VitaGUI::setMessageBoxes(){
 	}
 	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 +64) ;
 }
+

@@ -398,3 +398,4 @@ std::string Discord::getToken(){
 std::string Discord::getTicket(){
 	return ticket;
 }
+
