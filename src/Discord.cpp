@@ -21,7 +21,7 @@ Discord::~Discord(){
 void Discord::sendMessage(std::string msg){
 	
 	std::string postData = "{ \"content\":\"" + msg + "\" }";
-	std::string sendMessageUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id ;
+	std::string sendMessageUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id + "/messages" ;
 	VitaNet::http_response sendmessageresponse = vitaNet.curlDiscordPost(sendMessageUrl , postData , token);
 	if(sendmessageresponse.httpcode == 200){
 		
