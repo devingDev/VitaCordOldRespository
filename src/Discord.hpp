@@ -59,7 +59,7 @@ class Discord{
 		std::string getEmail();
 		std::string getPassword();
 		void loadData();
-		std::atomic<bool> loadingData;
+		bool loadingData;
 		std::vector<guild> guilds;
 		int guildsAmount = 0;
 		static void* loadData_wrapper(void* object)
@@ -77,7 +77,7 @@ class Discord{
 		bool twoFactorAuthEnabled;
 		user client;
 		bool loggedin;
-		std::atomic<bool> loadedGuilds ;
+		bool loadedGuilds ;
 		void fetchUserData();
 		void getGuilds();
 		void getChannels();
