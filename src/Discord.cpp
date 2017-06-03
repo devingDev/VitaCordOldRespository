@@ -15,63 +15,65 @@ Discord::~Discord(){
 
 void * Discord::thread_loadData(void *arg){
 	
+	Discord *discordPtr = reinterpret_cast<Discord *>(arg);
+	
 	logSD("start of thread_loadData()");
 	
 	logSD("set loadingData = true");
-	loadingData = true;
+	discordPtr->loadingData = true;
 	logSD("next is while");
-	while(loadingData){
+	while(discordPtr->loadingData){
 		logSD("in loop");
-		if(!loadedGuilds){
+		if(!discordPtr->loadedGuilds){
 			
 			logSD("!loadedGuilds");
 			std::string guildsUrl = "https://discordapp.com/api/users/@me/guilds";
 			logSD("guildsUrl"  + guildsUrl);
-			VitaNet::http_response guildsresponse = vitaNet.curlDiscordGet(guildsUrl , token);
+			VitaNet::http_response guildsresponse = discordPtr->vitaNet.curlDiscordGet(guildsUrl , token);
 			
 			logSD("guildsresponse : " + guildsresponse.body);
 			if(guildsresponse.httpcode == 200){
 				try{
 					nlohmann::json j_complete = nlohmann::json::parse(guildsresponse.body);
 					if(!j_complete.is_null()){
-						guilds.clear();
-						guildsAmount = j_complete.size();
+						discordPtr->guilds.clear();
+						discordPtr->guildsAmount = j_complete.size();
 						for(int i = 0; i < guildsAmount; i++){
 							
-							guilds.push_back(guild());
+							discordPtr->guilds.push_back(guild());
 							
 							if(!j_complete[i].is_null()){
 								
 								
 								if(!j_complete[i]["owner"].is_null()){
-									guilds[i].owner = j_complete[i]["owner"].get<bool>();
+									discordPtr->guilds[i].owner = j_complete[i]["owner"].get<bool>();
 								}else{
-									guilds[i].owner = false;
+									discordPtr->guilds[i].owner = false;
 								}
 								
 								if(!j_complete[i]["permissions"].is_null()){
-									guilds[i].permissions = j_complete[i]["permissions"].get<long>();
+									discordPtr->guilds[i].permissions = j_complete[i]["permissions"].get<long>();
 								}else{
-									guilds[i].permissions = 0;
+									discordPtr->guilds[i].permissions = 0;
 								}
 								
 								if(!j_complete[i]["icon"].is_null()){
-									guilds[i].icon = j_complete[i]["icon"].get<std::string>();
+									discordPtr->guilds[i].icon = j_complete[i]["icon"].get<std::string>();
 								}else{
-									guilds[i].icon = "";
+									discordPtr->guilds[i].icon = "";
 								}
 								
 								if(!j_complete[i]["id"].is_null()){
-									guilds[i].id = j_complete[i]["id"].get<std::string>();
+									discordPtr->guilds[i].id = j_complete[i]["id"].get<std::string>();
 								}else{
-									guilds[i].id = "";
+									discordPtr->guilds[i].id = "";
 								}
 								
 								if(!j_complete[i]["name"].is_null()){
-									guilds[i].name = j_complete[i]["name"].get<std::string>();
+									discordPtr->guilds[i].name = j_complete[i]["name"].get<std::string>();
 									
 								}else{
-									guilds[i].name = "";
+									discordPtr->guilds[i].name = "";
 								}
 								
 								
@@ -80,66 +82,66 @@ void * Discord::thread_loadData(void *arg){
 							
 							
 						}
-						loadedGuilds = true;
+						discordPtr->loadedGuilds = true;
 					}
 				}catch(const std::exception& e){
-					loadingData = false;
+					discordPtr->loadingData = false;
 				}
 				
 			}else{
-				loadingData = false;
+				discordPtr->loadingData = false;
 			}
 		}else{
-			for(int i = 0; i < guildsAmount ; i++){
-				std::string channelUrl = "https://discordapp.com/api/guilds/" + guilds[i].id + "/channels";
-				VitaNet::http_response channelresponse = vitaNet.curlDiscordGet(channelUrl , token);
+			for(int i = 0; i < discordPtr->guildsAmount ; i++){
+				std::string channelUrl = "https://discordapp.com/api/guilds/" + discordPtr->guilds[i].id + "/channels";
+				VitaNet::http_response channelresponse = discordPtr->vitaNet.curlDiscordGet(channelUrl , token);
 				logSD("channelresponse : " + channelresponse.body);
 				if(channelresponse.httpcode == 200){
 					try{
 						nlohmann::json j_complete = nlohmann::json::parse(channelresponse.body);
 						if(!j_complete.is_null()){
-							guilds[i].channels.clear();
+							discordPtr->guilds[i].channels.clear();
 							int channelsAmount = j_complete.size();
 							for(int c = 0; c < channelsAmount; c++){
 								
-								guilds[i].channels.push_back(channel());
+								discordPtr->guilds[i].channels.push_back(channel());
 								
 								if(!j_complete[c].is_null()){
 									
 									if(!j_complete[c]["type"].is_null()){
-										guilds[i].channels[c].type = j_complete[c]["type"].get<std::string>();
+										discordPtr->guilds[i].channels[c].type = j_complete[c]["type"].get<std::string>();
 									}else{
-										guilds[i].channels[c].type = "";
+										discordPtr->guilds[i].channels[c].type = "";
 									}
 									
 									if(!j_complete[c]["id"].is_null()){
-										guilds[i].channels[c].id = j_complete[c]["id"].get<std::string>();
+										discordPtr->guilds[i].channels[c].id = j_complete[c]["id"].get<std::string>();
 									}else{
-										guilds[i].channels[c].id = "";
+										discordPtr->guilds[i].channels[c].id = "";
 									}
 									
 									if(!j_complete[c]["name"].is_null()){
-										guilds[i].channels[c].name = j_complete[c]["name"].get<std::string>();
+										discordPtr->guilds[i].channels[c].name = j_complete[c]["name"].get<std::string>();
 									}else{
-										guilds[i].channels[c].name = "name unavailable";
+										discordPtr->guilds[i].channels[c].name = "name unavailable";
 									}
 									
 									if(!j_complete[c]["topic"].is_null()){
-										guilds[i].channels[c].topic = j_complete[c]["topic"].get<std::string>();
+										discordPtr->guilds[i].channels[c].topic = j_complete[c]["topic"].get<std::string>();
 									}else{
-										guilds[i].channels[c].topic = "";
+										discordPtr->guilds[i].channels[c].topic = "";
 									}
 								
 									if(!j_complete[c]["is_private"].is_null()){
-										guilds[i].channels[c].is_private = j_complete[c]["is_private"].get<bool>();
+										discordPtr->guilds[i].channels[c].is_private = j_complete[c]["is_private"].get<bool>();
 									}else{
-										guilds[i].channels[c].is_private = false;
+										discordPtr->guilds[i].channels[c].is_private = false;
 									}
 									
 									if(!j_complete[c]["last_message_id"].is_null()){
-										guilds[i].channels[c].last_message_id = j_complete[c]["last_message_id"].get<std::string>();
+										discordPtr->guilds[i].channels[c].last_message_id = j_complete[c]["last_message_id"].get<std::string>();
 									}else{
-										guilds[i].channels[c].last_message_id = false;
+										discordPtr->guilds[i].channels[c].last_message_id = false;
 									}
 									
 									
@@ -156,10 +158,11 @@ void * Discord::thread_loadData(void *arg){
 				
 			}
 			
-			loadingData = false;
+			discordPtr->loadingData = false;
 		}
 	}
 	logSD("end of thread_loadData()");
+	pthread_exit(NULL);
 }
 
 void Discord::loadData(){
@@ -168,7 +171,7 @@ void Discord::loadData(){
 	logSD("pthread_t loadDataThread");
 	pthread_t loadDataThread;
 	logSD("pthread_create( loadDataThread , NULL , wrapper , 0)");
-	pthread_create(&loadDataThread, NULL, &Discord::loadData_wrapper, 0);
+	pthread_create(&loadDataThread, NULL, &Discord::loadData_wrapper, this);
 	logSD("end of loadData()");
 	
 }
