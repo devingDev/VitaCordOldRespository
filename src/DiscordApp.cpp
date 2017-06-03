@@ -3,7 +3,7 @@
 
 void DiscordApp::Start(){
 	
-	
+	logSD("____App started!_____");
 	
 	for(;;){
 		vitaGUI.Draw();
@@ -27,13 +27,19 @@ void DiscordApp::Start(){
 				case 2:
 					int loginR = discord.login();
 					if(loginR  == 200){
+						logSD("Login Success");
 						vitaGUI.loadingString = "Wait a second " + discord.getUsername();
 						discord.loadData();
+						logSD("Loaded data");
 						vitaGUI.SetState(1);
 					}else if(loginR == 200000){
 						if( discord.submit2facode(vitaIME.getUserText("Enter your 2Factor Auth Code!")) == 200){
+							logSD("Login (2FA) Success");
 							vitaGUI.loadingString = "Wait a second " + discord.getUsername();
+							discord.loadData();
+							logSD("Loaded data");
 							vitaGUI.SetState(1);
+							logSD("Set state");
 						}
 					}
 					

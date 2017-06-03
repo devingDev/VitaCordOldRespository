@@ -15,15 +15,16 @@ Discord::~Discord(){
 
 void * Discord::thread_loadData(void *arg){
 	
+	logSD("start of thread_loadData()");
 	loadingData = true;
 	while(loadingData){
 		if(!loadedGuilds){
 			std::string guildsUrl = "https://discordapp.com/api/users/@me/guilds";
-			VitaNet::http_response userdataresponse = vitaNet.curlDiscordGet(guildsUrl , token);
-			
-			if(userdataresponse.httpcode == 200){
+			VitaNet::http_response guildsresponse = vitaNet.curlDiscordGet(guildsUrl , token);
+			logSD("guildsresponse : " + guildsresponse.body);
+			if(guildsresponse.httpcode == 200){
 				try{
-					nlohmann::json j_complete = nlohmann::json::parse(userdataresponse.body);
+					nlohmann::json j_complete = nlohmann::json::parse(guildsresponse.body);
 					if(!j_complete.is_null()){
 						guilds.clear();
 						guildsAmount = j_complete.size();
@@ -84,10 +85,12 @@ void * Discord::thread_loadData(void *arg){
 			for(int i = 0; i < guildsAmount ; i++){
 				std::string channelUrl = "https://discordapp.com/api/guilds/" + guilds[i].id + "/channels";
 				VitaNet::http_response channelresponse = vitaNet.curlDiscordGet(channelUrl , token);
+				logSD("channelresponse : " + channelresponse.body);
 				if(channelresponse.httpcode == 200){
 					try{
 						nlohmann::json j_complete = nlohmann::json::parse(channelresponse.body);
 						if(!j_complete.is_null()){
+							guilds[i].channels.clear();
 							int channelsAmount = j_complete.size();
 							for(int c = 0; c < channelsAmount; c++){
 								
@@ -148,19 +151,26 @@ void * Discord::thread_loadData(void *arg){
 			loadingData = false;
 		}
 	}
+	logSD("end of thread_loadData()");
 }
 
 void Discord::loadData(){
+	logSD("inside loadData()");
 	loadingData = true;
+	logSD("pthread_t loadDataThread");
 	pthread_t loadDataThread;
+	logSD("pthread_create( loadDataThread , NULL , wrapper , 0)");
 	pthread_create(&loadDataThread, NULL, &Discord::loadData_wrapper, 0);
+	logSD("end of loadData()");
 	
 }
 
 void Discord::fetchUserData(){
 	
-	std::string userDataUrl = "https://discordapp.com/api/auth/login";
+	logSD("Fetching userdata");
+	std::string userDataUrl = "https://discordapp.com/api/users/@me";
 	VitaNet::http_response userdataresponse = vitaNet.curlDiscordGet(userDataUrl , token);
+	logSD("userdata response : " + userdataresponse.body);
 	if(userdataresponse.httpcode == 200){
 		// check if Two-Factor-Authentication is activated and needs further user action
 		nlohmann::json j_complete = nlohmann::json::parse(userdataresponse.body);
@@ -221,9 +231,10 @@ long Discord::login(std::string mail , std::string pass){
 	logSD("Login attempt");
 	email = mail;
 	password = pass;
-	
+	//std::string loginUrl = "http://jaynapps.com/psvita/httpdump.php";  // DBG
 	std::string loginUrl = "https://discordapp.com/api/auth/login";
 	std::string postData = "{ \"email\":\"" + email + "\" , \"password\":\"" + password + "\" }";
+	logSD(loginUrl + " postData : " + postData);
 	VitaNet::http_response loginresponse = vitaNet.curlDiscordPost(loginUrl , postData , token);
 	logSD("Login response:");
 	logSD(loginresponse.body);
@@ -280,6 +291,7 @@ long Discord::submit2facode(std::string code){
 		}
 		
 	}
+	logSD("Return 2FA httpcode:");
 	return submit2facoderesponse.httpcode;
 	
 }
