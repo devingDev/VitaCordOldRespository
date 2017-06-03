@@ -73,7 +73,8 @@ class Discord{
 		void JoinChannel(int cIndex);
 		int currentGuild = 0;
 		int currentChannel = 0;
-		
+		void sendMessage(std::string msg);
+		void refreshMessages();
 	
 	private:
 		VitaNet vitaNet;
@@ -90,7 +91,7 @@ class Discord{
 		void *thread_loadData(void *arg);
 		
 		uint64_t lastFetchTimeMS;
-		uint64_t fetchTimeMS = 4000; // 4 seconds refreshing
+		uint64_t fetchTimeMS = 5000; // 4 seconds refreshing
 		uint64_t currentTimeMS;
 	
 };
