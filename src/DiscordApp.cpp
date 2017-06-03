@@ -1,4 +1,5 @@
 #include "DiscordApp.hpp"
+#include "log.hpp"
 
 void DiscordApp::Start(){
 	

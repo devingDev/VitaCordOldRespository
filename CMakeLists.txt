@@ -16,8 +16,8 @@ set(VITA_APP_NAME "VitaCord")
 set(VITA_TITLEID  "VTCD00001")
 set(VITA_VERSION  "01.05")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fpermissive -std=gnu11 -Wall -flto")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fpermissive -std=c++11 -Wall -flto")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fpermissive -std=gnu11 -Wall ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fpermissive -std=c++11 -Wall ")
 
 
 find_package(CURL REQUIRED)
@@ -28,9 +28,9 @@ include_directories(
 )
 
 add_executable(${SHORT_NAME}.elf
+  src/Discord.cpp
   src/VitaGUI.cpp
   src/DiscordApp.cpp
-  src/Discord.cpp
   src/VitaNet.cpp
   src/main.cpp
   src/log.cpp

@@ -37,7 +37,7 @@ class VitaGUI{
 		
 		float loadingImageAngle;
 		
-		int state ;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 settings , 8 stuff..
+		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 settings , 8 stuff..
 	
 	
 	

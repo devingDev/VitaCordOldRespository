@@ -3,27 +3,13 @@
 
 #include <string>
 #include <vector>
+#include <atomic>
+
 #include "VitaNet.hpp"
 
-#include "json.hpp"
 
 class Discord{
 	public:
-		Discord();
-		~Discord();
-		void setEmail(std::string mail);
-		void setPassword(std::string pass);
-		long login();
-		long login(std::string mail , std::string pass);
-		long submit2facode(std::string code);
-		std::string getToken();
-		std::string getTicket();
-		std::string getUsername();
-		std::string getEmail();
-		std::string getPassword();
-		void loadData();
-		bool loadingData;
-		
 		typedef struct {
 			std::string username;
 			std::string discriminator;
@@ -59,6 +45,30 @@ class Discord{
 			std::string name;
 			std::vector<channel> channels;
 		}guild;
+		
+		Discord();
+		~Discord();
+		void setEmail(std::string mail);
+		void setPassword(std::string pass);
+		long login();
+		long login(std::string mail , std::string pass);
+		long submit2facode(std::string code);
+		std::string getToken();
+		std::string getTicket();
+		std::string getUsername();
+		std::string getEmail();
+		std::string getPassword();
+		void loadData();
+		std::atomic<bool> loadingData;
+		std::vector<guild> guilds;
+		int guildsAmount = 0;
+		static void* loadData_wrapper(void* object)
+		{
+			reinterpret_cast<Discord*>(object)->thread_loadData(object);
+			return 0;
+		}
+		
+		
 	
 	private:
 		VitaNet vitaNet;
@@ -67,9 +77,11 @@ class Discord{
 		bool twoFactorAuthEnabled;
 		user client;
 		bool loggedin;
+		std::atomic<bool> loadedGuilds ;
 		void fetchUserData();
 		void getGuilds();
 		void getChannels();
+		void *thread_loadData(void *arg);
 		
 	
 	
