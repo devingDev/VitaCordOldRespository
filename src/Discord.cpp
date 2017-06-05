@@ -17,8 +17,19 @@ Discord::Discord(){
 Discord::~Discord(){
 		//?
 }
+bool Discord::sendDirectMessage(std::string msg){
+	std::string postData = "{ \"content\":\"" + msg + "\" }";
+	std::string sendDMMessageUrl = "https://discordapp.com/api/v6/channels/" 
+							+ directMessages[currentDirectMessage].id + "/messages" ;
+	VitaNet::http_response senddmmessageresponse = vitaNet.curlDiscordPost(sendDMMessageUrl , postData , token);
+	if(senddmmessageresponse.httpcode == 200){
+		
+		
+	}
+	
+}
 
-void Discord::sendMessage(std::string msg){
+bool Discord::sendMessage(std::string msg){
 	
 	std::string postData = "{ \"content\":\"" + msg + "\" }";
 	std::string sendMessageUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id + "/messages" ;
@@ -27,17 +38,18 @@ void Discord::sendMessage(std::string msg){
 		
 		
 	}
-	
+	return true;
 }
 
-void Discord::refreshMessages(){
+bool Discord::refreshMessages(){
 	
 	currentTimeMS = osGetTimeMS();
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
-		lastFetchTimeMS = osGetTimeMS();
 		getChannelMessages(currentChannel);
+		lastFetchTimeMS = osGetTimeMS();
 		
 	}
+	return true;
 	
 }
 
@@ -189,7 +201,7 @@ void * Discord::thread_loadData(void *arg){
 			}else{
 				discordPtr->loadingData = false;
 			}
-		}else{
+		}else if(discordPtr->loadedGuilds && !discordPtr->loadedChannels){
 			for(int i = 0; i < discordPtr->guildsAmount ; i++){
 				std::string channelUrl = "https://discordapp.com/api/guilds/" + discordPtr->guilds[i].id + "/channels";
 				VitaNet::http_response channelresponse = discordPtr->vitaNet.curlDiscordGet(channelUrl , token);
@@ -250,16 +262,273 @@ void * Discord::thread_loadData(void *arg){
 						}
 					}catch(const std::exception& e){
 				
+						discordPtr->loadedChannels = true;
 					}
 				}
 				
 			}
+			discordPtr->loadedChannels = true;
+		}else if(discordPtr->loadedGuilds && discordPtr->loadedChannels && !discordPtr->loadedDMs){
 			
+			std::string directMessagesChannelsUrl = "https://discordapp.com/api/v6/users/@me/channels";
+			VitaNet::http_response dmChannelsResponse = discordPtr->vitaNet.curlDiscordGet(directMessagesChannelsUrl , token);
+			if(dmChannelsResponse.httpcode == 200){
+				try{
+					nlohmann::json j_complete = nlohmann::json::parse(dmChannelsResponse.body);
+					if(!j_complete.is_null()){
+						discordPtr->directMessages.clear();
+						
+						for(int i = 0; i < j_complete.size(); i++){
+							discordPtr->directMessages.push_back(directMessage());
+							
+							if(!j_complete[i]["last_message_id"].is_null()){
+								discordPtr->directMessages[i].last_message_id = j_complete[i]["last_message_id"].get<std::string>();
+							}else{
+								discordPtr->directMessages[i].last_message_id = "0000000000000000";
+							}
+							if(!j_complete[i]["type"].is_null()){
+								discordPtr->directMessages[i].type = j_complete[i]["type"].get<long>();
+							}else{
+								discordPtr->directMessages[i].type = 1;
+							}
+							if(!j_complete[i]["id"].is_null()){
+								discordPtr->directMessages[i].id = j_complete[i]["id"].get<std::string>();
+							}else{
+								discordPtr->directMessages[i].id = "0000000000000000";
+							}
+							if(!j_complete[i]["recipients"].is_null()){
+								discordPtr->directMessages[i].recipients.clear();
+								for(int r = 0; r < j_complete[i]["recipients"].size() ; r++){
+									// author :
+									discordPtr->directMessages[i].recipients.push_back(user());
+									if(!j_complete[i]["recipients"][r]["username"].is_null()){
+										discordPtr->directMessages[i].recipients[r].username = j_complete[i]["recipients"][r]["username"].get<std::string>();
+									}else{
+										discordPtr->directMessages[i].recipients[r].username = "";
+									}
+									
+									if(!j_complete[i]["recipients"][r]["discriminator"].is_null()){
+										discordPtr->directMessages[i].recipients[r].discriminator = j_complete[i]["author"]["discriminator"].get<std::string>();
+									}else{
+										discordPtr->directMessages[i].recipients[r].discriminator = "";
+									}
+									
+									if(!j_complete[i]["recipients"][r]["id"].is_null()){
+										discordPtr->directMessages[i].recipients[r].id = j_complete[i]["recipients"][r]["id"].get<std::string>();
+									}else{
+										discordPtr->directMessages[i].recipients[r].id = "";
+									}
+									
+									if(!j_complete[i]["recipients"][r]["avatar"].is_null()){
+										discordPtr->directMessages[i].recipients[r].avatar = j_complete[i]["recipients"][r]["avatar"].get<std::string>();
+									}else{
+										discordPtr->directMessages[i].recipients[r].avatar = "";
+									}
+									
+									
+								}
+							}
+							
+							
+							
+							
+						}
+						
+					}
+					
+				}catch(const std::exception& e){
+			
+				}
+				
+			}
+			discordPtr->loadedDMs = true;
 			discordPtr->loadingData = false;
 		}
 	}
 	logSD("end of thread_loadData()");
 	pthread_exit(NULL);
+}
+
+
+void Discord::JoinDirectMessageChannel(int dIndex){
+	currentDirectMessage = dIndex;
+	getCurrentDirectMessages();
+	
+	
+}
+
+void Discord::getDirectMessageChannels(){
+	std::string directMessagesChannelsUrl = "https://discordapp.com/api/v6/users/@me/channels";
+	VitaNet::http_response dmChannelsResponse = vitaNet.curlDiscordGet(directMessagesChannelsUrl , token);
+	
+	logSD("DMS:");
+	logSD("URL:");
+	logSD(directMessagesChannelsUrl);
+	logSD("Response:");
+	logSD(dmChannelsResponse.body);
+	
+	if(dmChannelsResponse.httpcode == 200){
+		try{
+			nlohmann::json j_complete = nlohmann::json::parse(dmChannelsResponse.body);
+			if(!j_complete.is_null()){
+				directMessages.clear();
+				
+				for(int i = 0; i < j_complete.size(); i++){
+					directMessages.push_back(directMessage());
+					
+					if(!j_complete[i]["last_message_id"].is_null()){
+						directMessages[i].last_message_id = j_complete[i]["last_message_id"].get<std::string>();
+					}else{
+						directMessages[i].last_message_id = "0000000000000000";
+					}
+					if(!j_complete[i]["type"].is_null()){
+						directMessages[i].type = j_complete[i]["type"].get<long>();
+					}else{
+						directMessages[i].type = 1;
+					}
+					if(!j_complete[i]["id"].is_null()){
+						directMessages[i].id = j_complete[i]["id"].get<std::string>();
+					}else{
+						directMessages[i].id = "0000000000000000";
+					}
+					if(!j_complete[i]["recipients"].is_null()){
+						directMessages[i].recipients.clear();
+						for(int r = 0; r < j_complete[i]["recipients"].size() ; r++){
+							// author :
+							directMessages[i].recipients.push_back(user());
+							if(!j_complete[i]["recipients"][r]["username"].is_null()){
+								directMessages[i].recipients[r].username = j_complete[i]["recipients"][r]["username"].get<std::string>();
+							}else{
+								directMessages[i].recipients[r].username = "";
+							}
+							
+							if(!j_complete[i]["recipients"][r]["discriminator"].is_null()){
+								directMessages[i].recipients[r].discriminator = j_complete[i]["author"]["discriminator"].get<std::string>();
+							}else{
+								directMessages[i].recipients[r].discriminator = "";
+							}
+							
+							if(!j_complete[i]["recipients"][r]["id"].is_null()){
+								directMessages[i].recipients[r].id = j_complete[i]["recipients"][r]["id"].get<std::string>();
+							}else{
+								directMessages[i].recipients[r].id = "";
+							}
+							
+							if(!j_complete[i]["recipients"][r]["avatar"].is_null()){
+								directMessages[i].recipients[r].avatar = j_complete[i]["recipients"][r]["avatar"].get<std::string>();
+							}else{
+								directMessages[i].recipients[r].avatar = "";
+							}
+							
+							
+						}
+					}
+					
+					
+					
+					
+				}
+				
+			}
+			
+		}catch(const std::exception& e){
+			
+		}
+		
+	}
+	
+}
+
+
+bool Discord::refreshDirectMessages(){
+	
+	currentTimeMS = osGetTimeMS();
+	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
+		getDirectMessageChannels();
+		lastFetchTimeMS = osGetTimeMS();
+		
+	}
+}
+bool Discord::refreshCurrentDirectMessages(){
+	
+	currentTimeMS = osGetTimeMS();
+	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
+		getCurrentDirectMessages();
+		lastFetchTimeMS = osGetTimeMS();
+		
+	}
+	
+}
+
+void Discord::getCurrentDirectMessages(){
+	std::string dmChannelUrl = "https://discordapp.com/api/v6/channels/" + directMessages[currentDirectMessage].id + "/messages";
+	VitaNet::http_response dmChannelResponse = vitaNet.curlDiscordGet(dmChannelUrl , token);
+	
+	
+	
+	logSD("DM-Messages:");
+	logSD("URL:");
+	logSD(dmChannelUrl);
+	logSD("Response:");
+	logSD(dmChannelResponse.body);
+	
+	if(dmChannelResponse.httpcode == 200){
+		try{
+			nlohmann::json j_complete = nlohmann::json::parse(dmChannelResponse.body);
+			if(!j_complete.is_null()){
+				directMessages[currentDirectMessage].messages.clear();
+				int msgAmount = j_complete.size();
+				for(int i = 0; i < msgAmount; i++){
+					
+					directMessages[currentDirectMessage].messages.push_back(message());
+					
+					if(!j_complete[i]["timestamp"].is_null()){
+						directMessages[currentDirectMessage].messages[i].timestamp = j_complete[i]["timestamp"].get<std::string>();
+					}else{
+						directMessages[currentDirectMessage].messages[i].timestamp = "";
+					}
+					
+					if(!j_complete[i]["id"].is_null()){
+						directMessages[currentDirectMessage].messages[i].id = j_complete[i]["id"].get<std::string>();
+					}else{
+						directMessages[currentDirectMessage].messages[i].id = "";
+					}
+					
+					if(!j_complete[i]["content"].is_null()){
+						directMessages[currentDirectMessage].messages[i].content = j_complete[i]["content"].get<std::string>();
+					}else{
+						directMessages[currentDirectMessage].messages[i].content = "";
+					}
+					// author :
+					if(!j_complete[i]["author"]["username"].is_null()){
+						directMessages[currentDirectMessage].messages[i].author.username = j_complete[i]["author"]["username"].get<std::string>();
+					}else{
+						directMessages[currentDirectMessage].messages[i].author.username = "";
+					}
+					
+					if(!j_complete[i]["author"]["discriminator"].is_null()){
+						directMessages[currentDirectMessage].messages[i].author.discriminator = j_complete[i]["author"]["discriminator"].get<std::string>();
+					}else{
+						directMessages[currentDirectMessage].messages[i].author.discriminator = "";
+					}
+					
+					if(!j_complete[i]["author"]["id"].is_null()){
+						directMessages[currentDirectMessage].messages[i].author.id = j_complete[i]["author"]["id"].get<std::string>();
+					}else{
+						directMessages[currentDirectMessage].messages[i].author.id = "";
+					}
+					
+					if(!j_complete[i]["author"]["avatar"].is_null()){
+						directMessages[currentDirectMessage].messages[i].author.avatar = j_complete[i]["author"]["avatar"].get<std::string>();
+					}else{
+						directMessages[currentDirectMessage].messages[i].author.avatar = "";
+					}
+				}
+			}
+		}catch(const std::exception& e){
+			
+		}
+	}
 }
 
 void Discord::loadData(){

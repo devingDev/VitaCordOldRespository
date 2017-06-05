@@ -45,6 +45,13 @@ class Discord{
 			std::string name;
 			std::vector<channel> channels;
 		}guild;
+		typedef struct {
+			std::string last_message_id;
+			long type;
+			std::string id;
+			std::vector<user> recipients;
+			std::vector<message> messages;
+		}directMessage;
 		
 		Discord();
 		~Discord();
@@ -62,6 +69,7 @@ class Discord{
 		void loadData();
 		bool loadingData;
 		std::vector<guild> guilds;
+		std::vector<directMessage> directMessages;
 		int guildsAmount = 0;
 		static void* loadData_wrapper(void* object)
 		{
@@ -71,10 +79,15 @@ class Discord{
 		void JoinGuild(int gIndex);
 		uint64_t osGetTimeMS();
 		void JoinChannel(int cIndex);
+		void JoinDirectMessageChannel(int dIndex);
 		int currentGuild = 0;
 		int currentChannel = 0;
-		void sendMessage(std::string msg);
-		void refreshMessages();
+		int currentDirectMessage = 0;
+		bool sendMessage(std::string msg);
+		bool sendDirectMessage(std::string msg);
+		bool refreshMessages();
+		bool refreshDirectMessages();
+		bool refreshCurrentDirectMessages();
 	
 	private:
 		VitaNet vitaNet;
@@ -84,10 +97,14 @@ class Discord{
 		user client;
 		bool loggedin;
 		bool loadedGuilds ;
+		bool loadedChannels;
+		bool loadedDMs;
 		long fetchUserData();
 		void getGuilds();
 		void getChannels();
-		void getChannelMessages(int guildIndex);
+		void getDirectMessageChannels();
+		void getChannelMessages(int channelIndex);
+		void getCurrentDirectMessages();
 		void *thread_loadData(void *arg);
 		
 		uint64_t lastFetchTimeMS;

@@ -79,6 +79,7 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE assets/font/opensansemoji.ttf assets/font/opensansemoji.ttf
   FILE assets/font/seguiemj.pgf assets/font/seguiemj.pgf
   FILE assets/font/seguiemj.ttf assets/font/seguiemj.ttf
+  FILE assets/images/Vitacord-DMIcon-8BIT.png assets/images/Vitacord-DMIcon-8BIT.png
   FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
   FILE assets/images/Vitacord-LoginForm-8BIT.png assets/images/Vitacord-LoginForm-8BIT.png
   FILE assets/images/Vitacord-Loading-8BIT.png assets/images/Vitacord-Loading-8BIT.png
