@@ -3,7 +3,7 @@
 Client on Vita
 
 
-Credits for helping me: Arkanite  , SKGleba. Rinnegatamante , xyz , noname120 , davee
+Credits for helping me: Arkanite , XandridFire , SKGleba. Rinnegatamante , xyz , noname120 , davee and more if I remember :>
 
 If something is wrong ask in vita hacking discord or in #henkaku or open an issue (<-easiest)
 
