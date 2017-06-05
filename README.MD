@@ -1,25 +1,19 @@
 # VitaCord
 
-Need discord on your vita?
-
-Here you go!
-
-It has only a few features.
-
-You can switch between guilds/channels.
-In a channel you will see the latest 50 messages.
-If you press X while in a channel you can send a message.
-
-With L/R triggers you can scroll the text up and down.
-
-Navigation : UP , DOWN , CROSS (enter/start new message) , CIRCLE (back) , R/L (scrolling)
+Client on Vita
 
 
-Credits for helping me: Rinnegatamante , xyz , noname120 , davee and many more I don't remember
-Feel free to add comments!
+Credits for helping me: Arkanite  , SKGleba. Rinnegatamante , xyz , noname120 , davee
 
+If something is wrong ask in vita hacking discord or in #henkaku or open an issue (<-easiest)
+
+![alt text](http://jaynapps.com/imgupload/uploads/420a10028d4b4a285ddedd10202dc58a.jpg)
+![alt text](http://jaynapps.com/imgupload/uploads/5c5171747ca6a7b79ae6988670fd2e44.jpg)
+![alt text](http://jaynapps.com/imgupload/uploads/95f4a04c7e5fd6546f3cbc0a536b3438.jpg)
 
 CHANGELOG:
+
+1.04 rewrite + new UI + added DM (+ Press L to switch fonts , will be removed soon )
 
 1.03 added 2FA
 
