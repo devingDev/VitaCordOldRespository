@@ -174,6 +174,9 @@ void DiscordApp::Start(){
 			switch(clicked){
 				case -1:
 					break;
+				case CLICKED_DM_ICON:
+					vitaGUI.SetState(6);
+					break;
 				default:
 					discord.JoinGuild(clicked);
 					vitaGUI.SetState(3);
@@ -189,6 +192,9 @@ void DiscordApp::Start(){
 			switch(clicked){
 				case -1:
 					break;
+					case CLICKED_DM_ICON:
+						vitaGUI.SetState(6);
+						break;
 				default:
 					discord.JoinChannel(clicked);
 					vitaGUI.SetState(4);
@@ -212,14 +218,64 @@ void DiscordApp::Start(){
 			switch(clicked){
 				case -1:
 					break;
+				case CLICKED_DM_ICON:
+					vitaGUI.SetState(6);
+					break;
+					
 				default:
-					discord.JoinChannel(clicked);
-					vitaGUI.SetState(4);
-					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
 				
 			}
 			discord.refreshMessages();
+			
+		}else if(vitaState == 6){
+			
+			
+			if(vitaPad.circle){
+				vitaGUI.SetStateToLastState();
+				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+			}
+			
+			switch(clicked){
+				case -1:
+					break;
+				case CLICKED_DM_ICON:
+					vitaGUI.SetStateToLastState();
+					break;
+					
+				default:
+					discord.JoinDirectMessageChannel(clicked);
+					vitaGUI.SetState(7);
+					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					break;
+				
+			}
+			discord.refreshDirectMessages();
+			
+		}else if(vitaState == 7){
+			
+			
+			if(vitaPad.cross){
+				std::string userMessage = vitaIME.getUserText("Message");
+				discord.sendDirectMessage(userMessage);
+				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+			}else if(vitaPad.circle){
+				vitaGUI.SetStateToLastState();
+				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+			}
+			
+			switch(clicked){
+				case -1:
+					break;
+				case CLICKED_DM_ICON:
+					vitaGUI.SetStateToLastState();
+					break;
+					
+				default:
+					break;
+				
+			}
+			discord.refreshCurrentDirectMessages();
 			
 		}
 		

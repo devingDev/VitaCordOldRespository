@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 
+#define CLICKED_DM_ICON 50000
+
 class VitaGUI{
 	public:
 		VitaGUI();
@@ -26,13 +28,18 @@ class VitaGUI{
 		void setGuildBoxes();
 		void setChannelBoxes();
 		void setMessageBoxes();
+		void setDirectMessageBoxes();
+		void setDirectMessageMessagesBoxes();
 		void updateBoxes();
 		void NextFont();
+		
+		void SetStateToLastState();
 		
 	
 	private:
 		Discord *discordPtr;
 		int currentFont = 0;
+		int lastState = 0;
 		vita2d_font *vita2dFont;
 		vita2d_font *vita2dFontSymbola;
 		vita2d_font *vita2dFontSymbolaHint;
@@ -44,6 +51,7 @@ class VitaGUI{
 		vita2d_texture *loginFormImage;
 		vita2d_texture *loadingImage;
 		vita2d_texture *guildsBGImage;
+		vita2d_texture *dmIconImage;
 		std::vector<rectangle> rectangles;
 		std::string loadingScreenString;
 		//std::vector<std::string> guildNames;
@@ -55,6 +63,8 @@ class VitaGUI{
 		std::vector<box> guildBoxes;
 		std::vector<box> channelBoxes;
 		std::vector<box> messageBoxes;
+		std::vector<box> directMessageBoxes;
+		std::vector<box> directMessageMessagesBoxes;
 		
 		int guildScrollX = 0;
 		int guildScrollY = 0;
@@ -71,9 +81,21 @@ class VitaGUI{
 		int messageScrollYMin = -1280;
 		int messageScrollYMax = 0;
 		
+		
+		int directMessageScrollX = 0;
+		int directMessageScrollY = 0;
+		int directMessageScrollYMin = -1280;
+		int directMessageScrollYMax = 0;
+		
+		
+		int directMessageMessagesScrollX = 0;
+		int directMessageMessagesScrollY = 0;
+		int directMessageMessagesScrollYMin = -1280;
+		int directMessageMessagesScrollYMax = 0;
+		
 		float loadingImageAngle = 0;
 		
-		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 settings , 8 stuff..
+		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 dmchannellobby , 15 settings , 85818764 stuff..
 	
 	
 	

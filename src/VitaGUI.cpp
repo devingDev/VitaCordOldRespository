@@ -52,6 +52,7 @@ VitaGUI::VitaGUI(){
 	loginFormImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-LoginForm-8BIT.png");
 	loadingImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-Loading-8BIT.png");
 	guildsBGImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-GuildsBG-8BIT.png");
+	dmIconImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-DMIcon-8BIT.png");
 	
 	inputbox emailI;
 	emailI.x = 420;
@@ -112,6 +113,7 @@ void VitaGUI::Draw(){
 		//vita2d_pgf_draw_text(pgf, 150, 300, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
 		vita2d_font_draw_text(vita2dFont , 150, 300, RGBA8(255,255,255,255), 20, loadingString.c_str());
 		loadingImageAngle ++;
+		
 	}else if(state == 2){
 		setGuildBoxes();
 		for(int i = 0 ; i < guildBoxes.size() ; i++){
@@ -120,6 +122,7 @@ void VitaGUI::Draw(){
 		vita2d_font_draw_text(vita2dFont , guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 30, discordPtr->guilds[i].name.c_str());
 		}
 		
+		vita2d_draw_texture(dmIconImage , 0 , 0);
 		
 	}else if(state == 3){
 		setChannelBoxes();
@@ -127,10 +130,12 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < channelBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , channelScrollX + 128 , channelScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
-		vita2d_font_draw_text(vita2dFont , channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 30, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
+			vita2d_font_draw_text(vita2dFont , channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 30, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
 			//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
-		vita2d_font_draw_text(vita2dFont , channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 10, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
+			vita2d_font_draw_text(vita2dFont , channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 10, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
 		}
+		
+		vita2d_draw_texture(dmIconImage , 0 , 0);
 		
 	}else if(state == 4){
 		setMessageBoxes();
@@ -138,8 +143,34 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < messageBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , messageScrollX + 128 , messageScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
-			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 10, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), 10, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
 		}
+		
+		vita2d_draw_texture(dmIconImage , 0 , 0);
+		
+	}else if(state == 6){
+		setDirectMessageBoxes();
+		
+		for(int i = 0 ; i < directMessageBoxes.size() ; i++){
+			vita2d_draw_texture( guildsBGImage , directMessageScrollX + 128 , directMessageScrollY + i * 128);
+			//vita2d_pgf_draw_text(pgf, directMessageScrollX + 256, directMessageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , directMessageScrollX + 256, directMessageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->directMessages[i].recipients[0].username.c_str());
+		}
+		
+		vita2d_draw_texture(dmIconImage , 0 , 0);
+		
+	}else if(state == 7){
+		setDirectMessageMessagesBoxes();
+		
+		for(int i = 0 ; i < directMessageMessagesBoxes.size() ; i++){
+			vita2d_draw_texture( guildsBGImage , directMessageMessagesScrollX + 128 , directMessageMessagesScrollY + i * 128);
+			//vita2d_pgf_draw_text(pgf, directMessageMessagesScrollX + 256, directMessageMessagesScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , directMessageMessagesScrollX + 256, directMessageMessagesScrollY + i * 128 + 32, RGBA8(255,255,255,255), 10, discordPtr->directMessages[discordPtr->currentDirectMessage].recipients[0].username.c_str());
+			vita2d_font_draw_text(vita2dFont , directMessageMessagesScrollX + 256, directMessageMessagesScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->directMessages[discordPtr->currentDirectMessage].messages[i].content.c_str());
+		}
+		
+		vita2d_draw_texture(dmIconImage , 0 , 0);
 		
 	}else if(state == 9){
 		int i = 0;
@@ -178,6 +209,22 @@ int VitaGUI::scroll(int x , int y){
 		else if(messageScrollY > messageScrollYMax )
 			messageScrollY = messageScrollYMax;
 		return 0;
+	}else if(state==6){
+		directMessageScrollX = 0;
+		directMessageScrollY += y;
+		if(directMessageScrollY < directMessageScrollYMin)
+			directMessageScrollY = directMessageScrollYMin;
+		else if(directMessageScrollY > directMessageScrollYMax )
+			directMessageScrollY = directMessageScrollYMax;
+		return 0;
+	}else if(state==6){
+		directMessageMessagesScrollX = 0;
+		directMessageMessagesScrollY += y;
+		if(directMessageMessagesScrollY < directMessageMessagesScrollYMin)
+			directMessageMessagesScrollY = directMessageMessagesScrollYMin;
+		else if(directMessageMessagesScrollY > directMessageMessagesScrollYMax )
+			directMessageMessagesScrollY = directMessageMessagesScrollYMax;
+		return 0;
 	}
 	return -1;
 }
@@ -192,6 +239,11 @@ int VitaGUI::click(int x , int y){
 			}
 		}
 	}else if(state == 2){
+		
+		if(x > 0 && x < 128 && y > 0 && y < 128){
+			return CLICKED_DM_ICON;
+		}
+		
 		for(int i = 0 ; i < guildBoxes.size() ; i++){
 			if( x  > guildBoxes[i].x && x  < guildBoxes[i].x + guildBoxes[i].w){
 				if( y > guildBoxes[i].y && y  < guildBoxes[i].y + guildBoxes[i].h){
@@ -200,6 +252,11 @@ int VitaGUI::click(int x , int y){
 			}
 		}
 	}else if(state == 3){
+		
+		if(x > 0 && x < 128 && y > 0 && y < 128){
+			return CLICKED_DM_ICON;
+		}
+		
 		for(int i = 0 ; i < channelBoxes.size() ; i++){
 			if( x  > channelBoxes[i].x && x  < channelBoxes[i].x + channelBoxes[i].w){
 				if( y  > channelBoxes[i].y && y  < channelBoxes[i].y + channelBoxes[i].h){
@@ -208,7 +265,24 @@ int VitaGUI::click(int x , int y){
 			}
 		}
 	}else if(state == 4){
+		if(x > 0 && x < 128 && y > 0 && y < 128){
+			return CLICKED_DM_ICON;
+		}
 		
+		
+	}else if(state == 6){
+		
+		if(x > 0 && x < 128 && y > 0 && y < 128){
+			return CLICKED_DM_ICON;
+		}
+		
+		for(int i = 0 ; i < directMessageBoxes.size() ; i++){
+			if( x  > directMessageBoxes[i].x && x  < directMessageBoxes[i].x + directMessageBoxes[i].w){
+				if( y  > directMessageBoxes[i].y && y  < directMessageBoxes[i].y + directMessageBoxes[i].h){
+					return i;
+				}
+			}
+		}
 	}
 	return -1;
 }
@@ -234,7 +308,11 @@ int VitaGUI::GetState(){
 	return state;
 }
 void VitaGUI::SetState(int s){
+	lastState = state;
 	state = s;
+}
+void VitaGUI::SetStateToLastState(){
+	state = lastState;
 }
 
 void VitaGUI::passDiscordPointer(Discord *ptr){
@@ -274,6 +352,37 @@ void VitaGUI::setMessageBoxes(){
 		boxC.h = 128;
 		messageBoxes.push_back(boxC);
 	}
-	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 +64) ;
+	messageScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 +64) ;
 }
+
+void VitaGUI::setDirectMessageBoxes(){
+	directMessageBoxes.clear();
+	for(int i = 0; i < discordPtr->directMessages.size() ; i++){
+		box boxDM;
+		boxDM.x = directMessageScrollX + 128;
+		boxDM.y = directMessageScrollY + i * 128;
+		boxDM.w = 832;
+		boxDM.h = 128;
+		directMessageBoxes.push_back(boxDM);
+	}
+	directMessageScrollYMin = -((discordPtr->directMessages.size()-1)*128 +64) ;
+	
+}
+
+void VitaGUI::setDirectMessageMessagesBoxes(){
+		directMessageMessagesBoxes.clear();
+	for(int i = 0; i < discordPtr->directMessages[discordPtr->currentDirectMessage].messages.size() ; i++){
+		box boxDMM;
+		boxDMM.x = directMessageMessagesScrollX + 128;
+		boxDMM.y = directMessageMessagesScrollY + i * 128;
+		boxDMM.w = 832;
+		boxDMM.h = 128;
+		directMessageMessagesBoxes.push_back(boxDMM);
+	}
+	directMessageMessagesScrollYMax = -((discordPtr->directMessages[discordPtr->currentDirectMessage].messages.size()-1)*128 +64) ;
+	
+}
+
+
+
 
