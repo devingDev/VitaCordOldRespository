@@ -195,11 +195,11 @@ void * Discord::thread_loadData(void *arg){
 						discordPtr->loadedGuilds = true;
 					}
 				}catch(const std::exception& e){
-					discordPtr->loadingData = false;
+					discordPtr->loadedGuilds = true;
 				}
 				
 			}else{
-				discordPtr->loadingData = false;
+				discordPtr->loadedGuilds = true;
 			}
 		}else if(discordPtr->loadedGuilds && !discordPtr->loadedChannels){
 			for(int i = 0; i < discordPtr->guildsAmount ; i++){
@@ -272,63 +272,86 @@ void * Discord::thread_loadData(void *arg){
 			
 			std::string directMessagesChannelsUrl = "https://discordapp.com/api/v6/users/@me/channels";
 			VitaNet::http_response dmChannelsResponse = discordPtr->vitaNet.curlDiscordGet(directMessagesChannelsUrl , token);
+			logSD("dmMessageChannels Response : " + dmChannelsResponse.body);
 			if(dmChannelsResponse.httpcode == 200){
 				try{
 					nlohmann::json j_complete = nlohmann::json::parse(dmChannelsResponse.body);
 					if(!j_complete.is_null()){
 						discordPtr->directMessages.clear();
-						
-						for(int i = 0; i < j_complete.size(); i++){
+						int dmChannels = j_complete.size();
+						logSD("Amount of DM channels : " + std::to_string(dmChannels));
+						for(int i = 0; i < dmChannels; i++){
 							discordPtr->directMessages.push_back(directMessage());
+							logSD("dm channel added.");
 							
 							if(!j_complete[i]["last_message_id"].is_null()){
 								discordPtr->directMessages[i].last_message_id = j_complete[i]["last_message_id"].get<std::string>();
+								logSD("last message id : ." + discordPtr->directMessages[i].last_message_id);
 							}else{
 								discordPtr->directMessages[i].last_message_id = "0000000000000000";
+								logSD("last message id : ." + discordPtr->directMessages[i].last_message_id);
 							}
 							if(!j_complete[i]["type"].is_null()){
 								discordPtr->directMessages[i].type = j_complete[i]["type"].get<long>();
+								logSD("type : ." + std::to_string(discordPtr->directMessages[i].type));
 							}else{
 								discordPtr->directMessages[i].type = 1;
+								logSD("type : ." + std::to_string(discordPtr->directMessages[i].type));
 							}
 							if(!j_complete[i]["id"].is_null()){
 								discordPtr->directMessages[i].id = j_complete[i]["id"].get<std::string>();
+								logSD("last id : ." + discordPtr->directMessages[i].id);
 							}else{
 								discordPtr->directMessages[i].id = "0000000000000000";
+								logSD("last id : ." + discordPtr->directMessages[i].id);
 							}
+							logSD("checking for recipients");
 							if(!j_complete[i]["recipients"].is_null()){
 								discordPtr->directMessages[i].recipients.clear();
-								for(int r = 0; r < j_complete[i]["recipients"].size() ; r++){
+								int recAmount = j_complete[i]["recipients"].size();
+								logSD("Amount of recipients : " + std::to_string(recAmount));
+								for(int r = 0; r < recAmount  ; r++){
 									// author :
+									logSD("Adding recipient ");
 									discordPtr->directMessages[i].recipients.push_back(user());
 									if(!j_complete[i]["recipients"][r]["username"].is_null()){
 										discordPtr->directMessages[i].recipients[r].username = j_complete[i]["recipients"][r]["username"].get<std::string>();
+										logSD("username : " + discordPtr->directMessages[i].recipients[r].username);
 									}else{
 										discordPtr->directMessages[i].recipients[r].username = "";
+										logSD("username : " + discordPtr->directMessages[i].recipients[r].username);
 									}
 									
 									if(!j_complete[i]["recipients"][r]["discriminator"].is_null()){
-										discordPtr->directMessages[i].recipients[r].discriminator = j_complete[i]["author"]["discriminator"].get<std::string>();
+										discordPtr->directMessages[i].recipients[r].discriminator = j_complete[i]["recipients"][r]["discriminator"].get<std::string>();
+										logSD("discriminator : " + discordPtr->directMessages[i].recipients[r].discriminator);
 									}else{
 										discordPtr->directMessages[i].recipients[r].discriminator = "";
+										logSD("discriminator : " + discordPtr->directMessages[i].recipients[r].discriminator);
 									}
 									
 									if(!j_complete[i]["recipients"][r]["id"].is_null()){
 										discordPtr->directMessages[i].recipients[r].id = j_complete[i]["recipients"][r]["id"].get<std::string>();
+										logSD("id : " + discordPtr->directMessages[i].recipients[r].id);
 									}else{
 										discordPtr->directMessages[i].recipients[r].id = "";
+										logSD("id : " + discordPtr->directMessages[i].recipients[r].id);
 									}
 									
 									if(!j_complete[i]["recipients"][r]["avatar"].is_null()){
 										discordPtr->directMessages[i].recipients[r].avatar = j_complete[i]["recipients"][r]["avatar"].get<std::string>();
+										logSD("avatar : " + discordPtr->directMessages[i].recipients[r].avatar);
 									}else{
 										discordPtr->directMessages[i].recipients[r].avatar = "";
+										logSD("avatar : " + discordPtr->directMessages[i].recipients[r].avatar);
 									}
 									
 									
+									logSD("end of adding recipient.");
 								}
 							}
 							
+							logSD("end of this DM channel.");
 							
 							
 							
@@ -337,7 +360,11 @@ void * Discord::thread_loadData(void *arg){
 					}
 					
 				}catch(const std::exception& e){
-			
+					logSD("/EXCEPTION THROWN!!!");
+					logSD(":EXCEPTION THROWN!!!");
+					logSD(":EXCEPTION THROWN!!!");
+					logSD(":EXCEPTION THROWN!!!");
+					logSD("\\EXCEPTION THROWN!!!");
 				}
 				
 			}
@@ -361,19 +388,13 @@ void Discord::getDirectMessageChannels(){
 	std::string directMessagesChannelsUrl = "https://discordapp.com/api/v6/users/@me/channels";
 	VitaNet::http_response dmChannelsResponse = vitaNet.curlDiscordGet(directMessagesChannelsUrl , token);
 	
-	logSD("DMS:");
-	logSD("URL:");
-	logSD(directMessagesChannelsUrl);
-	logSD("Response:");
-	logSD(dmChannelsResponse.body);
-	
 	if(dmChannelsResponse.httpcode == 200){
 		try{
 			nlohmann::json j_complete = nlohmann::json::parse(dmChannelsResponse.body);
 			if(!j_complete.is_null()){
 				directMessages.clear();
-				
-				for(int i = 0; i < j_complete.size(); i++){
+				int dmChannels = j_complete.size();
+				for(int i = 0; i < dmChannels; i++){
 					directMessages.push_back(directMessage());
 					
 					if(!j_complete[i]["last_message_id"].is_null()){
@@ -393,7 +414,8 @@ void Discord::getDirectMessageChannels(){
 					}
 					if(!j_complete[i]["recipients"].is_null()){
 						directMessages[i].recipients.clear();
-						for(int r = 0; r < j_complete[i]["recipients"].size() ; r++){
+						int recAmount = j_complete[i]["recipients"].size();
+						for(int r = 0; r < recAmount  ; r++){
 							// author :
 							directMessages[i].recipients.push_back(user());
 							if(!j_complete[i]["recipients"][r]["username"].is_null()){
@@ -403,7 +425,7 @@ void Discord::getDirectMessageChannels(){
 							}
 							
 							if(!j_complete[i]["recipients"][r]["discriminator"].is_null()){
-								directMessages[i].recipients[r].discriminator = j_complete[i]["author"]["discriminator"].get<std::string>();
+								directMessages[i].recipients[r].discriminator = j_complete[i]["recipients"][r]["discriminator"].get<std::string>();
 							}else{
 								directMessages[i].recipients[r].discriminator = "";
 							}
@@ -432,10 +454,15 @@ void Discord::getDirectMessageChannels(){
 			}
 			
 		}catch(const std::exception& e){
-			
+			logSD("/EXCEPTION THROWN!!!");
+			logSD(":EXCEPTION THROWN!!!");
+			logSD(":EXCEPTION THROWN!!!");
+			logSD(":EXCEPTION THROWN!!!");
+			logSD("\\EXCEPTION THROWN!!!");
 		}
 		
 	}
+	lastFetchTimeMS = osGetTimeMS();
 	
 }
 
@@ -444,8 +471,8 @@ bool Discord::refreshDirectMessages(){
 	
 	currentTimeMS = osGetTimeMS();
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
-		getDirectMessageChannels();
 		lastFetchTimeMS = osGetTimeMS();
+		getDirectMessageChannels();
 		
 	}
 }
@@ -453,8 +480,8 @@ bool Discord::refreshCurrentDirectMessages(){
 	
 	currentTimeMS = osGetTimeMS();
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
-		getCurrentDirectMessages();
 		lastFetchTimeMS = osGetTimeMS();
+		getCurrentDirectMessages();
 		
 	}
 	
@@ -465,12 +492,6 @@ void Discord::getCurrentDirectMessages(){
 	VitaNet::http_response dmChannelResponse = vitaNet.curlDiscordGet(dmChannelUrl , token);
 	
 	
-	
-	logSD("DM-Messages:");
-	logSD("URL:");
-	logSD(dmChannelUrl);
-	logSD("Response:");
-	logSD(dmChannelResponse.body);
 	
 	if(dmChannelResponse.httpcode == 200){
 		try{
@@ -529,6 +550,7 @@ void Discord::getCurrentDirectMessages(){
 			
 		}
 	}
+	lastFetchTimeMS = osGetTimeMS();
 }
 
 void Discord::loadData(){
