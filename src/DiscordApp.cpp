@@ -232,7 +232,7 @@ void DiscordApp::Start(){
 			
 			
 			if(vitaPad.circle){
-				vitaGUI.SetStateToLastState();
+				vitaGUI.SetState(2);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}
 			
@@ -240,7 +240,7 @@ void DiscordApp::Start(){
 				case -1:
 					break;
 				case CLICKED_DM_ICON:
-					vitaGUI.SetStateToLastState();
+					vitaGUI.SetState(2);
 					break;
 					
 				default:
@@ -260,7 +260,7 @@ void DiscordApp::Start(){
 				discord.sendDirectMessage(userMessage);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}else if(vitaPad.circle){
-				vitaGUI.SetStateToLastState();
+				vitaGUI.SetState(6);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}
 			
@@ -268,7 +268,7 @@ void DiscordApp::Start(){
 				case -1:
 					break;
 				case CLICKED_DM_ICON:
-					vitaGUI.SetStateToLastState();
+					vitaGUI.SetState(6);
 					break;
 					
 				default:
