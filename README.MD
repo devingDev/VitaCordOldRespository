@@ -10,7 +10,7 @@ If something is wrong ask in vita hacking discord or in #henkaku or open an issu
 ![alt text](http://jaynapps.com/imgupload/uploads/420a10028d4b4a285ddedd10202dc58a.jpg)
 ![alt text](http://jaynapps.com/imgupload/uploads/5c5171747ca6a7b79ae6988670fd2e44.jpg)
 ![alt text](http://jaynapps.com/imgupload/uploads/95f4a04c7e5fd6546f3cbc0a536b3438.jpg)
-
+![alt text](http://jaynapps.com/imgupload/uploads/7a9dea564045c7c5672a896f1f445537.jpg)
 CHANGELOG:
 
 1.04 rewrite + new UI + added DM (+ Press L to switch fonts , will be removed soon )
