@@ -73,6 +73,12 @@ vita_create_self(${SHORT_NAME}.self ${SHORT_NAME}.elf)
 vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
+  FILE assets/font/symbola.ttf assets/font/symbola.ttf
+  FILE assets/font/symbolahint.ttf assets/font/symbolahint.ttf
+  FILE assets/font/lastresort.ttf assets/font/lastresort.ttf
+  FILE assets/font/opensansemoji.ttf assets/font/opensansemoji.ttf
+  FILE assets/font/seguiemj.pgf assets/font/seguiemj.pgf
+  FILE assets/font/seguiemj.ttf assets/font/seguiemj.ttf
   FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
   FILE assets/images/Vitacord-LoginForm-8BIT.png assets/images/Vitacord-LoginForm-8BIT.png
   FILE assets/images/Vitacord-Loading-8BIT.png assets/images/Vitacord-Loading-8BIT.png

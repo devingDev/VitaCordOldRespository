@@ -105,14 +105,6 @@ void DiscordApp::Start(){
 		vitaGUI.Draw();
 		vitaPad.Read();
 		vitaTouch.readTouch();
-		
-		
-		if(vitaPad.lefttrigger){
-			vitaGUI.NextFont();
-			sceKernelDelayThread(SLEEP_CLICK_EXTENDED*2);
-		}
-		
-		
 		if(vitaTouch.clicking){
 			clicked = vitaGUI.click(vitaTouch.lastClickPoint.x , vitaTouch.lastClickPoint.y);
 		}else{
