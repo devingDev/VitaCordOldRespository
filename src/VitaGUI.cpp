@@ -143,8 +143,8 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < messageBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , messageScrollX + 128 , messageScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
-			vita2d_font_draw_text(vita2dFont , messageScrollX + 96, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), 15, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username.c_str());
-			vita2d_font_draw_text(vita2dFont , messageScrollX + 96, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), 15, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username.c_str());
+			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
 		}
 		
 		vita2d_draw_texture(dmIconImage , 0 , 0);
