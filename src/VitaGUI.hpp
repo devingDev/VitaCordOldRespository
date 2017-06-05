@@ -27,12 +27,19 @@ class VitaGUI{
 		void setChannelBoxes();
 		void setMessageBoxes();
 		void updateBoxes();
+		void NextFont();
 		
 	
 	private:
 		Discord *discordPtr;
-	
-		vita2d_pgf *pgf;
+		int currentFont = 0;
+		vita2d_font *vita2dFont;
+		vita2d_font *vita2dFontSymbola;
+		vita2d_font *vita2dFontSymbolaHint;
+		vita2d_font *vita2dFontSeguiemEmoji;
+		vita2d_font *vita2dFontLastResort;
+		vita2d_font *vita2dFontOpenSansEmoji;
+		//vita2d_pgf *pgf;
 		vita2d_texture *backgroundImage;
 		vita2d_texture *loginFormImage;
 		vita2d_texture *loadingImage;
@@ -78,5 +85,4 @@ class VitaGUI{
 
 
 #endif
-
 

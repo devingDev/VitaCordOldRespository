@@ -1,12 +1,52 @@
 #include "VitaGUI.hpp"
 #include "log.hpp"
 
-
+void VitaGUI::NextFont(){
+	
+	
+	currentFont ++;
+	if(currentFont > 4){
+		currentFont = 0;
+	}else if(currentFont < 0){
+		currentFont = 0;
+	}
+	
+	switch(currentFont){
+		case 0:
+			vita2dFont = vita2dFontSymbola;
+			break;
+		case 1:
+			vita2dFont = vita2dFontSymbolaHint;
+			break;
+		case 2:
+			vita2dFont = vita2dFontSeguiemEmoji;
+			break;
+		case 3:
+			vita2dFont = vita2dFontLastResort;
+			break;	
+		case 4:
+			vita2dFont = vita2dFontOpenSansEmoji;
+			break;	
+		default:
+			vita2dFont = vita2dFontOpenSansEmoji;
+			break;
+	}
+}
 
 VitaGUI::VitaGUI(){
 	vita2d_init();
 	vita2d_set_clear_color(RGBA8(0x40, 0x40, 0x40, 0xFF));
-	pgf = vita2d_load_default_pgf();
+	//pgf = vita2d_load_default_pgf();
+	
+	//pgf = vita2d_load_custom_pgf("app0:assets/font/seguiemj.pgf");
+	vita2dFontSymbola = vita2d_load_font_file("app0:assets/font/symbola.ttf");
+	vita2dFontSymbolaHint = vita2d_load_font_file("app0:assets/font/symbolahint.ttf");
+	vita2dFontSeguiemEmoji = vita2d_load_font_file("app0:assets/font/seguiemj.ttf");
+	vita2dFontLastResort = vita2d_load_font_file("app0:assets/font/lastresort.ttf");
+	vita2dFontOpenSansEmoji = vita2d_load_font_file("app0:assets/font/opensansemoji.ttf");
+	
+	vita2dFont = vita2dFontSymbola;
+	
 	std::string bgPath = "app0:assets/images/Vitacord-Background-8BIT.png";
 	backgroundImage = vita2d_load_PNG_file(bgPath.c_str());
 	loginFormImage = vita2d_load_PNG_file("app0:assets/images/Vitacord-LoginForm-8BIT.png");
@@ -43,7 +83,8 @@ VitaGUI::~VitaGUI(){
 	vita2d_free_texture(backgroundImage);
 	vita2d_free_texture(loginFormImage);
 	vita2d_free_texture(loadingImage);
-	vita2d_free_pgf(pgf);
+	vita2d_free_font(vita2dFont);
+	//vita2d_free_pgf(pgf);
 }
 void VitaGUI::updateBoxes(){
 	
@@ -59,20 +100,24 @@ void VitaGUI::Draw(){
 	if(state == 0){
 		vita2d_draw_texture( backgroundImage , 0 , 0);
 		vita2d_draw_texture( loginFormImage , 0 , 0 );
-		vita2d_pgf_draw_text(pgf, 420, 154, RGBA8(255,255,255,255), 2.0f, loginTexts[0].c_str());
-		vita2d_pgf_draw_text(pgf, 420, 250, RGBA8(255,255,255,255), 2.0f, loginTexts[1].c_str());
+		//vita2d_pgf_draw_text(pgf, 420, 154, RGBA8(255,255,255,255), 2.0f, loginTexts[0].c_str());
+		//vita2d_pgf_draw_text(pgf, 420, 250, RGBA8(255,255,255,255), 2.0f, loginTexts[1].c_str());
+		vita2d_font_draw_text(vita2dFont , 420, 154, RGBA8(255,255,255,255), 20, loginTexts[0].c_str());
+		vita2d_font_draw_text(vita2dFont , 420, 250, RGBA8(255,255,255,255), 20, loginTexts[1].c_str());
 		
 	}else if(state == 1){
 		vita2d_draw_texture( backgroundImage , 0 , 0);
 		//vita2d_draw_texture_rotate(loginFormImage, 128 , 64, loadingImageAngle);
 		vita2d_draw_texture_rotate(loadingImage, 416 , 208, loadingImageAngle);
-		vita2d_pgf_draw_text(pgf, 150, 300, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
+		//vita2d_pgf_draw_text(pgf, 150, 300, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
+		vita2d_font_draw_text(vita2dFont , 150, 300, RGBA8(255,255,255,255), 20, loadingString.c_str());
 		loadingImageAngle ++;
 	}else if(state == 2){
 		setGuildBoxes();
 		for(int i = 0 ; i < guildBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , guildScrollX + 128 , guildScrollY + i * 128);
-			vita2d_pgf_draw_text(pgf, guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[i].name.c_str());
+			//vita2d_pgf_draw_text(pgf, guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[i].name.c_str());
+		vita2d_font_draw_text(vita2dFont , guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 30, discordPtr->guilds[i].name.c_str());
 		}
 		
 		
@@ -81,8 +126,10 @@ void VitaGUI::Draw(){
 		
 		for(int i = 0 ; i < channelBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , channelScrollX + 128 , channelScrollY + i * 128);
-			vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
-			vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
+			//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
+		vita2d_font_draw_text(vita2dFont , channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 30, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
+			//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
+		vita2d_font_draw_text(vita2dFont , channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 10, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
 		}
 		
 	}else if(state == 4){
@@ -90,7 +137,8 @@ void VitaGUI::Draw(){
 		
 		for(int i = 0 ; i < messageBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , messageScrollX + 128 , messageScrollY + i * 128);
-			vita2d_pgf_draw_text(pgf, messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			//vita2d_pgf_draw_text(pgf, messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 10, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
 		}
 		
 	}else if(state == 9){
