@@ -46,9 +46,11 @@ bool Discord::sendMessage(std::string msg){
 bool Discord::refreshMessages(){
 	
 	currentTimeMS = osGetTimeMS();
-	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
+	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS || forceRefreshMessages){
+		refreshingMessages = true;
 		getChannelMessages(currentChannel);
 		lastFetchTimeMS = osGetTimeMS();
+		refreshingMessages = false;
 		
 	}
 	return true;
@@ -127,8 +129,19 @@ void Discord::JoinGuild(int gIndex){
 	currentGuild = gIndex;
 }
 void Discord::JoinChannel(int cIndex){
+	inChannel = true;
 	currentChannel = cIndex;
-	getChannelMessages(currentChannel);
+	forceRefreshMessages = true;
+	refreshMessages();
+	forceRefreshMessages = false;
+	pthread_t loadMessagesThread;
+	logSD("pthread_create( loadDataThread , NULL , wrapper , 0)");
+	pthread_create(&loadMessagesThread, NULL, &Discord::refreshMessages_wrapper, this);
+	//getChannelMessages(currentChannel);
+}
+void Discord::LeaveChannel(){
+	inChannel = false;
+	currentChannel = 0;
 }
 void Discord::setToken(std::string tok){
 	token = tok;
@@ -255,37 +268,37 @@ void * Discord::thread_loadData(void *arg){
 										discordPtr->guilds[i].channels[c].last_message_id = false;
 									}
 									
-									if(!j_complete[c]["permission_overwrites"].is_null()){
-										
-										int p = j_complete[c]["permission_overwrites"].size();
-										for(int per = 0; per < p; per++){
-											discordPtr->guilds[i].channels[c].permission_overwrites.push_back(permission_overwrites());
-											if(!j_complete[c]["permission_overwrites"]["allow"].is_null()){
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = j_complete[c]["permission_overwrites"]["allow"].get<long>();
-											}else{
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = 0;
-											}
-											if(!j_complete[c]["permission_overwrites"]["type"].is_null()){
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].type = j_complete[c]["permission_overwrites"]["type"].get<std::string>();
-											}else{
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].type = "role";
-											}
-											if(!j_complete[c]["permission_overwrites"]["id"].is_null()){
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].id = j_complete[c]["permission_overwrites"]["id"].get<std::string>();
-											}else{
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].id = "0";
-											}
-											if(!j_complete[c]["permission_overwrites"]["deny"].is_null()){
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = j_complete[c]["permission_overwrites"]["deny"].get<long>();
-											}else{
-												discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = 0;
-											}
-											
-											
-										}
-										
-										
-									}
+									//if(!j_complete[c]["permission_overwrites"].is_null()){
+									//	
+									//	int p = j_complete[c]["permission_overwrites"].size();
+									//	for(int per = 0; per < p; per++){
+									//		discordPtr->guilds[i].channels[c].permission_overwrites.push_back(permission_overwrites());
+									//		if(!j_complete[c]["permission_overwrites"]["allow"].is_null()){
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = j_complete[c]["permission_overwrites"]["allow"].get<long>();
+									//		}else{
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = 0;
+									//		}
+									//		if(!j_complete[c]["permission_overwrites"]["type"].is_null()){
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].type = j_complete[c]["permission_overwrites"]["type"].get<std::string>();
+									//		}else{
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].type = "role";
+									//		}
+									//		if(!j_complete[c]["permission_overwrites"]["id"].is_null()){
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].id = j_complete[c]["permission_overwrites"]["id"].get<std::string>();
+									//		}else{
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].id = "0";
+									//		}
+									//		if(!j_complete[c]["permission_overwrites"]["deny"].is_null()){
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = j_complete[c]["permission_overwrites"]["deny"].get<long>();
+									//		}else{
+									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = 0;
+									//		}
+									//		
+									//		
+									//	}
+									//	
+									//	
+									//}
 									
 									
 									
@@ -409,6 +422,19 @@ void * Discord::thread_loadData(void *arg){
 	pthread_exit(NULL);
 }
 
+
+void * Discord::thread_refreshMessages(void *arg){
+	Discord *discordPtr = reinterpret_cast<Discord *>(arg);
+	
+	//discordPtr->getChannelMessages(discordPtr->currentChannel);
+	while(discordPtr->inChannel){
+		discordPtr->refreshMessages();
+		sceKernelDelayThread(1000000);
+	
+	}
+	
+	pthread_exit(NULL);
+}
 
 void Discord::JoinDirectMessageChannel(int dIndex){
 	currentDirectMessage = dIndex;
