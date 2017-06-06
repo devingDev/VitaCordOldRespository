@@ -28,10 +28,10 @@ include_directories(
 )
 
 add_executable(${SHORT_NAME}.elf
+  src/Discord.cpp
   src/easyencryptor.cpp
   src/DiscordApp.cpp
   src/VitaNet.cpp
-  src/Discord.cpp
   src/VitaGUI.cpp
   src/main.cpp
   src/log.cpp

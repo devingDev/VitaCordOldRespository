@@ -50,11 +50,11 @@ class VitaGUI{
 		int currentFont = 0;
 		int lastState = 0;
 		vita2d_font *vita2dFont;
-		vita2d_font *vita2dFontSymbola;
-		vita2d_font *vita2dFontSymbolaHint;
-		vita2d_font *vita2dFontSeguiemEmoji;
-		vita2d_font *vita2dFontLastResort;
-		vita2d_font *vita2dFontOpenSansEmoji;
+		//vita2d_font *vita2dFontSymbola;
+		//vita2d_font *vita2dFontSymbolaHint;
+		//vita2d_font *vita2dFontSeguiemEmoji;
+		//vita2d_font *vita2dFontLastResort;
+		//vita2d_font *vita2dFontOpenSansEmoji;
 		//vita2d_pgf *pgf;
 		vita2d_texture *backgroundImage;
 		vita2d_texture *loginFormImage;

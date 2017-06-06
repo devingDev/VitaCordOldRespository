@@ -104,6 +104,7 @@ class Discord{
 		bool refreshDirectMessages();
 		bool refreshCurrentDirectMessages();
 		bool refreshingMessages;
+		void utf16_to_utf8(uint16_t *src, uint8_t *dst);
 	
 	private:
 		VitaNet vitaNet;

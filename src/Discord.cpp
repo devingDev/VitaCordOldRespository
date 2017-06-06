@@ -57,6 +57,30 @@ bool Discord::refreshMessages(){
 	
 }
 
+void Discord::utf16_to_utf8(uint16_t *src, uint8_t *dst) {
+	int i;
+	for (i = 0; src[i]; i++) {
+		if ((src[i] & 0xFF80) == 0) {
+			*(dst++) = src[i] & 0xFF;
+		} else if((src[i] & 0xF800) == 0) {
+			*(dst++) = ((src[i] >> 6) & 0xFF) | 0xC0;
+			*(dst++) = (src[i] & 0x3F) | 0x80;
+		} else if((src[i] & 0xFC00) == 0xD800 && (src[i + 1] & 0xFC00) == 0xDC00) {
+			*(dst++) = (((src[i] + 64) >> 8) & 0x3) | 0xF0;
+			*(dst++) = (((src[i] >> 2) + 16) & 0x3F) | 0x80;
+			*(dst++) = ((src[i] >> 4) & 0x30) | 0x80 | ((src[i + 1] << 2) & 0xF);
+			*(dst++) = (src[i + 1] & 0x3F) | 0x80;
+			i += 1;
+		} else {
+			*(dst++) = ((src[i] >> 12) & 0xF) | 0xE0;
+			*(dst++) = ((src[i] >> 6) & 0x3F) | 0x80;
+			*(dst++) = (src[i] & 0x3F) | 0x80;
+		}
+	}
+
+	*dst = '\0';
+}
+
 void Discord::getChannelMessages(int channelIndex){
 	currentChannel = channelIndex;
 	std::string channelMessagesUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id + "/messages";
@@ -88,6 +112,12 @@ void Discord::getChannelMessages(int channelIndex){
 					}
 					
 					if(!j_complete[i]["content"].is_null()){
+						
+						//std::string str = 
+						//char * content = new char [str.length()+1];
+						//std::strcpy (content, str.c_str());
+						//char * contentUtf8 = new char [str.length()+1];
+						//utf16_to_utf8((uint16_t *)content , (uint8_t *) contentUtf8);
 						guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
 					}else{
 						guilds[currentGuild].channels[currentChannel].messages[i].content = "";

@@ -5,35 +5,35 @@
 #include <iterator>
 
 void VitaGUI::NextFont(){
+	// REMOVED 
 	
-	
-	currentFont ++;
-	if(currentFont > 4){
-		currentFont = 0;
-	}else if(currentFont < 0){
-		currentFont = 0;
-	}
-	
-	switch(currentFont){
-		case 0:
-			vita2dFont = vita2dFontSymbola;
-			break;
-		case 1:
-			vita2dFont = vita2dFontSymbolaHint;
-			break;
-		case 2:
-			vita2dFont = vita2dFontSeguiemEmoji;
-			break;
-		case 3:
-			vita2dFont = vita2dFontLastResort;
-			break;	
-		case 4:
-			vita2dFont = vita2dFontOpenSansEmoji;
-			break;	
-		default:
-			vita2dFont = vita2dFontOpenSansEmoji;
-			break;
-	}
+	//currentFont ++;
+	//if(currentFont > 4){
+	//	currentFont = 0;
+	//}else if(currentFont < 0){
+	//	currentFont = 0;
+	//}
+	//
+	//switch(currentFont){
+	//	case 0:
+	//		vita2dFont = vita2dFontSymbola;
+	//		break;
+	//	case 1:
+	//		vita2dFont = vita2dFontSymbolaHint;
+	//		break;
+	//	case 2:
+	//		vita2dFont = vita2dFontSeguiemEmoji;
+	//		break;
+	//	case 3:
+	//		vita2dFont = vita2dFontLastResort;
+	//		break;	
+	//	case 4:
+	//		vita2dFont = vita2dFontOpenSansEmoji;
+	//		break;	
+	//	default:
+	//		vita2dFont = vita2dFontOpenSansEmoji;
+	//		break;
+	//}
 }
 
 VitaGUI::VitaGUI(){
