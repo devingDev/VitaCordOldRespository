@@ -32,6 +32,16 @@ typedef struct{
 	
 }box;
 
+typedef struct{
+	int x;
+	int y;
+	int w;
+	int h;
+	std::string username;
+	std::string content;
+	
+}messagebox;
+
 
 #endif
 

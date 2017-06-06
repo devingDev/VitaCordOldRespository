@@ -107,12 +107,6 @@ void DiscordApp::Start(){
 		vitaTouch.readTouch();
 		
 		
-		if(vitaPad.lefttrigger){
-			vitaGUI.NextFont();
-			sceKernelDelayThread(SLEEP_CLICK_EXTENDED*2);
-		}
-		
-		
 		if(vitaTouch.clicking){
 			clicked = vitaGUI.click(vitaTouch.lastClickPoint.x , vitaTouch.lastClickPoint.y);
 		}else{
@@ -133,7 +127,7 @@ void DiscordApp::Start(){
 					break;
 				case 1:
 					discord.setPassword(vitaIME.getUserText("Discord Password" , discord.getPassword().c_str()));
-					vitaGUI.loginTexts[clicked] = discord.getPassword();
+					vitaGUI.loginTexts[clicked] = "********";
 					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
 					
