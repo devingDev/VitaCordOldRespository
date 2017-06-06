@@ -14,6 +14,12 @@ If something is wrong ask in vita hacking discord or in #henkaku or open an issu
 ![alt text](http://jaynapps.com/imgupload/uploads/35c874c93e221a29512a6f98fa5685cb.jpg)
 
 CHANGELOG:
+1.06 Limited rendering to a MAX/MIN Y Axis to prevent crashing when to many channels are loaded.
+	Also fixed keyboard.
+
+1.05 new livearea from T3CHNOLOGIC , multithreading ( no freezes when it refreshes channel messages)
+	tried out wordwrapping, does not work with long lines without spaces >_>
+	password is now hidden :>
 
 1.04 rewrite + new UI + added DM (+ Press L to switch fonts , will be removed soon )
 

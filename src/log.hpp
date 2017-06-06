@@ -5,6 +5,7 @@
 #include <string.h>
 
 void logSD(std::string logData);
+void criticalLogSD(std::string logData);
 
 #endif
 
