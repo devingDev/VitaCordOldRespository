@@ -217,7 +217,7 @@ int VitaGUI::scroll(int x , int y){
 		else if(directMessageScrollY > directMessageScrollYMax )
 			directMessageScrollY = directMessageScrollYMax;
 		return 0;
-	}else if(state==6){
+	}else if(state==7){
 		directMessageMessagesScrollX = 0;
 		directMessageMessagesScrollY += y;
 		if(directMessageMessagesScrollY < directMessageMessagesScrollYMin)
@@ -283,6 +283,13 @@ int VitaGUI::click(int x , int y){
 				}
 			}
 		}
+	}else if(state == 7){
+		
+		if(x > 0 && x < 128 && y > 0 && y < 128){
+			return CLICKED_DM_ICON;
+		}
+		
+		// ? messages
 	}
 	return -1;
 }
