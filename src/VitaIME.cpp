@@ -154,10 +154,21 @@ std::string VitaIME::getUserText(char title[] , char showtext[]){
 				vita2d_common_dialog_update();
 				vita2d_swap_buffers();
 				sceDisplayWaitVblankStart();
+				sceImeDialogTerm();
+				shown_dial = 0;
 				return userTextString;
 				break;
 			} else {
-				oslOskGetText(userText);
+				status = IME_DIALOG_RESULT_CANCELED;
+				vita2d_end_drawing();
+				vita2d_common_dialog_update();
+				vita2d_swap_buffers();
+				sceDisplayWaitVblankStart();
+				sceImeDialogTerm();
+				shown_dial = 0;
+				return userTextString;
+				break;
+				//oslOskGetText(userText);
 			}
 
 			sceImeDialogTerm();
