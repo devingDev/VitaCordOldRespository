@@ -1,5 +1,8 @@
 #include "VitaGUI.hpp"
 #include "log.hpp"
+#include <istream>
+#include <sstream>
+#include <iterator>
 
 void VitaGUI::NextFont(){
 	
@@ -39,13 +42,13 @@ VitaGUI::VitaGUI(){
 	//pgf = vita2d_load_default_pgf();
 	
 	//pgf = vita2d_load_custom_pgf("app0:assets/font/seguiemj.pgf");
-	vita2dFontSymbola = vita2d_load_font_file("app0:assets/font/symbola.ttf");
-	vita2dFontSymbolaHint = vita2d_load_font_file("app0:assets/font/symbolahint.ttf");
-	vita2dFontSeguiemEmoji = vita2d_load_font_file("app0:assets/font/seguiemj.ttf");
-	vita2dFontLastResort = vita2d_load_font_file("app0:assets/font/lastresort.ttf");
-	vita2dFontOpenSansEmoji = vita2d_load_font_file("app0:assets/font/opensansemoji.ttf");
+	//vita2dFontSymbola = vita2d_load_font_file("app0:assets/font/symbola.ttf");
+	//vita2dFontSymbolaHint = vita2d_load_font_file("app0:assets/font/symbolahint.ttf");
+	//vita2dFontSeguiemEmoji = vita2d_load_font_file("app0:assets/font/seguiemj.ttf");
+	//vita2dFontLastResort = vita2d_load_font_file("app0:assets/font/lastresort.ttf");
+	//vita2dFontOpenSansEmoji = vita2d_load_font_file("app0:assets/font/opensansemoji.ttf");
 	
-	vita2dFont = vita2dFontSymbola;
+	vita2dFont = vita2d_load_font_file("app0:assets/font/droidsans.ttf");
 	
 	std::string bgPath = "app0:assets/images/Vitacord-Background-8BIT.png";
 	backgroundImage = vita2d_load_PNG_file(bgPath.c_str());
@@ -103,8 +106,8 @@ void VitaGUI::Draw(){
 		vita2d_draw_texture( loginFormImage , 0 , 0 );
 		//vita2d_pgf_draw_text(pgf, 420, 154, RGBA8(255,255,255,255), 2.0f, loginTexts[0].c_str());
 		//vita2d_pgf_draw_text(pgf, 420, 250, RGBA8(255,255,255,255), 2.0f, loginTexts[1].c_str());
-		vita2d_font_draw_text(vita2dFont , 420, 154, RGBA8(255,255,255,255), 20, loginTexts[0].c_str());
-		vita2d_font_draw_text(vita2dFont , 420, 250, RGBA8(255,255,255,255), 20, loginTexts[1].c_str());
+		vita2d_font_draw_text(vita2dFont , 420, 154, RGBA8(255,255,255,255), 18, loginTexts[0].c_str());
+		vita2d_font_draw_text(vita2dFont , 420, 250, RGBA8(255,255,255,255), 18, loginTexts[1].c_str());
 		
 	}else if(state == 1){
 		vita2d_draw_texture( backgroundImage , 0 , 0);
@@ -119,7 +122,7 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < guildBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , guildScrollX + 128 , guildScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[i].name.c_str());
-			vita2d_font_draw_text(vita2dFont , guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 30, discordPtr->guilds[i].name.c_str());
+			vita2d_font_draw_text(vita2dFont , guildScrollX + 150, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), GUILD_TITLE_TEXT_SIZE_PIXEL, discordPtr->guilds[i].name.c_str());
 		}
 		
 		vita2d_draw_texture(dmIconImage , 0 , 0);
@@ -130,9 +133,9 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < channelBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , channelScrollX + 128 , channelScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
-			vita2d_font_draw_text(vita2dFont , channelScrollX + 200, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), 20, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
+			vita2d_font_draw_text(vita2dFont , channelScrollX + 150, channelScrollY + i * 128 + 64, RGBA8(255,255,255,255), CHANNEL_TITLE_TEXT_SIZE_PIXEL, discordPtr->guilds[discordPtr->currentGuild].channels[i].name.c_str());
 			//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
-			vita2d_font_draw_text(vita2dFont , channelScrollX + 200, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 18, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
+			vita2d_font_draw_text(vita2dFont , channelScrollX + 180, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), CHANNEL_TOPIC_TEXT_SIZE_PIXEL, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
 		}
 		
 		vita2d_draw_texture(dmIconImage , 0 , 0);
@@ -143,8 +146,10 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < messageBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , messageScrollX + 128 , messageScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
-			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), 15, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username.c_str());
-			vita2d_font_draw_text(vita2dFont , messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			//vita2d_font_draw_text(vita2dFont , messageScrollX + 150, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), MESSAGE_AUTHOR_TEXT_SIZE_PIXEL, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username.c_str());
+			//vita2d_font_draw_text(vita2dFont , messageScrollX + 160, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), MESSAGE_CONTENT_TEXT_SIZE_PIXEL, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , messageScrollX + 150, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), MESSAGE_AUTHOR_TEXT_SIZE_PIXEL, messageBoxes[i].username.c_str());
+			vita2d_font_draw_text(vita2dFont , messageScrollX + 160, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), MESSAGE_CONTENT_TEXT_SIZE_PIXEL, messageBoxes[i].content.c_str());
 		}
 		
 		vita2d_draw_texture(dmIconImage , 0 , 0);
@@ -155,7 +160,7 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < directMessageBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , directMessageScrollX + 128 , directMessageScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, directMessageScrollX + 256, directMessageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
-			vita2d_font_draw_text(vita2dFont , directMessageScrollX + 256, directMessageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->directMessages[i].recipients[0].username.c_str());
+			vita2d_font_draw_text(vita2dFont , directMessageScrollX + 150, directMessageScrollY + i * 128 + 96, RGBA8(255,255,255,255), MESSAGE_AUTHOR_TEXT_SIZE_PIXEL, discordPtr->directMessages[i].recipients[0].username.c_str());
 		}
 		
 		vita2d_draw_texture(dmIconImage , 0 , 0);
@@ -166,8 +171,8 @@ void VitaGUI::Draw(){
 		for(int i = 0 ; i < directMessageMessagesBoxes.size() ; i++){
 			vita2d_draw_texture( guildsBGImage , directMessageMessagesScrollX + 128 , directMessageMessagesScrollY + i * 128);
 			//vita2d_pgf_draw_text(pgf, directMessageMessagesScrollX + 256, directMessageMessagesScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
-			vita2d_font_draw_text(vita2dFont , directMessageMessagesScrollX + 256, directMessageMessagesScrollY + i * 128 + 32, RGBA8(255,255,255,255), 10, discordPtr->directMessages[discordPtr->currentDirectMessage].recipients[0].username.c_str());
-			vita2d_font_draw_text(vita2dFont , directMessageMessagesScrollX + 256, directMessageMessagesScrollY + i * 128 + 96, RGBA8(255,255,255,255), 20, discordPtr->directMessages[discordPtr->currentDirectMessage].messages[i].content.c_str());
+			vita2d_font_draw_text(vita2dFont , directMessageMessagesScrollX + 150, directMessageMessagesScrollY + i * 128 + 32, RGBA8(255,255,255,255), MESSAGE_AUTHOR_TEXT_SIZE_PIXEL, discordPtr->directMessages[discordPtr->currentDirectMessage].recipients[0].username.c_str());
+			vita2d_font_draw_text(vita2dFont , directMessageMessagesScrollX + 160, directMessageMessagesScrollY + i * 128 + 96, RGBA8(255,255,255,255), MESSAGE_CONTENT_TEXT_SIZE_PIXEL, discordPtr->directMessages[discordPtr->currentDirectMessage].messages[i].content.c_str());
 		}
 		
 		vita2d_draw_texture(dmIconImage , 0 , 0);
@@ -335,7 +340,7 @@ void VitaGUI::setGuildBoxes(){
 		boxG.h = 128;
 		guildBoxes.push_back(boxG);
 	}
-	guildScrollYMin = -((discordPtr->guilds.size()-1)*128 +64);
+	guildScrollYMin = -((discordPtr->guilds.size()-1)*128);
 }
 void VitaGUI::setChannelBoxes(){
 	channelBoxes.clear();
@@ -347,21 +352,49 @@ void VitaGUI::setChannelBoxes(){
 		boxC.h = 128;
 		channelBoxes.push_back(boxC);
 	}
-	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels.size()-1)*128 +64);
+	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels.size()-1)*128);
 }
 void VitaGUI::setMessageBoxes(){
 	if(!discordPtr->refreshingMessages){
 		messageBoxes.clear();
 		for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size() ; i++){
-			box boxC;
+			messagebox boxC;
 			boxC.x = messageScrollX + 128;
 			boxC.y = messageScrollY + i * 128;
 			boxC.w = 832;
 			boxC.h = 128;
+			boxC.username = discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username;
+			boxC.content = wordWrap( discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content , boxC.w);
 			messageBoxes.push_back(boxC);
 		}
-		messageScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 +64) ;
+		messageScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 ) ;
 	}
+}
+
+std::string VitaGUI::wordWrap(std::string stringToWrap , int availableWidth){
+	
+	int wordWidth = 0;
+	
+	std::string wrappedText="";
+	std::istringstream iss{stringToWrap};
+	// Read tokens from stream into vector (split at whitespace).
+	std::vector<std::string> words{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
+	
+	int spaceLeft = availableWidth;
+	for(int i = 0 ; i < words.size() ; i++){
+		wordWidth = vita2d_font_text_width(vita2dFont, MESSAGE_CONTENT_TEXT_SIZE_PIXEL, words[i].c_str());
+		if(wordWidth + 1  > spaceLeft){
+			words[i] = '\n' + words[i];
+			spaceLeft = availableWidth - wordWidth;
+		}else{
+			spaceLeft = spaceLeft - ( wordWidth + 1 );
+		}
+		wrappedText += words[i];
+	}
+	
+	
+	return wrappedText;
+	
 }
 
 void VitaGUI::setDirectMessageBoxes(){
@@ -379,7 +412,7 @@ void VitaGUI::setDirectMessageBoxes(){
 }
 
 void VitaGUI::setDirectMessageMessagesBoxes(){
-		directMessageMessagesBoxes.clear();
+	directMessageMessagesBoxes.clear();
 	for(int i = 0; i < discordPtr->directMessages[discordPtr->currentDirectMessage].messages.size() ; i++){
 		box boxDMM;
 		boxDMM.x = directMessageMessagesScrollX + 128;
@@ -388,7 +421,7 @@ void VitaGUI::setDirectMessageMessagesBoxes(){
 		boxDMM.h = 128;
 		directMessageMessagesBoxes.push_back(boxDMM);
 	}
-	directMessageMessagesScrollYMax = -((discordPtr->directMessages[discordPtr->currentDirectMessage].messages.size()-1)*128 +64) ;
+	directMessageMessagesScrollYMax = -((discordPtr->directMessages[discordPtr->currentDirectMessage].messages.size()-1)*128) ;
 	
 }
 

@@ -7,6 +7,13 @@
 #include <vector>
 #include <string>
 
+
+#define MESSAGE_AUTHOR_TEXT_SIZE_PIXEL 15
+#define MESSAGE_CONTENT_TEXT_SIZE_PIXEL 30
+#define CHANNEL_TITLE_TEXT_SIZE_PIXEL 20
+#define CHANNEL_TOPIC_TEXT_SIZE_PIXEL 12
+#define GUILD_TITLE_TEXT_SIZE_PIXEL 25
+
 #define CLICKED_DM_ICON 50000
 
 class VitaGUI{
@@ -62,7 +69,7 @@ class VitaGUI{
 		std::vector<inputbox> loginInputs;
 		std::vector<box> guildBoxes;
 		std::vector<box> channelBoxes;
-		std::vector<box> messageBoxes;
+		std::vector<messagebox> messageBoxes;
 		std::vector<box> directMessageBoxes;
 		std::vector<box> directMessageMessagesBoxes;
 		
@@ -97,6 +104,7 @@ class VitaGUI{
 		
 		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 dmchannellobby , 15 settings , 85818764 stuff..
 	
+		std::string wordWrap(std::string wrapthiss, int abwidth);
 	
 	
 };
