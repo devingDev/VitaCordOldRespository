@@ -272,7 +272,6 @@ void * Discord::thread_loadData(void *arg){
 			
 			std::string directMessagesChannelsUrl = "https://discordapp.com/api/v6/users/@me/channels";
 			VitaNet::http_response dmChannelsResponse = discordPtr->vitaNet.curlDiscordGet(directMessagesChannelsUrl , token);
-			logSD("dmMessageChannels Response : " + dmChannelsResponse.body);
 			if(dmChannelsResponse.httpcode == 200){
 				try{
 					nlohmann::json j_complete = nlohmann::json::parse(dmChannelsResponse.body);
@@ -646,10 +645,7 @@ long Discord::login(std::string mail , std::string pass){
 	//std::string loginUrl = "http://jaynapps.com/psvita/httpdump.php";  // DBG
 	std::string loginUrl = "https://discordapp.com/api/auth/login";
 	std::string postData = "{ \"email\":\"" + email + "\" , \"password\":\"" + password + "\" }";
-	logSD(loginUrl + " postData : " + postData);
 	VitaNet::http_response loginresponse = vitaNet.curlDiscordPost(loginUrl , postData , token);
-	logSD("Login response:");
-	logSD(loginresponse.body);
 	if(loginresponse.httpcode == 200){
 		// check if Two-Factor-Authentication is activated and needs further user action
 		nlohmann::json j_complete = nlohmann::json::parse(loginresponse.body);
@@ -690,7 +686,6 @@ long Discord::submit2facode(std::string code){
 	std::string postData = "{ \"code\":\"" + code2fa + "\" , \"ticket\":\"" + ticket + "\" }";
 	VitaNet::http_response submit2facoderesponse = vitaNet.curlDiscordPost( "https://discordapp.com/api/v6/auth/mfa/totp" , postData , token);
 	logSD("Submit 2FA Response:");
-	logSD(submit2facoderesponse.body);
 	if(submit2facoderesponse.httpcode == 200){
 		
 		nlohmann::json j_complete2 = nlohmann::json::parse(submit2facoderesponse.body);
@@ -703,7 +698,6 @@ long Discord::submit2facode(std::string code){
 		}
 		
 	}
-	logSD("Return 2FA httpcode:");
 	return submit2facoderesponse.httpcode;
 	
 }
