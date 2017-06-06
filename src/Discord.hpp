@@ -26,6 +26,12 @@ class Discord{
 			std::string timestamp;
 			std::string id;
 		}message;
+		typedef struct{
+			long allow;
+			std::string type;
+			std::string id;
+			long deny;
+		} permission_overwrites;
 		typedef struct {
 			std::string name;
 			std::string last_pin_timestamp;
@@ -34,6 +40,9 @@ class Discord{
 			std::string type;
 			std::string id;
 			bool is_private;
+			bool readallowed;
+			
+			std::vector<permission_overwrites> permission_overwrites;
 			
 			std::vector<message> messages;
 		}channel;

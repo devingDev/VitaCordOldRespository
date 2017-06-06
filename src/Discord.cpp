@@ -1,5 +1,7 @@
 #include "Discord.hpp"
 #include "log.hpp"
+
+#include <bitset>
 #include <pthread.h>
 #include "json.hpp"
 
@@ -220,7 +222,7 @@ void * Discord::thread_loadData(void *arg){
 									if(!j_complete[c]["type"].is_null()){
 										discordPtr->guilds[i].channels[c].type = j_complete[c]["type"].get<std::string>();
 									}else{
-										discordPtr->guilds[i].channels[c].type = "";
+										discordPtr->guilds[i].channels[c].type = "text";
 									}
 									
 									if(!j_complete[c]["id"].is_null()){
@@ -251,6 +253,38 @@ void * Discord::thread_loadData(void *arg){
 										discordPtr->guilds[i].channels[c].last_message_id = j_complete[c]["last_message_id"].get<std::string>();
 									}else{
 										discordPtr->guilds[i].channels[c].last_message_id = false;
+									}
+									
+									if(!j_complete[c]["permission_overwrites"].is_null()){
+										
+										int p = j_complete[c]["permission_overwrites"].size();
+										for(int per = 0; per < p; per++){
+											discordPtr->guilds[i].channels[c].permission_overwrites.push_back(permission_overwrites());
+											if(!j_complete[c]["permission_overwrites"]["allow"].is_null()){
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = j_complete[c]["permission_overwrites"]["allow"].get<long>();
+											}else{
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = 0;
+											}
+											if(!j_complete[c]["permission_overwrites"]["type"].is_null()){
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].type = j_complete[c]["permission_overwrites"]["type"].get<std::string>();
+											}else{
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].type = "role";
+											}
+											if(!j_complete[c]["permission_overwrites"]["id"].is_null()){
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].id = j_complete[c]["permission_overwrites"]["id"].get<std::string>();
+											}else{
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].id = "0";
+											}
+											if(!j_complete[c]["permission_overwrites"]["deny"].is_null()){
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = j_complete[c]["permission_overwrites"]["deny"].get<long>();
+											}else{
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = 0;
+											}
+											
+											
+										}
+										
+										
 									}
 									
 									
