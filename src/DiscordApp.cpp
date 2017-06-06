@@ -209,6 +209,7 @@ void DiscordApp::Start(){
 				discord.sendMessage(userMessage);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}else if(vitaPad.circle){
+				discord.LeaveChannel();
 				vitaGUI.SetState(3);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}else{
@@ -219,6 +220,7 @@ void DiscordApp::Start(){
 				case -1:
 					break;
 				case CLICKED_DM_ICON:
+					discord.LeaveChannel();
 					vitaGUI.SetState(6);
 					break;
 					
@@ -226,7 +228,7 @@ void DiscordApp::Start(){
 					break;
 				
 			}
-			discord.refreshMessages();
+			
 			
 		}else if(vitaState == 6){
 			

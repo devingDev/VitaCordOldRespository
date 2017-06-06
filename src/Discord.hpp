@@ -85,9 +85,15 @@ class Discord{
 			reinterpret_cast<Discord*>(object)->thread_loadData(object);
 			return 0;
 		}
+		static void* refreshMessages_wrapper(void* object)
+		{
+			reinterpret_cast<Discord*>(object)->thread_refreshMessages(object);
+			return 0;
+		}
 		void JoinGuild(int gIndex);
 		uint64_t osGetTimeMS();
 		void JoinChannel(int cIndex);
+		void LeaveChannel();
 		void JoinDirectMessageChannel(int dIndex);
 		int currentGuild = 0;
 		int currentChannel = 0;
@@ -97,6 +103,7 @@ class Discord{
 		bool refreshMessages();
 		bool refreshDirectMessages();
 		bool refreshCurrentDirectMessages();
+		bool refreshingMessages;
 	
 	private:
 		VitaNet vitaNet;
@@ -106,6 +113,7 @@ class Discord{
 		user client;
 		bool loggedin;
 		bool loadedGuilds ;
+		bool inChannel;
 		bool loadedChannels;
 		bool loadedDMs;
 		long fetchUserData();
@@ -115,10 +123,12 @@ class Discord{
 		void getChannelMessages(int channelIndex);
 		void getCurrentDirectMessages();
 		void *thread_loadData(void *arg);
+		void *thread_refreshMessages(void *arg);
 		
 		uint64_t lastFetchTimeMS;
-		uint64_t fetchTimeMS = 5000; // 4 seconds refreshing
+		uint64_t fetchTimeMS = 4000; // 4 seconds refreshing
 		uint64_t currentTimeMS;
+		bool forceRefreshMessages;
 	
 };
 

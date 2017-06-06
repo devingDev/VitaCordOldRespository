@@ -350,16 +350,18 @@ void VitaGUI::setChannelBoxes(){
 	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels.size()-1)*128 +64);
 }
 void VitaGUI::setMessageBoxes(){
-	messageBoxes.clear();
-	for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size() ; i++){
-		box boxC;
-		boxC.x = messageScrollX + 128;
-		boxC.y = messageScrollY + i * 128;
-		boxC.w = 832;
-		boxC.h = 128;
-		messageBoxes.push_back(boxC);
+	if(!discordPtr->refreshingMessages){
+		messageBoxes.clear();
+		for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size() ; i++){
+			box boxC;
+			boxC.x = messageScrollX + 128;
+			boxC.y = messageScrollY + i * 128;
+			boxC.w = 832;
+			boxC.h = 128;
+			messageBoxes.push_back(boxC);
+		}
+		messageScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 +64) ;
 	}
-	messageScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size()-1)*128 +64) ;
 }
 
 void VitaGUI::setDirectMessageBoxes(){
