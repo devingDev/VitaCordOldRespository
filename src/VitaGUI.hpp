@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 
+#define MAX_DRAW_HEIGHT 800
+#define MIN_DRAW_HEIGHT -800
 
 #define MESSAGE_AUTHOR_TEXT_SIZE_PIXEL 15
 #define MESSAGE_CONTENT_TEXT_SIZE_PIXEL 30
