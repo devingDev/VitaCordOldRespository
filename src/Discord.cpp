@@ -61,6 +61,7 @@ void Discord::getChannelMessages(int channelIndex){
 	currentChannel = channelIndex;
 	std::string channelMessagesUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id + "/messages";
 	VitaNet::http_response channelmessagesresponse = vitaNet.curlDiscordGet(channelMessagesUrl , token);
+	logSD(channelmessagesresponse.body);
 	if(channelmessagesresponse.httpcode == 200){
 		nlohmann::json j_complete = nlohmann::json::parse(channelmessagesresponse.body);
 		int messagesAmount = j_complete.size();
@@ -157,6 +158,7 @@ void * Discord::thread_loadData(void *arg){
 		if(!discordPtr->loadedGuilds){
 			std::string guildsUrl = "https://discordapp.com/api/users/@me/guilds";
 			VitaNet::http_response guildsresponse = discordPtr->vitaNet.curlDiscordGet(guildsUrl , token);
+			logSD(guildsresponse.body);
 			if(guildsresponse.httpcode == 200){
 				try{
 					nlohmann::json j_complete = nlohmann::json::parse(guildsresponse.body);
@@ -190,15 +192,19 @@ void * Discord::thread_loadData(void *arg){
 								
 								if(!j_complete[i]["id"].is_null()){
 									discordPtr->guilds[i].id = j_complete[i]["id"].get<std::string>();
+									logSD(discordPtr->guilds[i].id);
 								}else{
 									discordPtr->guilds[i].id = "";
+									logSD(discordPtr->guilds[i].id);
 								}
 								
 								if(!j_complete[i]["name"].is_null()){
 									discordPtr->guilds[i].name = j_complete[i]["name"].get<std::string>();
+									logSD(discordPtr->guilds[i].name);
 									
 								}else{
 									discordPtr->guilds[i].name = "";
+									logSD(discordPtr->guilds[i].name);
 								}
 								
 								
@@ -220,6 +226,7 @@ void * Discord::thread_loadData(void *arg){
 			for(int i = 0; i < discordPtr->guildsAmount ; i++){
 				std::string channelUrl = "https://discordapp.com/api/guilds/" + discordPtr->guilds[i].id + "/channels";
 				VitaNet::http_response channelresponse = discordPtr->vitaNet.curlDiscordGet(channelUrl , token);
+				logSD(channelresponse.body);
 				if(channelresponse.httpcode == 200){
 					try{
 						nlohmann::json j_complete = nlohmann::json::parse(channelresponse.body);
@@ -234,38 +241,50 @@ void * Discord::thread_loadData(void *arg){
 									
 									if(!j_complete[c]["type"].is_null()){
 										discordPtr->guilds[i].channels[c].type = j_complete[c]["type"].get<std::string>();
+										logSD(discordPtr->guilds[i].channels[c].type);
 									}else{
 										discordPtr->guilds[i].channels[c].type = "text";
+										logSD(discordPtr->guilds[i].channels[c].type);
 									}
 									
 									if(!j_complete[c]["id"].is_null()){
 										discordPtr->guilds[i].channels[c].id = j_complete[c]["id"].get<std::string>();
+										logSD(discordPtr->guilds[i].channels[c].id);
 									}else{
-										discordPtr->guilds[i].channels[c].id = "";
+										discordPtr->guilds[i].channels[c].id = "00000000";
+										logSD(discordPtr->guilds[i].channels[c].id);
 									}
 									
 									if(!j_complete[c]["name"].is_null()){
 										discordPtr->guilds[i].channels[c].name = j_complete[c]["name"].get<std::string>();
+										logSD(discordPtr->guilds[i].channels[c].name);
 									}else{
 										discordPtr->guilds[i].channels[c].name = "name unavailable";
+										logSD(discordPtr->guilds[i].channels[c].name);
 									}
 									
 									if(!j_complete[c]["topic"].is_null()){
 										discordPtr->guilds[i].channels[c].topic = j_complete[c]["topic"].get<std::string>();
+										logSD(discordPtr->guilds[i].channels[c].topic);
 									}else{
-										discordPtr->guilds[i].channels[c].topic = "";
+										discordPtr->guilds[i].channels[c].topic = " ";
+										logSD(discordPtr->guilds[i].channels[c].topic);
 									}
 								
 									if(!j_complete[c]["is_private"].is_null()){
 										discordPtr->guilds[i].channels[c].is_private = j_complete[c]["is_private"].get<bool>();
+										logSD(std::to_string(discordPtr->guilds[i].channels[c].is_private));
 									}else{
 										discordPtr->guilds[i].channels[c].is_private = false;
+										logSD(std::to_string(discordPtr->guilds[i].channels[c].is_private));
 									}
 									
 									if(!j_complete[c]["last_message_id"].is_null()){
 										discordPtr->guilds[i].channels[c].last_message_id = j_complete[c]["last_message_id"].get<std::string>();
+										logSD(discordPtr->guilds[i].channels[c].last_message_id);
 									}else{
-										discordPtr->guilds[i].channels[c].last_message_id = false;
+										discordPtr->guilds[i].channels[c].last_message_id = "00000000";
+										logSD(discordPtr->guilds[i].channels[c].last_message_id);
 									}
 									
 									//if(!j_complete[c]["permission_overwrites"].is_null()){
@@ -319,6 +338,7 @@ void * Discord::thread_loadData(void *arg){
 			
 			std::string directMessagesChannelsUrl = "https://discordapp.com/api/v6/users/@me/channels";
 			VitaNet::http_response dmChannelsResponse = discordPtr->vitaNet.curlDiscordGet(directMessagesChannelsUrl , token);
+			logSD(dmChannelsResponse.body);
 			if(dmChannelsResponse.httpcode == 200){
 				try{
 					nlohmann::json j_complete = nlohmann::json::parse(dmChannelsResponse.body);
