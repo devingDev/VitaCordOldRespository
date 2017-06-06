@@ -76,7 +76,7 @@ void DiscordApp::loadUserDataFromFile(){
 	discord.setToken(token);
 	
 	vitaGUI.loginTexts[0] = discord.getEmail();
-	vitaGUI.loginTexts[1] = discord.getPassword();
+	vitaGUI.loginTexts[1] = "********";
 }
 
 void DiscordApp::saveUserDataToFile(std::string mail , std::string pass , std::string _tok){
@@ -126,7 +126,7 @@ void DiscordApp::Start(){
 					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
 				case 1:
-					discord.setPassword(vitaIME.getUserText("Discord Password" , discord.getPassword().c_str()));
+					discord.setPassword(vitaIME.getUserText("Discord Password" ));
 					vitaGUI.loginTexts[clicked] = "********";
 					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
