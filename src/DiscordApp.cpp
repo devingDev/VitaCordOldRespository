@@ -102,17 +102,20 @@ void DiscordApp::Start(){
 	vitaGUI.passDiscordPointer( &discord );
 	logSD("start program loop");
 	for(;;){
-		vitaGUI.Draw();
+		logSD("vitapad read");
 		vitaPad.Read();
+		logSD("vitatouch read");
 		vitaTouch.readTouch();
 		
 		
 		if(vitaTouch.clicking){
+			logSD("clicking check");
 			clicked = vitaGUI.click(vitaTouch.lastClickPoint.x , vitaTouch.lastClickPoint.y);
 		}else{
 			clicked = -1;
 		}
 		if(vitaTouch.scrolling){
+			logSD("scolling check");
 			scrolled = vitaGUI.scroll(vitaTouch.scrollDirX , vitaTouch.scrollDirY);
 		}else{
 			scrolled = -1;
@@ -172,7 +175,9 @@ void DiscordApp::Start(){
 					vitaGUI.SetState(6);
 					break;
 				default:
+					logSD("join guild");
 					discord.JoinGuild(clicked);
+					logSD("vitagui setstate(3)");
 					vitaGUI.SetState(3);
 					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
@@ -275,6 +280,8 @@ void DiscordApp::Start(){
 			
 		}
 		
+		logSD("vitagui draw");
+		vitaGUI.Draw();
 		
 	}
 	
