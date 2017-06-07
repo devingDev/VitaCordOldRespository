@@ -37,6 +37,8 @@ typedef struct{
 	int y;
 	int w;
 	int h;
+	int lineCount;
+	int messageHeight;
 	std::string username;
 	std::string content;
 	

@@ -12,7 +12,7 @@
 	<frame id="frame2">
 		<liveitem>
 			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
-				<str color="#546293" size="50" bold="on" shadow="on">VitaCord</str>
+				<str color="#546293" size="50" bold="on" shadow="on"></str>
 			</text>
 		</liveitem>
 	</frame>

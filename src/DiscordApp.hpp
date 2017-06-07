@@ -27,6 +27,10 @@ class DiscordApp{
 		int clicked = -1;
 		int scrolled = -1;
 		int vitaState = 0;
+		
+		void doLogin();
+		void getUserEmailInput();
+		void getUserPasswordInput();
 	
 };
 

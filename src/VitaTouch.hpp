@@ -8,8 +8,8 @@
 #define SLEEP_CLICK_NORMAL 150000
 #define SLEEP_CLICK_EXTENDED 350000
 
-#define MIN_DIST_TO_SCROLL_Y 5
-#define MIN_DIST_TO_SCROLL_X 5
+#define MIN_DIST_TO_SCROLL_Y 3
+#define MIN_DIST_TO_SCROLL_X 3
 
 class VitaTouch{
 	public:
@@ -19,6 +19,7 @@ class VitaTouch{
 		SceTouchData touch[SCE_TOUCH_PORT_MAX_NUM];
 		vector2 getClickPoint();
 		vector2 lastClickPoint;
+		vector2 lastTouchPoint;
 		bool clicking;
 		bool scrolling;
 		int scrollDirX ;

@@ -10,11 +10,24 @@
 #define MAX_DRAW_HEIGHT 800
 #define MIN_DRAW_HEIGHT -800
 
+#define MAX_FONT_SIZE 32
+
 #define MESSAGE_AUTHOR_TEXT_SIZE_PIXEL 15
-#define MESSAGE_CONTENT_TEXT_SIZE_PIXEL 30
-#define CHANNEL_TITLE_TEXT_SIZE_PIXEL 20
-#define CHANNEL_TOPIC_TEXT_SIZE_PIXEL 12
-#define GUILD_TITLE_TEXT_SIZE_PIXEL 25
+#define MESSAGE_CONTENT_TEXT_SIZE_PIXEL 24
+#define CHANNEL_TITLE_TEXT_SIZE_PIXEL 18
+#define CHANNEL_TOPIC_TEXT_SIZE_PIXEL 14
+#define GUILD_TITLE_TEXT_SIZE_PIXEL 18
+
+
+#define MESSAGE_INPUT_HEIGHT 72
+
+#define GUILD_HEIGHT 64
+#define CHANNEL_HEIGHT 64
+#define DMICONX 128
+#define DMICONY 30
+#define DMICONX2 128+64
+#define DMICONY2 30+64
+
 
 #define CLICKED_DM_ICON 50000
 
@@ -25,7 +38,7 @@ class VitaGUI{
 		void Draw();
 		void AddRectangle(float x , float y , float w , float h , unsigned int color);
 		void RemoveRectangle(int index);
-		int scroll(int x , int y);
+		int scroll(int x , int y , int posx  , int posy);
 		int click(int x , int y);
 		std::vector<std::string> loginTexts;
 		std::string loadingString = "";
@@ -50,12 +63,17 @@ class VitaGUI{
 			vita2d_texture *icon;
 		} emoji_icon;
 		
+		
+		void setUserInfo();
 	
 	private:
 		Discord *discordPtr;
 		int currentFont = 0;
 		int lastState = 0;
-		vita2d_font *vita2dFont;
+		vita2d_font *vita2dFont[MAX_FONT_SIZE];
+		vita2d_font *vita2dFontSmall;
+		vita2d_font *vita2dFontNormal;
+		vita2d_font *vita2dFontBig;
 		//vita2d_font *vita2dFontSymbola;
 		//vita2d_font *vita2dFontSymbolaHint;
 		//vita2d_font *vita2dFontSeguiemEmoji;
@@ -67,6 +85,9 @@ class VitaGUI{
 		vita2d_texture *loadingImage;
 		vita2d_texture *guildsBGImage;
 		vita2d_texture *dmIconImage;
+		vita2d_texture *statbarIconImage;
+		vita2d_texture *sidepanelStateIconImage;
+		vita2d_texture *messageInputImage;
 		std::vector<rectangle> rectangles;
 		std::string loadingScreenString;
 		//std::vector<std::string> guildNames;
@@ -114,7 +135,9 @@ class VitaGUI{
 		
 		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 dmchannellobby , 15 settings , 85818764 stuff..
 	
-		std::string wordWrap(std::string wrapthiss, int abwidth);
+		int wordWrap(std::string wrapthiss, int abwidth , std::string &output);  // return value is amount of linebreaks
+		
+		std::string panelUsername , panelUserDiscriminator;
 	
 	
 };
