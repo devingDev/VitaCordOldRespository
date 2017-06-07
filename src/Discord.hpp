@@ -111,13 +111,13 @@ class Discord{
 		bool refreshCurrentDirectMessages();
 		bool refreshingMessages;
 		void utf16_to_utf8(uint16_t *src, uint8_t *dst);
+		user client;
+		std::string email = "", password = "", code2fa , token , ticket , username , id , avatar , discriminator , phone;
 	
 	private:
 		VitaNet vitaNet;
-		std::string email = "", password = "", code2fa , token , ticket , username , id , avatar , discriminator , phone;
 		bool verified, mfa_enabled; // mfa == twofactor its the same
 		bool twoFactorAuthEnabled;
-		user client;
 		bool loggedin;
 		bool loadedGuilds ;
 		bool inChannel;

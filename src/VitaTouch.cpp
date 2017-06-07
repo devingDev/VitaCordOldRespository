@@ -25,10 +25,12 @@ void VitaTouch::readTouch(){
 			lastClickPoint.x = touch_old[SCE_TOUCH_PORT_FRONT].report[0].x / 2;  // 1920 touch => 960 display
 			lastClickPoint.y = touch_old[SCE_TOUCH_PORT_FRONT].report[0].y / 2;
 			scrollDirX = scrollDirY = 0;
+			lastTouchPoint = emptyClickPoint;
 			scrolling = false;
 			clicking = true;
 		}else{
 			lastClickPoint = emptyClickPoint;
+			lastTouchPoint = emptyClickPoint;
 			scrollDirX = scrollDirY = 0;
 			scrolling = false;
 			clicking = false;
@@ -36,6 +38,8 @@ void VitaTouch::readTouch(){
 	}else if(touch_old[SCE_TOUCH_PORT_FRONT].reportNum >= 1 && touch[SCE_TOUCH_PORT_FRONT].reportNum >= 1){
 		scrollDirX = (touch[SCE_TOUCH_PORT_FRONT].report[0].x - touch_old[SCE_TOUCH_PORT_FRONT].report[0].x)/2;
 		scrollDirY = (touch[SCE_TOUCH_PORT_FRONT].report[0].y - touch_old[SCE_TOUCH_PORT_FRONT].report[0].y)/2;
+		lastTouchPoint.x = touch_old[SCE_TOUCH_PORT_FRONT].report[0].x/2;
+		lastTouchPoint.y = touch_old[SCE_TOUCH_PORT_FRONT].report[0].y/2;
 		if(abs(scrollDirX) > MIN_DIST_TO_SCROLL_X || abs(scrollDirY) > MIN_DIST_TO_SCROLL_Y){
 			lastClickPoint = emptyClickPoint;
 			scrolling = true;
@@ -43,6 +47,7 @@ void VitaTouch::readTouch(){
 		}
 	}else{
 		lastClickPoint = emptyClickPoint;
+		lastTouchPoint = emptyClickPoint;
 		scrollDirX = scrollDirY = 0;
 		scrolling = false;
 		clicking = false;

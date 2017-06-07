@@ -123,7 +123,55 @@ std::string VitaIME::getUserText(char title[] ){
 	return getUserText(title , "");
 }
 
-std::string VitaIME::getUserText(char title[] , char showtext[]){
+
+
+std::string VitaIME::getUserText(char title[] , char showtext[]) {
+    bool shown_dial = false;
+   
+    char userText[512];
+    strcpy(userText, showtext);
+   
+   
+   
+    while (1) {
+        vita2d_start_drawing();
+        vita2d_clear_screen();
+       
+        if (!shown_dial) {
+            initImeDialog(title, userText, 128);
+            shown_dial = true;
+            }
+       
+        SceCommonDialogStatus status = sceImeDialogGetStatus();
+       
+        if (status == IME_DIALOG_RESULT_FINISHED) {
+            SceImeDialogResult result;
+            memset(&result, 0, sizeof(SceImeDialogResult));
+            sceImeDialogGetResult(&result);
+ 
+            if (result.button == SCE_IME_DIALOG_BUTTON_CLOSE)
+                status = IME_DIALOG_RESULT_CANCELED;
+            else
+                oslOskGetText(userText);
+ 
+            sceImeDialogTerm();
+            shown_dial = 0;
+            break;
+		}
+       
+        vita2d_end_drawing();
+        vita2d_common_dialog_update();
+        vita2d_swap_buffers();
+        sceDisplayWaitVblankStart();
+	}
+    return userText;
+}
+
+
+
+
+
+/*std::string VitaIME::getUserText(char title[] , char showtext[]){
 	int shown_dial = 0;
 	
 	char userText[512] ;
@@ -159,6 +207,7 @@ std::string VitaIME::getUserText(char title[] , char showtext[]){
 				return userTextString;
 				break;
 			} else {
+				oslOskGetText(userText);
 				status = IME_DIALOG_RESULT_CANCELED;
 				vita2d_end_drawing();
 				vita2d_common_dialog_update();
@@ -166,9 +215,9 @@ std::string VitaIME::getUserText(char title[] , char showtext[]){
 				sceDisplayWaitVblankStart();
 				sceImeDialogTerm();
 				shown_dial = 0;
+				userTextString = userText;
 				return userTextString;
 				break;
-				//oslOskGetText(userText);
 			}
 
 			sceImeDialogTerm();
@@ -200,7 +249,7 @@ std::string VitaIME::getUserText(char title[] , char showtext[]){
         sceDisplayWaitVblankStart();
     }
 	return userTextString;
-}
+}*/
 
 
 VitaIME::VitaIME(){

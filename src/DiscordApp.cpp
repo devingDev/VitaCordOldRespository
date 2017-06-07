@@ -94,7 +94,7 @@ void DiscordApp::saveUserDataToFile(std::string mail , std::string pass , std::s
 
 void DiscordApp::Start(){
 	
-	logSD("____App started!_____");
+	criticalLogSD("____App started!_____");
 	
 	logSD("load userdata file");
 	loadUserDataFromFile();
@@ -110,13 +110,13 @@ void DiscordApp::Start(){
 		
 		if(vitaTouch.clicking){
 			logSD("clicking check");
-			clicked = vitaGUI.click(vitaTouch.lastClickPoint.x , vitaTouch.lastClickPoint.y);
+			clicked = vitaGUI.click(vitaTouch.lastClickPoint.x , vitaTouch.lastClickPoint.y );
 		}else{
 			clicked = -1;
 		}
 		if(vitaTouch.scrolling){
 			logSD("scolling check");
-			scrolled = vitaGUI.scroll(vitaTouch.scrollDirX , vitaTouch.scrollDirY);
+			scrolled = vitaGUI.scroll(vitaTouch.scrollDirX , vitaTouch.scrollDirY , vitaTouch.lastTouchPoint.x, vitaTouch.lastTouchPoint.y);
 		}else{
 			scrolled = -1;
 		}
@@ -124,44 +124,16 @@ void DiscordApp::Start(){
 		if(vitaState == 0){
 			switch(clicked){
 				case 0:
-					std::string newemail = vitaIME.getUserText("Discord Email" , discord.getEmail().c_str() );
-					sceKernelDelayThread(10000);
-					discord.setEmail(newemail);
-					vitaGUI.loginTexts[0] = newemail;
-					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					getUserEmailInput();
 					break;
+					
 				case 1:
-					std::string newpassword = vitaIME.getUserText("Discord Password" );
-					sceKernelDelayThread(10000);
-					discord.setPassword(newpassword);
-					vitaGUI.loginTexts[1] = "********";
-					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					getUserPasswordInput();
 					break;
 					
 				case 2:
-					int loginR = discord.login();
-					if(loginR  == 200){
-						logSD("Login Success");
-						vitaGUI.loadingString = "Loading your stuff , " + discord.getUsername();
-						saveUserDataToFile(discord.getEmail() , discord.getPassword() , discord.getToken());
-						discord.loadData();
-						logSD("Loaded data");
-						vitaGUI.SetState(1);
-					}else if(loginR == 200000){
-						if( discord.submit2facode(vitaIME.getUserText("Enter your 2Factor Auth Code!")) == 200){
-							logSD("Login (2FA) Success");
-							vitaGUI.loadingString = "Wait a second " + discord.getUsername();
-							saveUserDataToFile(discord.getEmail() , discord.getPassword() , discord.getToken());
-							discord.loadData();
-							logSD("Loaded data");
-							vitaGUI.SetState(1);
-							logSD("Set state");
-						}
-					}
-					
-					sceKernelDelayThread(SLEEP_CLICK_EXTENDED);
+					doLogin();
 					break;
-				
 			}
 		}else if(vitaState == 1){
 			if(discord.loadingData){
@@ -195,9 +167,9 @@ void DiscordApp::Start(){
 			switch(clicked){
 				case -1:
 					break;
-					case CLICKED_DM_ICON:
-						vitaGUI.SetState(6);
-						break;
+				case CLICKED_DM_ICON:
+					vitaGUI.SetState(6);
+					break;
 				default:
 					discord.JoinChannel(clicked);
 					vitaGUI.SetState(4);
@@ -228,6 +200,9 @@ void DiscordApp::Start(){
 					break;
 					
 				default:
+					discord.JoinChannel(clicked);
+					vitaGUI.SetState(4);
+					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
 				
 			}
@@ -290,5 +265,56 @@ void DiscordApp::Start(){
 	}
 	
 }
+
+void DiscordApp::doLogin(){
+	int loginR = discord.login();
+	if(loginR  == 200){
+		logSD("Login Success");
+		vitaGUI.loadingString = "Loading your stuff , " + discord.getUsername();
+		saveUserDataToFile(discord.getEmail() , discord.getPassword() , discord.getToken());
+		discord.loadData();
+		logSD("Loaded data");
+		vitaGUI.SetState(1);
+	}else if(loginR == 200000){
+		if( discord.submit2facode(vitaIME.getUserText("Enter your 2Factor Auth Code!")) == 200){
+			logSD("Login (2FA) Success");
+			vitaGUI.loadingString = "Wait a second " + discord.getUsername();
+			saveUserDataToFile(discord.getEmail() , discord.getPassword() , discord.getToken());
+			discord.loadData();
+			logSD("Loaded data");
+			vitaGUI.SetState(1);
+			logSD("Set state");
+		}
+	}
+	
+	vitaGUI.setUserInfo();
+	
+	sceKernelDelayThread(SLEEP_CLICK_EXTENDED);
+	
+	
+}
+
+
+
+void DiscordApp::getUserEmailInput(){
+	
+	
+	std::string newemail = vitaIME.getUserText("Discord Email" , discord.getEmail().c_str() );
+	discord.setEmail(newemail);
+	vitaGUI.loginTexts[0] = newemail;
+	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+}
+
+void DiscordApp::getUserPasswordInput(){
+	
+	std::string newpassword = vitaIME.getUserText("Discord Password" , "");
+	discord.setPassword(newpassword);
+	vitaGUI.loginTexts[1] = "********";
+	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+}
+
+
+
+
 
 
