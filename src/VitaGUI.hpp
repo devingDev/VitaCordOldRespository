@@ -44,6 +44,12 @@ class VitaGUI{
 		
 		void SetStateToLastState();
 		
+		typedef struct{
+			std::string name;
+			int id;
+			vita2d_texture *icon;
+		} emoji_icon;
+		
 	
 	private:
 		Discord *discordPtr;
@@ -74,6 +80,8 @@ class VitaGUI{
 		std::vector<messagebox> messageBoxes;
 		std::vector<box> directMessageBoxes;
 		std::vector<box> directMessageMessagesBoxes;
+		
+		std::vector<emoji_icon> emojis;
 		
 		int guildScrollX = 0;
 		int guildScrollY = 0;

@@ -29,10 +29,10 @@ include_directories(
 
 add_executable(${SHORT_NAME}.elf
   src/Discord.cpp
+  src/VitaGUI.cpp
   src/easyencryptor.cpp
   src/DiscordApp.cpp
   src/VitaNet.cpp
-  src/VitaGUI.cpp
   src/main.cpp
   src/log.cpp
   src/VitaIME.cpp
@@ -80,6 +80,8 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   #FILE assets/font/seguiemj.pgf assets/font/seguiemj.pgf
   #FILE assets/font/seguiemj.ttf assets/font/seguiemj.ttf
   FILE assets/font/droidsans.ttf assets/font/droidsans.ttf
+  FILE assets/emoji/emoji_1f354.png assets/emoji/emoji_1f354.png
+  FILE assets/emoji/emoji_1f35f.png assets/emoji/emoji_1f35f.png
   FILE assets/images/Vitacord-DMIcon-8BIT.png assets/images/Vitacord-DMIcon-8BIT.png
   FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
   FILE assets/images/Vitacord-LoginForm-8BIT.png assets/images/Vitacord-LoginForm-8BIT.png

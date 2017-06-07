@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <atomic>
+#include <sstream>
 
 #include "VitaNet.hpp"
 
@@ -17,6 +18,10 @@ class Discord{
 			std::string avatar;
 			
 		}user;
+		typedef struct{
+			int codepoint;
+			int x;
+		} message_emoji;
 		typedef struct {
 			user author;
 			std::string content;
@@ -25,6 +30,7 @@ class Discord{
 			std::string mentions;
 			std::string timestamp;
 			std::string id;
+			std::vector<message_emoji> emojis;
 		}message;
 		typedef struct{
 			long allow;
@@ -125,6 +131,10 @@ class Discord{
 		void getCurrentDirectMessages();
 		void *thread_loadData(void *arg);
 		void *thread_refreshMessages(void *arg);
+		
+		std::stringstream stringStream;
+		
+		void parseMessageContentEmoji(message *m, std::string str);
 		
 		uint64_t lastFetchTimeMS;
 		uint64_t fetchTimeMS = 4000; // 4 seconds refreshing
