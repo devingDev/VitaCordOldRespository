@@ -3,6 +3,15 @@
 
 #include <bitset>
 #include <pthread.h>
+#include <locale>
+#include <codecvt>
+#include <string>
+#include <iostream>
+#include <iconv.h>
+#include <wchar.h>
+#include <stdlib.h>
+
+#include <cctype>
 #include "json.hpp"
 
 #include <psp2/kernel/processmgr.h>
@@ -81,6 +90,227 @@ void Discord::utf16_to_utf8(uint16_t *src, uint8_t *dst) {
 	*dst = '\0';
 }
 
+/*static int strConv(const string &src, wstring &dst) 
+{   
+    iconv_t cd = iconv_open("UCS-4-INTERNAL", "UTF-8");
+    if (cd == (iconv_t)-1)
+        return -1;
+    
+    size_t src_length = strlen(src.c_str());
+    int wlen = (int)src_length/3;    
+    size_t buf_length = src_length + wlen;
+    
+    char src_buf[src_length];
+    strcpy(src_buf, src.c_str());
+    char *buf = new char [buf_length];
+    char *inptr = src_buf;
+    char *outptr = buf;
+    if (iconv(cd, &inptr, &src_length, &outptr, &buf_length) == -1) 
+    {
+        if (buf!=NULL)
+            delete [] buf;
+        return -1;
+    }
+    iconv_close(cd);
+    
+    dst = wstring(reinterpret_cast<wchar_t*>(buf));
+    dst = dst.substr(0, wlen);
+    
+    if (buf!=NULL)
+        delete [] buf;
+    
+    return wlen;    
+}*/
+
+void Discord::parseMessageContentEmoji(message *m , std::string str){
+	
+
+	//bool escFound = false;
+	//bool uniescFound = false;
+	//bool lookingForHi = false;
+	//bool lookingForLo = false;
+	//bool foundHi = false;
+	//bool foundLo = false;
+	//int cpCount = 0;
+	//int trCount = 0;
+	//int hi = 0;
+	//int lo = 0;
+	//std::string hiStr = "";
+	//std::string loStr = "";
+	
+	int emojiCount = 0;
+	
+	// TODO : removeunicode escapes and only keep content + whitesapce
+	m->content = str;
+
+	bool hiFound = false;
+	bool loFound = false;
+	std::string surrogateStr = "";
+	int surrogateHi = 0;
+	int surrogateLo = 0;
+	m->emojis.clear();
+	
+	
+	// old function BAAAD only working if the user writes the unicode himself like : \uXXXX\uXXXX 
+	/*
+	for(int i = 0; i < str.length(); i ++){
+		criticalLogSD("Checking message length:");
+		criticalLogSD("i + 11 ? str.length:" + std::to_string(str.length()));
+		if(i + 11 < str.length()){  
+			criticalLogSD("Checking message for escape sign:");
+			criticalLogSD("checking for hi esc : " + str[i]);
+			if(str[i] == '\\'){
+				criticalLogSD(".esc found:");
+				if(str[i+1] == '\\'){
+					criticalLogSD("-double esc sign");
+					continue;
+				}
+				criticalLogSD(".checking for hi u : " + str[i+1]);
+				if(str[i+1] == 'u'){
+					criticalLogSD(".found u sign");
+					criticalLogSD("checking for lo esc : " + str[i+6]);
+					if(str[i+6] == '\\'){
+						criticalLogSD(".found lo esc sign");
+						criticalLogSD("checking for lo u : " + str[i+7]);
+						if(str[i+7] == 'u'){
+							
+							criticalLogSD(".found lo u sign");
+							
+							criticalLogSD("next sign is : " + str[i+2]);
+							if(isxdigit(str[i+2])){
+								criticalLogSD("1 found hex sign");
+								criticalLogSD("next sign is : " + str[i+3]);
+								surrogateStr += str[i+2];
+								if(isxdigit(str[i+3])){
+									criticalLogSD("2 found hex sign");
+									criticalLogSD("next sign is : " + str[i+4]);
+									surrogateStr += str[i+3];
+									if(isxdigit(str[i+4])){
+										criticalLogSD("3 found hex sign");
+										criticalLogSD("next sign is : " + str[i+5]);
+										surrogateStr += str[i+4];
+										if(isxdigit(str[i+5])){
+											criticalLogSD("4 found hex sign");
+											surrogateStr += str[i+5];
+											
+											criticalLogSD("surrogateStr : " + surrogateStr);
+											
+											stringStream.str(std::string());
+											stringStream.clear();
+											stringStream << std::hex << surrogateStr;
+											stringStream >> surrogateHi;
+											surrogateStr = "";
+											
+											if (surrogateHi >= 0xD800 && surrogateHi <= 0xDBFF ){
+												
+												criticalLogSD("surrogateStr was Higher surrogate");
+												criticalLogSD("next sign is : " + str[i+8]);
+												if(isxdigit(str[i+8])){
+													criticalLogSD("5 found hex sign");
+													criticalLogSD("next sign is : " + str[i+9]);
+													surrogateStr += str[i+8];
+													if(isxdigit(str[i+9])){
+														criticalLogSD("6 found hex sign");
+														criticalLogSD("next sign is : " + str[i+10]);
+														surrogateStr += str[i+9];
+														if(isxdigit(str[i+10])){
+															criticalLogSD("7 found hex sign");
+															criticalLogSD("next sign is : " + str[i+11]);
+															surrogateStr += str[i+10];
+															if(isxdigit(str[i+11])){
+																criticalLogSD("8 found hex sign");
+																surrogateStr += str[i+11];
+																criticalLogSD("surrogateStr : " + surrogateStr);
+																
+																
+																stringStream.str(std::string());
+																stringStream.clear();
+																stringStream << std::hex << surrogateStr;
+																stringStream >> surrogateLo;
+																surrogateStr = "";
+																if (surrogateLo >= 0xDC00 && surrogateLo <= 0xDFFF ){
+																	criticalLogSD("surrogateStr was Lower surrogate");
+																	//std::codecvt_utf16<char32_t, 0x10ffffUL, std::codecvt_mode::little_endian> cvt;
+																	//mbstate_t state;
+																	//char16_t pair[] = { higherSurrogate, lowerSurrogate };
+																	//const char16_t *next;
+                                                                    //
+																	//char32_t u[2];
+																	//char32_t *unext;
+                                                                    //
+																	//cvt.in(state, (const char *)pair, (const char *)(pair + 2),(const char *&)next, u, u + 1, unext);
+																	
+																	// hi - 0xD800
+																	// lo - 0xDC00
+																	// unicodepoint => (number which first 10 bits are = hi bits and last 10 bits are lo ) + 0x010000
+																	//std::bitset<32> myBit(0);
+																	//int myCP = 0;
+																	
+																	int XTRM = ((surrogateHi - 0xD800) << 10);
+																	XTRM += (surrogateLo-0xDC00);
+																	XTRM += 0x010000;
+																	
+																	criticalLogSD("totally found an emoji! : ");
+																	criticalLogSD("Position : " + std::to_string(i));
+																	criticalLogSD("message id : " + m->id);
+																	criticalLogSD(std::to_string(XTRM));
+																	
+																	m->emojis.push_back(message_emoji());
+																	m->emojis[emojiCount].codepoint = XTRM;
+																	m->emojis[emojiCount].x = i;
+																	emojiCount++;
+																	i+=6;
+																	surrogateHi = 0;
+																	surrogateLo = 0;
+																	
+																}
+														
+															}
+														
+														}
+													
+													}
+													
+												}
+												
+											}
+											
+										}
+									}
+								}
+							}
+						}
+					}
+					
+				}
+			}
+		}else{
+			i = str.length();// no more to get here :P
+		}
+		surrogateStr = "";
+	}
+	
+	
+	*/
+	
+	
+	/*for(int i = 0; i < str.length() ; i++){
+		
+		
+		criticalLogSD("char at i = " + std::to_string(i) + " : " + str[i] + " (int) : " + std::to_string((int)str[i]));
+		
+		
+		//std::wstring messageWString;
+		//std::string messageString;
+		//strConv(messageString , messageWString);
+		//
+		//wchar_t widecstr = messageWString.c_str();
+		
+		
+	}*/
+	
+}
+
 void Discord::getChannelMessages(int channelIndex){
 	currentChannel = channelIndex;
 	std::string channelMessagesUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id + "/messages";
@@ -118,7 +348,8 @@ void Discord::getChannelMessages(int channelIndex){
 						//std::strcpy (content, str.c_str());
 						//char * contentUtf8 = new char [str.length()+1];
 						//utf16_to_utf8((uint16_t *)content , (uint8_t *) contentUtf8);
-						guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
+						parseMessageContentEmoji(&guilds[currentGuild].channels[currentChannel].messages[i] , j_complete[i]["content"].get<std::string>() );
+						//guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
 					}else{
 						guilds[currentGuild].channels[currentChannel].messages[i].content = "";
 					}

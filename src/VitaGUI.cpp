@@ -81,6 +81,16 @@ VitaGUI::VitaGUI(){
 	loginTexts.push_back(" ");
 	loginTexts.push_back(" ");
 	
+	emojis.push_back(emoji_icon());
+	emojis[0].name = "frenchfries";
+	emojis[0].id = 0x1f35f;
+	emojis[0].icon = vita2d_load_PNG_file("app0:assets/emoji/emoji_1f35f.png");
+	
+	emojis.push_back(emoji_icon());
+	emojis[1].name = "hamburger";
+	emojis[1].id = 0x1f354;
+	emojis[1].icon = vita2d_load_PNG_file("app0:assets/emoji/emoji_1f354.png");
+	
 }
 VitaGUI::~VitaGUI(){
 	vita2d_fini();
@@ -115,7 +125,7 @@ void VitaGUI::Draw(){
 		vita2d_draw_texture_rotate(loadingImage, 416 , 208, loadingImageAngle);
 		//vita2d_pgf_draw_text(pgf, 150, 300, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
 		vita2d_font_draw_text(vita2dFont , 150, 300, RGBA8(255,255,255,255), 20, loadingString.c_str());
-		loadingImageAngle += 0.4f;
+		loadingImageAngle += 0.08f;
 		
 	}else if(state == 2){
 		setGuildBoxes();
@@ -164,6 +174,20 @@ void VitaGUI::Draw(){
 				//vita2d_font_draw_text(vita2dFont , messageScrollX + 160, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), MESSAGE_CONTENT_TEXT_SIZE_PIXEL, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
 				vita2d_font_draw_text(vita2dFont , messageScrollX + 150, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), MESSAGE_AUTHOR_TEXT_SIZE_PIXEL, messageBoxes[i].username.c_str());
 				vita2d_font_draw_text(vita2dFont , messageScrollX + 160, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), MESSAGE_CONTENT_TEXT_SIZE_PIXEL, messageBoxes[i].content.c_str());
+			}
+			for(int emo = 0; emo < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis.size() ; emo++){
+				
+				for(int xFail = 0 ; xFail < emojis.size() ; xFail++){
+					//criticalLogSD(" draw searching for emoji!");
+					if(emojis[xFail].id == discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis[emo].codepoint){
+						//criticalLogSD("drwa emoji matches code!");
+						if(emojis[xFail].icon != NULL){
+							//criticalLogSD("draw emoji not empty!");
+							vita2d_draw_texture(emojis[xFail].icon , messageScrollX + 160 + MESSAGE_CONTENT_TEXT_SIZE_PIXEL * discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis[emo].x , messageScrollY + i * 128 + 96);
+						}
+					}
+				}
+				
 			}
 		}
 		

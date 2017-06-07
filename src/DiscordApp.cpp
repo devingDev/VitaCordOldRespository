@@ -124,13 +124,17 @@ void DiscordApp::Start(){
 		if(vitaState == 0){
 			switch(clicked){
 				case 0:
-					discord.setEmail(vitaIME.getUserText("Discord Email" , discord.getEmail().c_str() ));
-					vitaGUI.loginTexts[clicked] = discord.getEmail();
+					std::string newemail = vitaIME.getUserText("Discord Email" , discord.getEmail().c_str() );
+					sceKernelDelayThread(10000);
+					discord.setEmail(newemail);
+					vitaGUI.loginTexts[0] = newemail;
 					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
 				case 1:
-					discord.setPassword(vitaIME.getUserText("Discord Password" ));
-					vitaGUI.loginTexts[clicked] = "********";
+					std::string newpassword = vitaIME.getUserText("Discord Password" );
+					sceKernelDelayThread(10000);
+					discord.setPassword(newpassword);
+					vitaGUI.loginTexts[1] = "********";
 					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 					break;
 					

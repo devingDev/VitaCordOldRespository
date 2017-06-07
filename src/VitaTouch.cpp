@@ -36,7 +36,7 @@ void VitaTouch::readTouch(){
 	}else if(touch_old[SCE_TOUCH_PORT_FRONT].reportNum >= 1 && touch[SCE_TOUCH_PORT_FRONT].reportNum >= 1){
 		scrollDirX = (touch[SCE_TOUCH_PORT_FRONT].report[0].x - touch_old[SCE_TOUCH_PORT_FRONT].report[0].x)/2;
 		scrollDirY = (touch[SCE_TOUCH_PORT_FRONT].report[0].y - touch_old[SCE_TOUCH_PORT_FRONT].report[0].y)/2;
-		if(abs(scrollDirX) > 10 || abs(scrollDirY) > 10){
+		if(abs(scrollDirX) > MIN_DIST_TO_SCROLL_X || abs(scrollDirY) > MIN_DIST_TO_SCROLL_Y){
 			lastClickPoint = emptyClickPoint;
 			scrolling = true;
 			clicking = false;
