@@ -3,6 +3,8 @@
 #include <istream>
 #include <sstream>
 #include <iterator>
+#include <algorithm>   // for reverse
+#include <psp2/io/dirent.h> 
 
 
 static int max(int a , int b){
@@ -100,17 +102,20 @@ VitaGUI::VitaGUI(){
 	
 	
 	// L8R
-	emojis.push_back(emoji_icon());
-	emojis[0].name = "frenchfries";
-	emojis[0].id = 0x1f35f;
-	emojis[0].icon = vita2d_load_PNG_file("app0:assets/emoji/emoji_1f35f.png");
 	
-	emojis.push_back(emoji_icon());
-	emojis[1].name = "hamburger";
-	emojis[1].id = 0x1f354;
-	emojis[1].icon = vita2d_load_PNG_file("app0:assets/emoji/emoji_1f354.png");
+	
+	
+	loadEmojiFiles();
+	
+	
 	
 }
+void VitaGUI::loadEmojiFiles(){
+	// EMOJI LOADER:
+	emojis.clear();
+	emojis.push_back(emoji_icon());
+}
+
 VitaGUI::~VitaGUI(){
 	vita2d_fini();
 	vita2d_free_texture(backgroundImage);
@@ -275,7 +280,7 @@ void VitaGUI::Draw(){
 		   int currentHeights = 0;
 		//for(int i =  messageBoxes.size() ; i >= 0  ; i--){
 		for(int i =  0 ; i < messageBoxesAmount ; i++){
-			yPos = messageScrollY + (i * 64);
+			yPos = messageScrollY + 40;
 			if(yPos < MAX_DRAW_HEIGHT && yPos > MIN_DRAW_HEIGHT){
 				height = messageBoxes[i].messageHeight;
 				vita2d_draw_rectangle(240, yPos + height, 710, 2, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
@@ -290,19 +295,17 @@ void VitaGUI::Draw(){
 				//vita2d_font_draw_text(vita2dFont[30] , messageScrollX + 160, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), MESSAGE_CONTENT_TEXT_SIZE_PIXEL, messageBoxes[i].content.c_str());
 			}
 			for(int emo = 0; emo < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis.size() ; emo++){
-				
-				for(int xFail = 0 ; xFail < emojis.size() ; xFail++){
-					//criticalLogSD(" draw searching for emoji!");
-					if(emojis[xFail].id == discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis[emo].codepoint){
-						//criticalLogSD("drwa emoji matches code!");
-						if(emojis[xFail].icon != NULL){
-							//criticalLogSD("draw emoji not empty!");
-							vita2d_draw_texture(emojis[xFail].icon , messageScrollX + 160 + MESSAGE_CONTENT_TEXT_SIZE_PIXEL * discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis[emo].x , messageScrollY + i * 128 + 96);
-						}
+				int in = discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis[emo].index ;
+				if(emojis[in].icon != NULL){
+					if(emojis[in].id == discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis[emo].codepoint){
+						
+						vita2d_draw_texture(emojis[in].icon , messageScrollX + 160 + MESSAGE_CONTENT_TEXT_SIZE_PIXEL * discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].emojis[emo].x , messageScrollY + i * 128 + 96);
+						
 					}
 				}
-				
 			}
+			
+			yPos += height; // add message height to yPos
 		}
 		
 		// TOP sidepanel to hide guilds underneath
@@ -464,9 +467,14 @@ int VitaGUI::click(int x , int y){
 			}
 		}
 	}else if(state == 4){
+		
+		
 		if(x > DMICONX && x < DMICONX2 && y > DMICONY && y < DMICONY2){
 			return CLICKED_DM_ICON;
 		}
+		
+		
+		
 		
 		for(int i = 0 ; i < channelBoxes.size() ; i++){
 			if( x  > channelBoxes[i].x && x  < channelBoxes[i].x + channelBoxes[i].w){
@@ -579,8 +587,10 @@ void VitaGUI::setMessageBoxes(){
 	int bottomMargin = 8;
 	int textHeight = 0;
 	int allHeight = 0;
-	if(!discordPtr->refreshingMessages){
+	if(!discordPtr->refreshingMessages && discordPtr->refreshedMessages){
+		discordPtr->refreshedMessages = false;
 		messageBoxes.clear();
+		std::reverse(discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.begin() , discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.end());
 		for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size() ; i++){
 			messagebox boxC;
 			boxC.x = messageScrollX + 230;
@@ -589,7 +599,7 @@ void VitaGUI::setMessageBoxes(){
 			boxC.h = 64;
 			boxC.username = discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username;
 			boxC.content = "";
-			boxC.lineCount = wordWrap( discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content , boxC.w , boxC.content);
+			boxC.lineCount = wordWrap( discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content , 655 , boxC.content);
 			textHeight = boxC.lineCount * vita2d_font_text_height(vita2dFont[15], 15, "H");
 			boxC.messageHeight = max(64, textHeight + topMargin + bottomMargin);
 			allHeight += boxC.messageHeight;

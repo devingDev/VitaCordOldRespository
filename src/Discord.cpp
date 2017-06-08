@@ -59,6 +59,7 @@ bool Discord::refreshMessages(){
 		refreshingMessages = true;
 		getChannelMessages(currentChannel);
 		lastFetchTimeMS = osGetTimeMS();
+		refreshedMessages = true;
 		refreshingMessages = false;
 		
 	}
@@ -142,12 +143,27 @@ void Discord::parseMessageContentEmoji(message *m , std::string str){
 	
 	// TODO : removeunicode escapes and only keep content + whitesapce
 	m->content = str;
+	
+	std::wstring_convert<std::codecvt_utf8<char32_t>,char32_t> convert;
+	std::u32string utf32String = convert.from_bytes(str);;
+	m->contentUTF32 = utf32String;
+	
+	for(int i = 0; i < utf32String.length() ; i++){
+		
+		//for(int emo = 0; emo < emoList.size() ; emo++){
+		//	
+		//	
+		//}
+		
+		
+	}
+	
 
-	bool hiFound = false;
-	bool loFound = false;
-	std::string surrogateStr = "";
-	int surrogateHi = 0;
-	int surrogateLo = 0;
+	//bool hiFound = false;
+	//bool loFound = false;
+	//std::string surrogateStr = "";
+	//int surrogateHi = 0;
+	//int surrogateLo = 0;
 	m->emojis.clear();
 	
 	
@@ -348,8 +364,8 @@ void Discord::getChannelMessages(int channelIndex){
 						//std::strcpy (content, str.c_str());
 						//char * contentUtf8 = new char [str.length()+1];
 						//utf16_to_utf8((uint16_t *)content , (uint8_t *) contentUtf8);
-						//parseMessageContentEmoji(&guilds[currentGuild].channels[currentChannel].messages[i] , j_complete[i]["content"].get<std::string>() );
-						guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
+						parseMessageContentEmoji(&guilds[currentGuild].channels[currentChannel].messages[i] , j_complete[i]["content"].get<std::string>() );
+						//guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
 					}else{
 						guilds[currentGuild].channels[currentChannel].messages[i].content = "";
 					}
