@@ -99,6 +99,7 @@ VitaGUI::VitaGUI(){
 	loginTexts.clear();
 	loginTexts.push_back(" ");
 	loginTexts.push_back(" ");
+	loginTexts.push_back(" ");
 	
 	
 	// L8R
@@ -142,7 +143,8 @@ void VitaGUI::Draw(){
 		setChannelBoxes();
 		setMessageBoxes();
 	}
-
+	
+	
 	vita2d_start_drawing();
 	vita2d_clear_screen();
 
@@ -154,6 +156,7 @@ void VitaGUI::Draw(){
 		//vita2d_pgf_draw_text(pgf, 420, 250, RGBA8(255,255,255,255), 2.0f, loginTexts[1].c_str());
 		vita2d_font_draw_text(vita2dFont[18] , 438, 181, RGBA8(255,255,255,255), 18, loginTexts[0].c_str());
 		vita2d_font_draw_text(vita2dFont[18] , 438, 261, RGBA8(255,255,255,255), 18, loginTexts[1].c_str());
+		vita2d_font_draw_text(vita2dFont[18] , 815, 261, RGBA8(255,0,0,255), 18, loginTexts[2].c_str());
 		
 	}else if(state == 1){
 		vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(114, 137, 217, 255));
@@ -394,14 +397,14 @@ int VitaGUI::scroll(int x , int y , int posx , int posy){
 		if(posx < 230 && posx > 0 && posy < 522 && posy > 22){
 			guildScrollX = 0;
 			guildScrollY += y;
-
+			if(guildScrollY < guildScrollYMin)
+				guildScrollY = guildScrollYMin;
+			else if(guildScrollY > guildScrollYMax )
+				guildScrollY = guildScrollYMax;
 			
 		}
 		
-		if(guildScrollY < guildScrollYMin)
-			guildScrollY = guildScrollYMin;
-		else if(guildScrollY > guildScrollYMax )
-			guildScrollY = guildScrollYMax;
+
 		
 		return 0;
 	}else if(state == 3){
@@ -409,43 +412,51 @@ int VitaGUI::scroll(int x , int y , int posx , int posy){
 			channelScrollX = 0;
 			channelScrollY += y;
 
+			
+			if(channelScrollY < channelScrollYMin)
+				channelScrollY = channelScrollYMin;
+			else if(channelScrollY > channelScrollYMax )
+				channelScrollY = channelScrollYMax;
 		}
 		
-		if(channelScrollY < channelScrollYMin)
-			channelScrollY = channelScrollYMin;
-		else if(channelScrollY > channelScrollYMax )
-			channelScrollY = channelScrollYMax;
+
 		
 		return 0;
 	}else if(state==4){
 		if(posx < 230 && posx > 0 && posy < 522 && posy > 22){
 			channelScrollX = 0;
 			channelScrollY += y;
+			
+			
+			if(channelScrollY < channelScrollYMin)
+				channelScrollY = channelScrollYMin;
+			else if(channelScrollY > channelScrollYMax )
+				channelScrollY = channelScrollYMax;
+			
+
 
 		}else if (posx > 230){
 			messageScrollX = 0;
 			messageScrollY += y;
 
+			
+			if(messageScrollY < messageScrollYMin)
+				messageScrollY = messageScrollYMin;
+			else if(messageScrollY > messageScrollYMax )
+				messageScrollY = messageScrollYMax;
 		}
 		
-		if(channelScrollY < channelScrollYMin)
-			channelScrollY = channelScrollYMin;
-		else if(channelScrollY > channelScrollYMax )
-			channelScrollY = channelScrollYMax;
-		if(messageScrollY < messageScrollYMin)
-			messageScrollY = messageScrollYMin;
-		else if(messageScrollY > messageScrollYMax )
-			messageScrollY = messageScrollYMax;
+
 		return 0;
 	}else if(state==6){
 		directMessageScrollX = 0;
 		directMessageScrollY += y;
 		
-		
 		if(directMessageScrollY < directMessageScrollYMin)
 			directMessageScrollY = directMessageScrollYMin;
 		else if(directMessageScrollY > directMessageScrollYMax )
 			directMessageScrollY = directMessageScrollYMax;
+
 		return 0;
 	}else if(state==7){
 		directMessageMessagesScrollX = 0;
@@ -456,10 +467,14 @@ int VitaGUI::scroll(int x , int y , int posx , int posy){
 			directMessageMessagesScrollY = directMessageMessagesScrollYMin;
 		else if(directMessageMessagesScrollY > directMessageMessagesScrollYMax )
 			directMessageMessagesScrollY = directMessageMessagesScrollYMax;
+		
 		return 0;
 	}
 	return -1;
 }
+
+
+
 
 int VitaGUI::click(int x , int y){
 	if(state == 0){
@@ -595,7 +610,7 @@ void VitaGUI::setGuildBoxes(){
 		boxG.h = GUILD_HEIGHT;
 		guildBoxes.push_back(boxG);
 	}
-	guildScrollYMin = -((discordPtr->guilds.size()-1)*GUILD_HEIGHT);
+	guildScrollYMin = -((discordPtr->guilds.size()-1)*GUILD_HEIGHT - 300);
 }
 void VitaGUI::setChannelBoxes(){
 	channelBoxes.clear();
@@ -607,18 +622,17 @@ void VitaGUI::setChannelBoxes(){
 		boxC.h = CHANNEL_HEIGHT;
 		channelBoxes.push_back(boxC);
 	}
-	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels.size()-1)*128);
+	channelScrollYMin = -((discordPtr->guilds[discordPtr->currentGuild].channels.size()-1)*128 - 300);
 }
-void VitaGUI::setMessageBoxes(){
+bool VitaGUI::setMessageBoxes(){
 		
-	int topMargin = 12;
-	int bottomMargin = 8;
+	int topMargin = 45;
+	int bottomMargin = 18;
 	int textHeight = 0;
 	int allHeight = 0;
 	if(!discordPtr->refreshingMessages && discordPtr->refreshedMessages){
 		discordPtr->refreshedMessages = false;
 		messageBoxes.clear();
-		//std::reverse(discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.begin() , discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.end());
 		for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size() ; i++){
 			messagebox boxC;
 			boxC.x = messageScrollX + 230;
@@ -634,34 +648,54 @@ void VitaGUI::setMessageBoxes(){
 			messageBoxes.push_back(boxC);
 		}
 		messageScrollYMin =  -( (messageBoxes.size() - 1) * 64 - 352 ); //-( allHeight )
+		return true;
 	}
+	return false;
 }
 
-int VitaGUI::wordWrap(std::string stringToWrap ,  int availableWidth , std::string &out ){
+int VitaGUI::wordWrap(std::string str, int width, std::string &out) {
+   
+    int curWidth = width;
+    int lineCount = 1;
+    while (curWidth < str.length()) {
+        std::string::size_type spacePos = str.rfind(' ', curWidth);
+        if (spacePos == std::string::npos)
+            spacePos = str.find(' ', curWidth);
+        if (spacePos != std::string::npos) {
+            str[spacePos] = '\n';
+            lineCount++;
+            curWidth = spacePos + width + 1;
+            }
+        }
+    out = str.substr(0, str.size());
+    return lineCount;
+
+
+//(std::string stringToWrap ,  int availableWidth , std::string &out ){
 	
-	int wordWidth = 0;
-	int lineBreaks = 0;
-	
-	out="";
-	std::istringstream iss{stringToWrap};
-	// Read tokens from stream into vector (split at whitespace).
-	std::vector<std::string> words{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
-	
-	int spaceLeft = availableWidth;
-	for(int i = 0 ; i < words.size() ; i++){
-		wordWidth = vita2d_font_text_width(vita2dFontNormal, MESSAGE_CONTENT_TEXT_SIZE_PIXEL, words[i].c_str());
-		if(wordWidth + 1  > spaceLeft){
-			words[i] = '\n' + words[i];
-			lineBreaks++;
-			spaceLeft = availableWidth - wordWidth;
-		}else{
-			spaceLeft = spaceLeft - ( wordWidth + 1 );
-		}
-		out += words[i];
-	}
-	
-	
-	return lineBreaks;
+	//int wordWidth = 0;
+	//int lineBreaks = 0;
+	//
+	//out="";
+	//std::istringstream iss{stringToWrap};
+	//// Read tokens from stream into vector (split at whitespace).
+	//std::vector<std::string> words{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
+	//
+	//int spaceLeft = availableWidth;
+	//for(int i = 0 ; i < words.size() ; i++){
+	//	wordWidth = vita2d_font_text_width(vita2dFontNormal, MESSAGE_CONTENT_TEXT_SIZE_PIXEL, words[i].c_str());
+	//	if(wordWidth + 1  > spaceLeft){
+	//		words[i] = '\n' + words[i];
+	//		lineBreaks++;
+	//		spaceLeft = availableWidth - wordWidth;
+	//	}else{
+	//		spaceLeft = spaceLeft - ( wordWidth + 1 );
+	//	}
+	//	out += words[i];
+	//}
+	//
+	//
+	//return lineBreaks;
 	
 }
 
