@@ -173,9 +173,9 @@ void VitaGUI::Draw(){
 	}else if(state == 1){
 		vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(114, 137, 217, 255));
 		//vita2d_draw_texture_rotate(loginFormImage, 128 , 64, loadingImageAngle);
-		vita2d_draw_texture_rotate(loadingImage, 416 , 208, loadingImageAngle);
+		vita2d_draw_texture_rotate(loadingImage, 480 , 247, loadingImageAngle);
 		//vita2d_pgf_draw_text(pgf, 150, 300, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
-		vita2d_font_draw_text(vita2dFont[20] , 150, 300, RGBA8(255,255,255,255), 20, loadingString.c_str());
+		vita2d_font_draw_text(vita2dFont[20] , 320, 355, RGBA8(255,255,255,255), 20, loadingString.c_str());
 		loadingImageAngle += 0.08f;
 		
 	}else if(state == 2){
