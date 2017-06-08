@@ -11,6 +11,7 @@
 #include <wchar.h>
 #include <stdlib.h>
 #include <algorithm>   // for reverse
+#include <debugnet.h>
 
 #include <cctype>
 #include "json.hpp"
@@ -30,24 +31,25 @@ Discord::~Discord(){
 		//?
 }
 bool Discord::sendDirectMessage(std::string msg){
+	debugNetPrintf(DEBUG , "Sending DM\n" );
 	std::string postData = "{ \"content\":\"" + msg + "\" }";
 	std::string sendDMMessageUrl = "https://discordapp.com/api/v6/channels/" 
 							+ directMessages[currentDirectMessage].id + "/messages" ;
 	VitaNet::http_response senddmmessageresponse = vitaNet.curlDiscordPost(sendDMMessageUrl , postData , token);
 	if(senddmmessageresponse.httpcode == 200){
-		
+		debugNetPrintf(DEBUG , "DM SENT!\n" );
 		
 	}
 	
 }
 
 bool Discord::sendMessage(std::string msg){
-	
+	debugNetPrintf(DEBUG , "Sending message\n" );
 	std::string postData = "{ \"content\":\"" + msg + "\" }";
 	std::string sendMessageUrl = "https://discordapp.com/api/channels/" + guilds[currentGuild].channels[currentChannel].id + "/messages" ;
 	VitaNet::http_response sendmessageresponse = vitaNet.curlDiscordPost(sendMessageUrl , postData , token);
 	if(sendmessageresponse.httpcode == 200){
-		
+		debugNetPrintf(DEBUG , "Message SENT!\n" );
 		
 	}
 	return true;
@@ -57,11 +59,14 @@ bool Discord::refreshMessages(){
 	
 	currentTimeMS = osGetTimeMS();
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS || forceRefreshMessages){
+		debugNetPrintf(DEBUG , "get new messages\n" );
+		
 		refreshingMessages = true;
 		getChannelMessages(currentChannel);
 		lastFetchTimeMS = osGetTimeMS();
 		refreshedMessages = true;
 		refreshingMessages = false;
+		forceRefreshMessages = false;
 		
 	}
 	return true;
@@ -417,9 +422,14 @@ void Discord::JoinChannel(int cIndex){
 	forceRefreshMessages = true;
 	refreshMessages();
 	forceRefreshMessages = false;
-	pthread_t loadMessagesThread;
-	logSD("pthread_create( loadDataThread , NULL , wrapper , 0)");
-	pthread_create(&loadMessagesThread, NULL, &Discord::refreshMessages_wrapper, this);
+	
+	if(!pthreadStarted){
+		debugNetPrintf(DEBUG , "Startint pthread refresh Messages\n");
+		pthread_t loadMessagesThread;
+		pthreadStarted = true;
+		logSD("pthread_create( loadDataThread , NULL , wrapper , 0)");
+		pthread_create(&loadMessagesThread, NULL, &Discord::refreshMessages_wrapper, this);
+	}
 	//getChannelMessages(currentChannel);
 }
 void Discord::LeaveChannel(){
@@ -734,7 +744,7 @@ void * Discord::thread_refreshMessages(void *arg){
 		sceKernelDelayThread(1000000);
 	
 	}
-	
+	pthreadStarted = false;
 	pthread_exit(NULL);
 }
 

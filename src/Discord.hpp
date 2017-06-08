@@ -139,6 +139,9 @@ class Discord{
 		void *thread_loadData(void *arg);
 		void *thread_refreshMessages(void *arg);
 		
+		
+		bool pthreadStarted;
+		
 		std::stringstream stringStream;
 		
 		void parseMessageContentEmoji(message *m, std::string str);

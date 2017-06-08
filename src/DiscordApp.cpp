@@ -357,6 +357,7 @@ void DiscordApp::LeaveDMChannel(){
 
 void DiscordApp::JoinChannel(int index){
 
+	discord.LeaveChannel();
 	discord.JoinChannel(index);
 	vitaGUI.SetState(4);
 	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
