@@ -147,7 +147,7 @@ void Discord::parseMessageContentEmoji(message *m , std::string str){
 	
 	std::wstring_convert<std::codecvt_utf8<char32_t>,char32_t> convert;
 	std::u32string utf32String = convert.from_bytes(str);;
-	m->contentUTF32 = utf32String;
+	//m->contentUTF32 = utf32String;
 	
 	for(int i = 0; i < utf32String.length() ; i++){
 		
@@ -349,13 +349,13 @@ void Discord::getChannelMessages(int channelIndex){
 					if(!j_complete[i]["timestamp"].is_null()){
 						guilds[currentGuild].channels[currentChannel].messages[i].timestamp = j_complete[i]["timestamp"].get<std::string>();
 					}else{
-						guilds[currentGuild].channels[currentChannel].messages[i].timestamp = "";
+						guilds[currentGuild].channels[currentChannel].messages[i].timestamp = "0";
 					}
 					
 					if(!j_complete[i]["id"].is_null()){
 						guilds[currentGuild].channels[currentChannel].messages[i].id = j_complete[i]["id"].get<std::string>();
 					}else{
-						guilds[currentGuild].channels[currentChannel].messages[i].id = "";
+						guilds[currentGuild].channels[currentChannel].messages[i].id = "0";
 					}
 					
 					if(!j_complete[i]["content"].is_null()){
@@ -374,25 +374,25 @@ void Discord::getChannelMessages(int channelIndex){
 					if(!j_complete[i]["author"]["username"].is_null()){
 						guilds[currentGuild].channels[currentChannel].messages[i].author.username = j_complete[i]["author"]["username"].get<std::string>();
 					}else{
-						guilds[currentGuild].channels[currentChannel].messages[i].author.username = "";
+						guilds[currentGuild].channels[currentChannel].messages[i].author.username = "N/A";
 					}
 					
 					if(!j_complete[i]["author"]["discriminator"].is_null()){
 						guilds[currentGuild].channels[currentChannel].messages[i].author.discriminator = j_complete[i]["author"]["discriminator"].get<std::string>();
 					}else{
-						guilds[currentGuild].channels[currentChannel].messages[i].author.discriminator = "";
+						guilds[currentGuild].channels[currentChannel].messages[i].author.discriminator = "N/A";
 					}
 					
 					if(!j_complete[i]["author"]["id"].is_null()){
 						guilds[currentGuild].channels[currentChannel].messages[i].author.id = j_complete[i]["author"]["id"].get<std::string>();
 					}else{
-						guilds[currentGuild].channels[currentChannel].messages[i].author.id = "";
+						guilds[currentGuild].channels[currentChannel].messages[i].author.id = "0";
 					}
 					
 					if(!j_complete[i]["author"]["avatar"].is_null()){
 						guilds[currentGuild].channels[currentChannel].messages[i].author.avatar = j_complete[i]["author"]["avatar"].get<std::string>();
 					}else{
-						guilds[currentGuild].channels[currentChannel].messages[i].author.avatar = "";
+						guilds[currentGuild].channels[currentChannel].messages[i].author.avatar = "0";
 					}
 
 				}

@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 
-#define MAX_DRAW_HEIGHT 800
+#define MAX_DRAW_HEIGHT 550
 #define MIN_DRAW_HEIGHT -800
 
 #define MAX_FONT_SIZE 32

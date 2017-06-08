@@ -131,6 +131,16 @@ void VitaGUI::updateBoxes(){
 }
 
 void VitaGUI::Draw(){
+	
+	
+	if(state == 2){
+		setGuildBoxes();
+	} else if(state == 3){
+		setChannelBoxes();
+	}else if(state == 4){
+		setChannelBoxes();
+		setMessageBoxes();
+	}
 
 	vita2d_start_drawing();
 	vita2d_clear_screen();
@@ -153,10 +163,9 @@ void VitaGUI::Draw(){
 		loadingImageAngle += 0.08f;
 		
 	}else if(state == 2){
-		setGuildBoxes();
+		
 		vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(54, 57, 62, 255)); // Background
 
-		
 		
 		
 		
@@ -170,7 +179,7 @@ void VitaGUI::Draw(){
 				//vita2d_draw_texture( guildsBGImage , guildScrollX + 230 , guildScrollY + i * 128);
 				//vita2d_draw_rectangle(guildScrollX + 4, 100 + guildScrollY + i * GUILD_HEIGHT, 222 , GUILD_HEIGHT, RGBA8(48, 50, 55, 255));
 				//vita2d_pgf_draw_text(pgf, guildScrollX + 256, guildScrollY + i * 128 + 96, RGBA8(255,255,255,255), 3.0f, discordPtr->guilds[i].name.c_str());
-				vita2d_font_draw_text(vita2dFont[18] , guildScrollX + 8, 100 + guildScrollY + i * GUILD_HEIGHT + GUILD_HEIGHT, RGBA8(255,255,255,255), GUILD_TITLE_TEXT_SIZE_PIXEL, discordPtr->guilds[i].name.c_str());
+				vita2d_font_draw_text(vita2dFont[18] , guildScrollX + 8, 100 + guildScrollY + i * GUILD_HEIGHT + 40, RGBA8(255,255,255,255), GUILD_TITLE_TEXT_SIZE_PIXEL, discordPtr->guilds[i].name.c_str());
 			}
 		}
 		
@@ -195,8 +204,7 @@ void VitaGUI::Draw(){
 		vita2d_draw_texture(statbarIconImage, 10, 7); // statbarIconImage = Vitacord-statbar-icon.png
 		
 	}else if(state == 3){
-		logSD("call setChannelBoxes");
-		setChannelBoxes();
+		
 		vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(54, 57, 62, 255)); // Background
 		
 		
@@ -215,7 +223,7 @@ void VitaGUI::Draw(){
 				logSD("Channelname:");
 				logSD(discordPtr->guilds[discordPtr->currentGuild].channels[i].name);
 				std::string channelName = discordPtr->guilds[discordPtr->currentGuild].channels[i].name;
-				vita2d_font_draw_text(vita2dFont[18] , channelScrollX + 8, 100 + channelScrollY + i * CHANNEL_HEIGHT + CHANNEL_HEIGHT, RGBA8(255,255,255,255), CHANNEL_TITLE_TEXT_SIZE_PIXEL, channelName.c_str());
+				vita2d_font_draw_text(vita2dFont[18] , channelScrollX + 8, 100 + channelScrollY + i * CHANNEL_HEIGHT + 40, RGBA8(255,255,255,255), CHANNEL_TITLE_TEXT_SIZE_PIXEL, channelName.c_str());
 				//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
 				//logSD("topic:");
 				//logSD(discordPtr->guilds[discordPtr->currentGuild].channels[i].topic);
@@ -245,7 +253,6 @@ void VitaGUI::Draw(){
 		vita2d_draw_texture(statbarIconImage, 10, 7); // statbarIconImage = Vitacord-statbar-icon.png
 		
 	}else if(state == 4){
-		setMessageBoxes();
 		vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(54, 57, 62, 255)); // Background
 		
 		
@@ -265,7 +272,7 @@ void VitaGUI::Draw(){
 				logSD("Channelname:");
 				logSD(discordPtr->guilds[discordPtr->currentGuild].channels[i].name);
 				std::string channelName = discordPtr->guilds[discordPtr->currentGuild].channels[i].name;
-				vita2d_font_draw_text(vita2dFont[18] , channelScrollX + 8, 100 + channelScrollY + i * CHANNEL_HEIGHT + CHANNEL_HEIGHT, RGBA8(255,255,255,255), CHANNEL_TITLE_TEXT_SIZE_PIXEL, channelName.c_str());
+				vita2d_font_draw_text(vita2dFont[18] , channelScrollX + 8, 100 + channelScrollY + i * CHANNEL_HEIGHT + 40, RGBA8(255,255,255,255), CHANNEL_TITLE_TEXT_SIZE_PIXEL, channelName.c_str());
 				//vita2d_pgf_draw_text(pgf, channelScrollX + 256, channelScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[i].topic.c_str());
 				//logSD("topic:");
 				//logSD(discordPtr->guilds[discordPtr->currentGuild].channels[i].topic);
