@@ -3,7 +3,8 @@
 #include <istream>
 #include <sstream>
 #include <iterator>
-#include <psp2/io/dirent.h> 
+#include <psp2/io/dirent.h>
+#include <debugnet.h>
 
 
 static int max(int a , int b){
