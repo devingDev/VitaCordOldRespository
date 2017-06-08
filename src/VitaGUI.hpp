@@ -84,6 +84,7 @@ class VitaGUI{
 		//vita2d_font *vita2dFontOpenSansEmoji;
 		//vita2d_pgf *pgf;
 		vita2d_texture *backgroundImage;
+		
 		vita2d_texture *loginFormImage;
 		vita2d_texture *loadingImage;
 		vita2d_texture *guildsBGImage;
@@ -109,29 +110,29 @@ class VitaGUI{
 		
 		int guildScrollX = 0;
 		int guildScrollY = 0;
-		int guildScrollYMin = -1280;
+		int guildScrollYMin = -5000;
 		int guildScrollYMax = 0;
 		
 		int channelScrollX = 0;
 		int channelScrollY = 0;
-		int channelScrollYMin = -1280;
+		int channelScrollYMin = -5000;
 		int channelScrollYMax = 0;
 		
 		int messageScrollX = 0;
 		int messageScrollY = 0;
-		int messageScrollYMin = -1280;
+		int messageScrollYMin = -5000;
 		int messageScrollYMax = 0;
 		
 		
 		int directMessageScrollX = 0;
 		int directMessageScrollY = 0;
-		int directMessageScrollYMin = -1280;
+		int directMessageScrollYMin = -5000;
 		int directMessageScrollYMax = 0;
 		
 		
 		int directMessageMessagesScrollX = 0;
 		int directMessageMessagesScrollY = 0;
-		int directMessageMessagesScrollYMin = -1280;
+		int directMessageMessagesScrollYMin = -5000;
 		int directMessageMessagesScrollYMax = 0;
 		
 		float loadingImageAngle = 0;
