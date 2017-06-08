@@ -67,6 +67,18 @@ class VitaGUI{
 		
 		std::vector<emoji_icon> emojis;
 		
+		
+		
+		void DrawLoginScreen();
+		void DrawGuildsOnSidebar();
+		void DrawChannelsOnSidebar();
+		void DrawMessages();
+		void DrawDirectMessageUsersOnSidebar();
+		
+		void unshowLoginCue();
+		void showLoginCue();
+		
+		
 		void setUserInfo();
 	
 	private:

@@ -116,6 +116,7 @@ class Discord{
 		user client;
 		std::string email = "", password = "", code2fa , token , ticket , username , id , avatar , discriminator , phone;
 		bool refreshedMessages;
+		bool inChannel;
 	
 	
 	private:
@@ -124,7 +125,6 @@ class Discord{
 		bool twoFactorAuthEnabled;
 		bool loggedin;
 		bool loadedGuilds ;
-		bool inChannel;
 		bool loadedChannels;
 		bool loadedDMs;
 		long fetchUserData();
