@@ -74,6 +74,7 @@ class VitaGUI{
 		void DrawChannelsOnSidebar();
 		void DrawMessages();
 		void DrawDirectMessageUsersOnSidebar();
+		void DrawDirectMessageMessages();
 		
 		void unshowLoginCue();
 		void showLoginCue();
@@ -116,36 +117,36 @@ class VitaGUI{
 		std::vector<box> channelBoxes;
 		std::vector<messagebox> messageBoxes;
 		std::vector<box> directMessageBoxes;
-		std::vector<box> directMessageMessagesBoxes;
+		std::vector<messagebox> directMessageMessagesBoxes;
 		
 		void loadEmojiFiles();
 		
 		int guildScrollX = 0;
 		int guildScrollY = 0;
 		int guildScrollYMin = -1280;
-		int guildScrollYMax = 0;
+		int guildScrollYMax = 15;
 		
 		int channelScrollX = 0;
 		int channelScrollY = 0;
 		int channelScrollYMin = -1280;
-		int channelScrollYMax = 0;
+		int channelScrollYMax = 15;
 		
 		int messageScrollX = 0;
 		int messageScrollY = 0;
 		int messageScrollYMin = -1280;
-		int messageScrollYMax = 0;
+		int messageScrollYMax = 15;
 		
 		
 		int directMessageScrollX = 0;
 		int directMessageScrollY = 0;
 		int directMessageScrollYMin = -1280;
-		int directMessageScrollYMax = 0;
+		int directMessageScrollYMax = 15;
 		
 		
 		int directMessageMessagesScrollX = 0;
 		int directMessageMessagesScrollY = 0;
 		int directMessageMessagesScrollYMin = -1280;
-		int directMessageMessagesScrollYMax = 0;
+		int directMessageMessagesScrollYMax = 15;
 		
 		float loadingImageAngle = 0;
 		
