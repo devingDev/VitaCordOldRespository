@@ -51,7 +51,7 @@ class VitaGUI{
 		void passDiscordPointer(Discord *ptr);
 		void setGuildBoxes();
 		void setChannelBoxes();
-		void setMessageBoxes();
+		bool setMessageBoxes();
 		void setDirectMessageBoxes();
 		void setDirectMessageMessagesBoxes();
 		void updateBoxes();
@@ -110,38 +110,39 @@ class VitaGUI{
 		
 		int guildScrollX = 0;
 		int guildScrollY = 0;
-		int guildScrollYMin = -5000;
+		int guildScrollYMin = -1280;
 		int guildScrollYMax = 0;
 		
 		int channelScrollX = 0;
 		int channelScrollY = 0;
-		int channelScrollYMin = -5000;
+		int channelScrollYMin = -1280;
 		int channelScrollYMax = 0;
 		
 		int messageScrollX = 0;
 		int messageScrollY = 0;
-		int messageScrollYMin = -5000;
+		int messageScrollYMin = -1280;
 		int messageScrollYMax = 0;
 		
 		
 		int directMessageScrollX = 0;
 		int directMessageScrollY = 0;
-		int directMessageScrollYMin = -5000;
+		int directMessageScrollYMin = -1280;
 		int directMessageScrollYMax = 0;
 		
 		
 		int directMessageMessagesScrollX = 0;
 		int directMessageMessagesScrollY = 0;
-		int directMessageMessagesScrollYMin = -5000;
+		int directMessageMessagesScrollYMin = -1280;
 		int directMessageMessagesScrollYMax = 0;
 		
 		float loadingImageAngle = 0;
 		
 		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 dmchannellobby , 15 settings , 85818764 stuff..
 	
-		int wordWrap(std::string wrapthiss, int abwidth , std::string &output);  // return value is amount of linebreaks
+		int wordWrap(std::string str, int width, std::string &out);  // return value is amount of linebreaks
 		
 		std::string panelUsername , panelUserDiscriminator;
+		
 	
 	
 };
