@@ -185,7 +185,7 @@ void DiscordApp::Start(){
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}else if(vitaPad.circle){
 				discord.LeaveChannel();
-				vitaGUI.SetState(3);
+				vitaGUI.SetState(2);
 				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}else{
 				
@@ -267,6 +267,8 @@ void DiscordApp::Start(){
 }
 
 void DiscordApp::doLogin(){
+	
+	vitaGUI.showLoginCue();
 	int loginR = discord.login();
 	if(loginR  == 200){
 		logSD("Login Success");
@@ -284,9 +286,14 @@ void DiscordApp::doLogin(){
 			logSD("Loaded data");
 			vitaGUI.SetState(1);
 			logSD("Set state");
+		}else{
+			vitaGUI.loginTexts[2] = "Wrong 2FA code ?";
 		}
+	}else{
+		vitaGUI.loginTexts[2] = "Wrong password ?";
 	}
 	
+	vitaGUI.unshowLoginCue();
 	vitaGUI.setUserInfo();
 	
 	sceKernelDelayThread(SLEEP_CLICK_EXTENDED);
@@ -297,7 +304,7 @@ void DiscordApp::doLogin(){
 
 
 void DiscordApp::getUserEmailInput(){
-	
+	vitaGUI.loginTexts[2] = "";
 	
 	std::string newemail = vitaIME.getUserText("Discord Email" , discord.getEmail().c_str() );
 	discord.setEmail(newemail);
@@ -306,6 +313,7 @@ void DiscordApp::getUserEmailInput(){
 }
 
 void DiscordApp::getUserPasswordInput(){
+	vitaGUI.loginTexts[2] = "";
 	
 	std::string newpassword = vitaIME.getUserText("Discord Password" , "");
 	discord.setPassword(newpassword);
