@@ -103,6 +103,7 @@ class Discord{
 		void JoinChannel(int cIndex);
 		void LeaveChannel();
 		void JoinDirectMessageChannel(int dIndex);
+		void LeaveDirectMessageChannel();
 		int currentGuild = 0;
 		int currentChannel = 0;
 		int currentDirectMessage = 0;
@@ -117,6 +118,8 @@ class Discord{
 		std::string email = "", password = "", code2fa , token , ticket , username , id , avatar , discriminator , phone;
 		bool refreshedMessages;
 		bool inChannel;
+		bool inDirectMessageChannel;
+		bool loadingDirectMessages ;
 	
 	
 	private:

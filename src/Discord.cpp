@@ -738,9 +738,18 @@ void * Discord::thread_refreshMessages(void *arg){
 	pthread_exit(NULL);
 }
 
+void Discord::LeaveDirectMessageChannel(){
+	currentDirectMessage = 0;
+	inDirectMessageChannel = false;
+	
+	
+}
 void Discord::JoinDirectMessageChannel(int dIndex){
 	currentDirectMessage = dIndex;
+	inDirectMessageChannel = true;
+	loadingDirectMessages = true;
 	getCurrentDirectMessages();
+	loadingDirectMessages = false;
 	
 	
 }
@@ -910,6 +919,10 @@ void Discord::getCurrentDirectMessages(){
 		}catch(const std::exception& e){
 			
 		}
+		
+		
+		std::reverse( directMessages[currentDirectMessage].messages.begin() , directMessages[currentDirectMessage].messages.end() );
+		
 	}
 	lastFetchTimeMS = osGetTimeMS();
 }
