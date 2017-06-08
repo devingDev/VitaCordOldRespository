@@ -5,6 +5,7 @@
 #include <vector>
 #include <atomic>
 #include <sstream>
+#include <pthread.h>
 
 #include "VitaNet.hpp"
 
@@ -139,7 +140,7 @@ class Discord{
 		void *thread_loadData(void *arg);
 		void *thread_refreshMessages(void *arg);
 		
-		
+		pthread_t loadMessagesThread;
 		bool pthreadStarted;
 		
 		std::stringstream stringStream;

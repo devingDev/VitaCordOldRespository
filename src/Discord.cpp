@@ -57,6 +57,7 @@ bool Discord::sendMessage(std::string msg){
 
 bool Discord::refreshMessages(){
 	
+	debugNetPrintf(DEBUG , "checking time to refresh messages\n" );
 	currentTimeMS = osGetTimeMS();
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS || forceRefreshMessages){
 		debugNetPrintf(DEBUG , "get new messages\n" );
@@ -425,10 +426,21 @@ void Discord::JoinChannel(int cIndex){
 	
 	if(!pthreadStarted){
 		debugNetPrintf(DEBUG , "Startint pthread refresh Messages\n");
-		pthread_t loadMessagesThread;
+		
 		pthreadStarted = true;
 		logSD("pthread_create( loadDataThread , NULL , wrapper , 0)");
-		pthread_create(&loadMessagesThread, NULL, &Discord::refreshMessages_wrapper, this);
+		debugNetPrintf(DEBUG , "pthread_create coming\n");
+		if( int errP = pthread_create(&loadMessagesThread, NULL, &Discord::refreshMessages_wrapper, this) != 0){
+			debugNetPrintf(DEBUG , "PTHREAD_CREATE ERROR : %d\n" , errP);
+			debugNetPrintf(DEBUG , "PTHREAD_CREATE ERROR : %d\n" , errP);
+			debugNetPrintf(DEBUG , "PTHREAD_CREATE ERROR : %d\n" , errP);
+			pthreadStarted = false;
+			
+		}else{
+			
+			debugNetPrintf(DEBUG , "successfully started pthread\n");
+			
+		}
 	}
 	//getChannelMessages(currentChannel);
 }

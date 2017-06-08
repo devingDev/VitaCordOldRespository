@@ -109,7 +109,6 @@ void DiscordApp::Start(){
 		logSD("vitatouch read");
 		vitaTouch.readTouch();
 		
-		debugNetPrintf(DEBUG , "VitaPad Left Analog X : %d  , Y : %d \n" , vitaPad.lx , vitaPad.ly);
 		
 		if(vitaTouch.clicking){
 			logSD("clicking check");
