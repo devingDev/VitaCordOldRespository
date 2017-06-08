@@ -399,7 +399,7 @@ void Discord::getChannelMessages(int channelIndex){
 			}
 			
 			
-			//std::reverse(guilds[currentGuild].channels[currentChannel].messages.begin() , guilds[currentGuild].channels[currentChannel].messages.end());
+			std::reverse(guilds[currentGuild].channels[currentChannel].messages.begin() , guilds[currentGuild].channels[currentChannel].messages.end());
 			
 		}
 	
