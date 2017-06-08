@@ -918,7 +918,7 @@ void Discord::getCurrentDirectMessages(){
 			}
 		}catch(const std::exception& e){
 			
-		}
+		} 
 		
 		
 		std::reverse( directMessages[currentDirectMessage].messages.begin() , directMessages[currentDirectMessage].messages.end() );

@@ -146,7 +146,7 @@ class VitaGUI{
 		int directMessageMessagesScrollX = 0;
 		int directMessageMessagesScrollY = 0;
 		int directMessageMessagesScrollYMin = -1280;
-		int directMessageMessagesScrollYMax = 15;
+		int directMessageMessagesScrollYMax = 15 ;
 		
 		float loadingImageAngle = 0;
 		

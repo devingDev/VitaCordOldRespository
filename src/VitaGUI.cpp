@@ -134,27 +134,37 @@ void VitaGUI::updateBoxes(){
 
 void VitaGUI::Draw(){
 	
+	debugNetPrintf(DEBUG, "Draw()\n");
 	
 	if(state == 2){
+		
+		debugNetPrintf(DEBUG, "Call SetGuildBoxes()\n");
 		setGuildBoxes();
 	} else if(state == 3){
+		debugNetPrintf(DEBUG, "Call SetChannelBoxes()\n");
 		setChannelBoxes();
 	}else if(state == 4){
+		debugNetPrintf(DEBUG, "Call SetChannel+MessageBoxes()\n");
 		setChannelBoxes();
 		setMessageBoxes();
 	}else if(state == 6){
 		
+		debugNetPrintf(DEBUG, "Call SetDMBoxes()\n");
 		setDirectMessageBoxes();
 	}else if(state == 7){
+		
+		debugNetPrintf(DEBUG, "Call SetDM+MsgBoxes()\n");
 		setDirectMessageBoxes();
 		setDirectMessageMessagesBoxes();
 	}
 		
+		debugNetPrintf(DEBUG, "All boxes set!\n");
 	
 	
 	vita2d_start_drawing();
 	vita2d_clear_screen();
-
+	
+	debugNetPrintf(DEBUG, "Check states\n");
 	
 	if(state == 0){
 		
@@ -349,11 +359,14 @@ void VitaGUI::Draw(){
 	}
 
 	
+	debugNetPrintf(DEBUG, "End of check states\n");
+	
 	vita2d_end_drawing();
 	vita2d_swap_buffers();
 }
 
 int VitaGUI::scroll(int x , int y , int posx , int posy){
+	debugNetPrintf(DEBUG, "Scroll GUI\n");
 	if(state == 2){
 		if(posx < 230 && posx > 0 && posy < 522 && posy > 22){
 			guildScrollX = 0;
@@ -452,6 +465,7 @@ int VitaGUI::scroll(int x , int y , int posx , int posy){
 
 
 int VitaGUI::click(int x , int y){
+	debugNetPrintf(DEBUG, "Click GUI\n");
 	if(state == 0){
 		for(int i = 0 ; i < loginInputs.size() ; i++){
 			if( x > loginInputs[i].x && x < loginInputs[i].x + loginInputs[i].w){
@@ -559,6 +573,7 @@ int VitaGUI::GetState(){
 void VitaGUI::SetState(int s){
 	lastState = state;
 	state = s;
+	debugNetPrintf(DEBUG, "SetState : %d\n" , state);
 	
 	if(state == 4){
 		setMessageBoxes();
@@ -635,7 +650,7 @@ bool VitaGUI::setMessageBoxes(){
 			
 			messageBoxes.push_back(boxC);
 		}
-		messageScrollYMin =  -( (messageBoxes.size() - 1) * 64 - 352 ); //-( allHeight )
+		messageScrollYMin =  -( allHeight - 352 ); //-( allHeight )
 		return true;
 	}
 	return false;
@@ -735,7 +750,7 @@ void VitaGUI::setDirectMessageMessagesBoxes(){
 			
 			directMessageMessagesBoxes.push_back(boxC);
 		}
-		directMessageMessagesScrollYMin =  -( (directMessageMessagesBoxes.size() - 1) * 64 - 352 ); //-( allHeight )
+		directMessageMessagesScrollYMin =  -( allHeight - 352 ); //-( allHeight )
 
 	//}
 	
@@ -752,6 +767,7 @@ void VitaGUI::setUserInfo(){
 
 
 void VitaGUI::showLoginCue(){
+	debugNetPrintf(DEBUG, "Show login cue\n");
 	vita2d_start_drawing();
 	vita2d_clear_screen();
 	
@@ -761,9 +777,11 @@ void VitaGUI::showLoginCue(){
 	
 	vita2d_end_drawing();
 	vita2d_swap_buffers();
+	debugNetPrintf(DEBUG, "Finish show login cue\n");
 }
 
 void VitaGUI::unshowLoginCue(){
+	debugNetPrintf(DEBUG, "unshwo login cue\n");
 	vita2d_start_drawing();
 	vita2d_clear_screen();
 	
@@ -772,6 +790,7 @@ void VitaGUI::unshowLoginCue(){
 	vita2d_end_drawing();
 	vita2d_swap_buffers();
 	
+	debugNetPrintf(DEBUG, "finish unshow login cue\n");
 }
 
 void VitaGUI::DrawLoginScreen(){
@@ -880,6 +899,7 @@ void VitaGUI::DrawMessages(){
 void VitaGUI::DrawDirectMessageUsersOnSidebar(){
 	
 	
+	debugNetPrintf(DEBUG, "DrawDirectMessageUsers\n");
 	
 	for(int i = 0 ; i < directMessageBoxes.size() ; i++){
 		if(directMessageScrollY + i * CHANNEL_HEIGHT < MAX_DRAW_HEIGHT && directMessageScrollY + i * CHANNEL_HEIGHT > MIN_DRAW_HEIGHT){

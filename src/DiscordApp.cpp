@@ -1,6 +1,8 @@
 #include "DiscordApp.hpp"
 #include "log.hpp"
 #include "easyencryptor.hpp"
+
+#include <debugnet.h>
 #include <psp2/io/fcntl.h>
 
 
@@ -107,6 +109,7 @@ void DiscordApp::Start(){
 		logSD("vitatouch read");
 		vitaTouch.readTouch();
 		
+		debugNetPrintf(DEBUG , "VitaPad Left Analog X : %d  , Y : %d \n" , vitaPad.lx , vitaPad.ly);
 		
 		if(vitaTouch.clicking){
 			logSD("clicking check");
@@ -254,7 +257,7 @@ void DiscordApp::Start(){
 				case CLICKED_DM_ICON:
 					discord.LeaveDirectMessageChannel();
 					vitaGUI.SetState(2);
-					break;
+					break; 
 					
 				default:
 					discord.LeaveDirectMessageChannel();
