@@ -279,8 +279,9 @@ void VitaGUI::Draw(){
 		   int messageBoxesAmount = messageBoxes.size();
 		   int currentHeights = 0;
 		//for(int i =  messageBoxes.size() ; i >= 0  ; i--){
+		yPos = messageScrollY + 40;
 		for(int i =  0 ; i < messageBoxesAmount ; i++){
-			yPos = messageScrollY + 40;
+			
 			if(yPos < MAX_DRAW_HEIGHT && yPos > MIN_DRAW_HEIGHT){
 				height = messageBoxes[i].messageHeight;
 				vita2d_draw_rectangle(240, yPos + height, 710, 2, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
@@ -590,7 +591,7 @@ void VitaGUI::setMessageBoxes(){
 	if(!discordPtr->refreshingMessages && discordPtr->refreshedMessages){
 		discordPtr->refreshedMessages = false;
 		messageBoxes.clear();
-		std::reverse(discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.begin() , discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.end());
+		//std::reverse(discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.begin() , discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.end());
 		for(int i = 0; i < discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages.size() ; i++){
 			messagebox boxC;
 			boxC.x = messageScrollX + 230;
