@@ -394,43 +394,54 @@ int VitaGUI::scroll(int x , int y , int posx , int posy){
 		if(posx < 230 && posx > 0 && posy < 522 && posy > 22){
 			guildScrollX = 0;
 			guildScrollY += y;
-			if(guildScrollY < guildScrollYMin)
-				guildScrollY = guildScrollYMin;
-			else if(guildScrollY > guildScrollYMax )
-				guildScrollY = guildScrollYMax;
+
 			
 		}
+		
+		if(guildScrollY < guildScrollYMin)
+			guildScrollY = guildScrollYMin;
+		else if(guildScrollY > guildScrollYMax )
+			guildScrollY = guildScrollYMax;
+		
 		return 0;
 	}else if(state == 3){
 		if(posx < 230 && posx > 0 && posy < 522 && posy > 22){
 			channelScrollX = 0;
 			channelScrollY += y;
-			if(channelScrollY < channelScrollYMin)
-				channelScrollY = channelScrollYMin;
-			else if(channelScrollY > channelScrollYMax )
-				channelScrollY = channelScrollYMax;
+
 		}
+		
+		if(channelScrollY < channelScrollYMin)
+			channelScrollY = channelScrollYMin;
+		else if(channelScrollY > channelScrollYMax )
+			channelScrollY = channelScrollYMax;
+		
 		return 0;
 	}else if(state==4){
 		if(posx < 230 && posx > 0 && posy < 522 && posy > 22){
 			channelScrollX = 0;
 			channelScrollY += y;
-			if(channelScrollY < channelScrollYMin)
-				channelScrollY = channelScrollYMin;
-			else if(channelScrollY > channelScrollYMax )
-				channelScrollY = channelScrollYMax;
+
 		}else if (posx > 230){
 			messageScrollX = 0;
 			messageScrollY += y;
-			if(messageScrollY < messageScrollYMin)
-				messageScrollY = messageScrollYMin;
-			else if(messageScrollY > messageScrollYMax )
-				messageScrollY = messageScrollYMax;
+
 		}
+		
+		if(channelScrollY < channelScrollYMin)
+			channelScrollY = channelScrollYMin;
+		else if(channelScrollY > channelScrollYMax )
+			channelScrollY = channelScrollYMax;
+		if(messageScrollY < messageScrollYMin)
+			messageScrollY = messageScrollYMin;
+		else if(messageScrollY > messageScrollYMax )
+			messageScrollY = messageScrollYMax;
 		return 0;
 	}else if(state==6){
 		directMessageScrollX = 0;
 		directMessageScrollY += y;
+		
+		
 		if(directMessageScrollY < directMessageScrollYMin)
 			directMessageScrollY = directMessageScrollYMin;
 		else if(directMessageScrollY > directMessageScrollYMax )
@@ -439,6 +450,8 @@ int VitaGUI::scroll(int x , int y , int posx , int posy){
 	}else if(state==7){
 		directMessageMessagesScrollX = 0;
 		directMessageMessagesScrollY += y;
+		
+		
 		if(directMessageMessagesScrollY < directMessageMessagesScrollYMin)
 			directMessageMessagesScrollY = directMessageMessagesScrollYMin;
 		else if(directMessageMessagesScrollY > directMessageMessagesScrollYMax )
@@ -622,7 +635,7 @@ void VitaGUI::setMessageBoxes(){
 			allHeight += boxC.messageHeight;
 			messageBoxes.push_back(boxC);
 		}
-		messageScrollYMin =  -( (messageBoxes.size() - 1) * 64); //-( allHeight )
+		messageScrollYMin =  -( (messageBoxes.size() - 1) * 64 - 352 ); //-( allHeight )
 	}
 }
 
