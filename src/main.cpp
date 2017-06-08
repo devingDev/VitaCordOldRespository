@@ -2,6 +2,22 @@
 
 #include "DiscordApp.hpp"
 #include <pthread.h>
+#include <debugnet.h>
+
+
+
+#define DEBUGNET_IP "10.0.0.110"
+#define DEBUGNET_PORT 12131
+/* debug types
+NONE 0
+INFO 1
+ERROR 2
+DEBUG 3
+debugNetPrintf(ERROR, "Test error level %d\n", ret);
+*/
+
+
+
 
 extern "C"
 {
@@ -26,6 +42,7 @@ void pthread_setup(void)
     __sinit(_REENT);
 }
 int main(){
+	debugNetInit(DEBUGNET_IP, DEBUGNET_PORT, DEBUG);
 	
 	DiscordApp discordapp;
 	discordapp.Start();
