@@ -10,6 +10,7 @@
 #include <iconv.h>
 #include <wchar.h>
 #include <stdlib.h>
+#include <algorithm>   // for reverse
 
 #include <cctype>
 #include "json.hpp"
@@ -364,8 +365,8 @@ void Discord::getChannelMessages(int channelIndex){
 						//std::strcpy (content, str.c_str());
 						//char * contentUtf8 = new char [str.length()+1];
 						//utf16_to_utf8((uint16_t *)content , (uint8_t *) contentUtf8);
-						parseMessageContentEmoji(&guilds[currentGuild].channels[currentChannel].messages[i] , j_complete[i]["content"].get<std::string>() );
-						//guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
+						//parseMessageContentEmoji(&guilds[currentGuild].channels[currentChannel].messages[i] , j_complete[i]["content"].get<std::string>() );
+						guilds[currentGuild].channels[currentChannel].messages[i].content = j_complete[i]["content"].get<std::string>();
 					}else{
 						guilds[currentGuild].channels[currentChannel].messages[i].content = "";
 					}
@@ -396,6 +397,10 @@ void Discord::getChannelMessages(int channelIndex){
 
 				}
 			}
+			
+			
+			//std::reverse(guilds[currentGuild].channels[currentChannel].messages.begin() , guilds[currentGuild].channels[currentChannel].messages.end());
+			
 		}
 	
 		lastFetchTimeMS = osGetTimeMS();
