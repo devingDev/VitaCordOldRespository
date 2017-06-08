@@ -75,12 +75,11 @@ vita_create_self(${SHORT_NAME}.self ${SHORT_NAME}.elf)
 vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
-  #FILE assets/font/symbola.ttf assets/font/symbola.ttf
-  #FILE assets/font/symbolahint.ttf assets/font/symbolahint.ttf
-  #FILE assets/font/lastresort.ttf assets/font/lastresort.ttf
-  #FILE assets/font/opensansemoji.ttf assets/font/opensansemoji.ttf
-  #FILE assets/font/seguiemj.pgf assets/font/seguiemj.pgf
-  #FILE assets/font/seguiemj.ttf assets/font/seguiemj.ttf
+  FILE sce_sys/icon0.png sce_sys/icon0.png
+  FILE sce_sys/pic0.png sce_sys/pic0.png
+  FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
+  FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
+  FILE sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
   FILE assets/font/droidsans.ttf assets/font/droidsans.ttf
   FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
   FILE assets/images/Vitacord-DMIcon-8BIT.png assets/images/Vitacord-DMIcon-8BIT.png
@@ -90,10 +89,39 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE assets/images/Vitacord-messager-input.png assets/images/Vitacord-messager-input.png
   FILE assets/images/Vitacord-sidebar-default-usericon.png assets/images/Vitacord-sidebar-default-usericon.png
   FILE assets/images/Vitacord-statbar-icon.png assets/images/Vitacord-statbar-icon.png
-  FILE sce_sys/icon0.png sce_sys/icon0.png
-  FILE sce_sys/pic0.png sce_sys/pic0.png
-  FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
-  FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
-  FILE sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
+  FILE assets/images/loading/thumb001.png assets/images/loading/thumb001.png
+  FILE assets/images/loading/thumb002.png assets/images/loading/thumb002.png
+  FILE assets/images/loading/thumb003.png assets/images/loading/thumb003.png
+  FILE assets/images/loading/thumb004.png assets/images/loading/thumb004.png
+  FILE assets/images/loading/thumb005.png assets/images/loading/thumb005.png
+  FILE assets/images/loading/thumb006.png assets/images/loading/thumb006.png
+  FILE assets/images/loading/thumb007.png assets/images/loading/thumb007.png
+  FILE assets/images/loading/thumb008.png assets/images/loading/thumb008.png
+  FILE assets/images/loading/thumb009.png assets/images/loading/thumb009.png
+  FILE assets/images/loading/thumb010.png assets/images/loading/thumb010.png
+  FILE assets/images/loading/thumb011.png assets/images/loading/thumb011.png
+  FILE assets/images/loading/thumb012.png assets/images/loading/thumb012.png
+  FILE assets/images/loading/thumb013.png assets/images/loading/thumb013.png
+  FILE assets/images/loading/thumb014.png assets/images/loading/thumb014.png
+  FILE assets/images/loading/thumb015.png assets/images/loading/thumb015.png
+  FILE assets/images/loading/thumb016.png assets/images/loading/thumb016.png
+  FILE assets/images/loading/thumb017.png assets/images/loading/thumb017.png
+  FILE assets/images/loading/thumb018.png assets/images/loading/thumb018.png
+  FILE assets/images/loading/thumb019.png assets/images/loading/thumb019.png
+  FILE assets/images/loading/thumb020.png assets/images/loading/thumb020.png
+  FILE assets/images/loading/thumb021.png assets/images/loading/thumb021.png
+  FILE assets/images/loading/thumb022.png assets/images/loading/thumb022.png
+  FILE assets/images/loading/thumb023.png assets/images/loading/thumb023.png
+  FILE assets/images/loading/thumb024.png assets/images/loading/thumb024.png
+  FILE assets/images/loading/thumb025.png assets/images/loading/thumb025.png
+  FILE assets/images/loading/thumb026.png assets/images/loading/thumb026.png
+  FILE assets/images/loading/thumb027.png assets/images/loading/thumb027.png
+  FILE assets/images/loading/thumb028.png assets/images/loading/thumb028.png
+  FILE assets/images/loading/thumb029.png assets/images/loading/thumb029.png
+  FILE assets/images/loading/thumb030.png assets/images/loading/thumb030.png
+  FILE assets/images/loading/thumb031.png assets/images/loading/thumb031.png
+  FILE assets/images/loading/thumb032.png assets/images/loading/thumb032.png
+  FILE assets/images/loading/thumb033.png assets/images/loading/thumb033.png
+  FILE assets/images/loading/thumb034.png assets/images/loading/thumb034.png
 )
 

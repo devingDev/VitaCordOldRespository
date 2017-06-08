@@ -174,22 +174,17 @@ void DiscordApp::Start(){
 					vitaGUI.SetState(6);
 					break;
 				default:
-					discord.JoinChannel(clicked);
-					vitaGUI.SetState(4);
-					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					JoinChannel(clicked);
 					break;
 				
 			}
 			
 		}else if(vitaState == 4){
 			if(vitaPad.cross){
-				std::string userMessage = vitaIME.getUserText("Message");
-				discord.sendMessage(userMessage);
-				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+				SendChannelMessage();
 			}else if(vitaPad.circle){
 				discord.LeaveChannel();
 				vitaGUI.SetState(2);
-				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 			}else{
 				
 			}
@@ -202,10 +197,12 @@ void DiscordApp::Start(){
 					vitaGUI.SetState(6);
 					break;
 					
+				case CLICKED_MESSAGE_INPUT:
+					SendChannelMessage();
+					break;
+				
 				default:
-					discord.JoinChannel(clicked);
-					vitaGUI.SetState(4);
-					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					JoinChannel(clicked);
 					break;
 				
 			}
@@ -215,23 +212,18 @@ void DiscordApp::Start(){
 			
 			
 			if(vitaPad.circle){
-				discord.LeaveDirectMessageChannel();
-				vitaGUI.SetState(2);
-				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+				LeaveDMChannel();
 			}
 			
 			switch(clicked){
 				case -1:
 					break;
 				case CLICKED_DM_ICON:
-					discord.LeaveDirectMessageChannel();
-					vitaGUI.SetState(2);
+					LeaveDMChannel();
 					break;
 					
 				default:
-					discord.JoinDirectMessageChannel(clicked);
-					vitaGUI.SetState(7);
-					sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+					JoinDMChannel(clicked);
 					break;
 				
 			}
@@ -241,28 +233,25 @@ void DiscordApp::Start(){
 			
 			
 			if(vitaPad.cross){
-				
-				std::string userMessage = vitaIME.getUserText("Message");
-				discord.sendDirectMessage(userMessage);
-				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+				SendDirectMessage();
 			}else if(vitaPad.circle){
-				discord.LeaveDirectMessageChannel();
-				vitaGUI.SetState(2);
-				sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+				LeaveDMChannel();
 			}
 			
 			switch(clicked){
 				case -1:
 					break;
+					
 				case CLICKED_DM_ICON:
-					discord.LeaveDirectMessageChannel();
-					vitaGUI.SetState(2);
+					LeaveDMChannel();
 					break; 
 					
+				case CLICKED_MESSAGE_INPUT:
+					SendDirectMessage();
+					break;
+					
 				default:
-					discord.LeaveDirectMessageChannel();
-					discord.JoinDirectMessageChannel(clicked);
-					vitaGUI.SetState(7);
+					JoinDMChannel(clicked);
 					break;
 				
 			}
@@ -280,6 +269,7 @@ void DiscordApp::Start(){
 void DiscordApp::doLogin(){
 	
 	vitaGUI.showLoginCue();
+	debugNetPrintf(DEBUG  , "(Check)Login with email : %s   and password : %s!\n" , discord.getPassword().c_str() , discord.getEmail().c_str());
 	int loginR = discord.login();
 	if(loginR  == 200){
 		logSD("Login Success");
@@ -327,13 +317,49 @@ void DiscordApp::getUserPasswordInput(){
 	vitaGUI.loginTexts[2] = "";
 	
 	std::string newpassword = vitaIME.getUserText("Discord Password" , "");
+	debugNetPrintf(DEBUG  , "New password is : %s\n" , newpassword.c_str());
 	discord.setPassword(newpassword);
+	debugNetPrintf(DEBUG  , "(Check)New password is : %s\n" , discord.getPassword().c_str());
 	vitaGUI.loginTexts[1] = "********";
 	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
 }
 
 
+void DiscordApp::SendChannelMessage(){
 
+	std::string userMessage = vitaIME.getUserText("Message");
+	discord.sendMessage(userMessage);
+	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+	
+}
 
+void DiscordApp::SendDirectMessage(){
+
+	std::string userMessage = vitaIME.getUserText("Message");
+	discord.sendDirectMessage(userMessage);
+	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+}
+
+void DiscordApp::JoinDMChannel(int index){
+	
+	discord.LeaveDirectMessageChannel();	
+	discord.JoinDirectMessageChannel(index);
+	vitaGUI.SetState(7);
+	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+}
+
+void DiscordApp::LeaveDMChannel(){
+	discord.LeaveDirectMessageChannel();
+	vitaGUI.SetState(2);
+	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+	
+}
+
+void DiscordApp::JoinChannel(int index){
+
+	discord.JoinChannel(index);
+	vitaGUI.SetState(4);
+	sceKernelDelayThread(SLEEP_CLICK_NORMAL);
+}
 
 

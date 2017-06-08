@@ -29,7 +29,10 @@
 #define DMICONY2 30+64
 
 
+#define FRAMES_LOADING_IMAGE 34
+
 #define CLICKED_DM_ICON 50000
+#define CLICKED_MESSAGE_INPUT 1221
 
 #define MAX_EMOJI 2500;
 
@@ -148,7 +151,19 @@ class VitaGUI{
 		int directMessageMessagesScrollYMin = -1280;
 		int directMessageMessagesScrollYMax = 15 ;
 		
+		
+		bool messageScrollSet = false;
+		bool directMessageMessagesScrollSet = false;
+		
+		
+		box inputboxMessageInput;
+		
+		
 		float loadingImageAngle = 0;
+		int framePassed = 0;
+		int loadingImageFrame = 0;
+		vita2d_texture * loadingAnim[FRAMES_LOADING_IMAGE];
+		
 		
 		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 dmchannellobby , 15 settings , 85818764 stuff..
 	

@@ -1026,7 +1026,7 @@ long Discord::login(std::string mail , std::string pass){
 	//std::string loginUrl = "http://jaynapps.com/psvita/httpdump.php";  // DBG
 	std::string loginUrl = "https://discordapp.com/api/auth/login";
 	std::string postData = "{ \"email\":\"" + email + "\" , \"password\":\"" + password + "\" }";
-	VitaNet::http_response loginresponse = vitaNet.curlDiscordPost(loginUrl , postData , token);
+	VitaNet::http_response loginresponse = vitaNet.curlDiscordPost(loginUrl , postData , "");
 	if(loginresponse.httpcode == 200){
 		// check if Two-Factor-Authentication is activated and needs further user action
 		nlohmann::json j_complete = nlohmann::json::parse(loginresponse.body);

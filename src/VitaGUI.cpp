@@ -102,7 +102,25 @@ VitaGUI::VitaGUI(){
 	loginTexts.push_back(" ");
 	
 	
+	inputboxMessageInput.x = 230;
+	inputboxMessageInput.y = 473;
+	inputboxMessageInput.w = 730;
+	inputboxMessageInput.h = 71;
+	
 	// L8R
+	
+	std::string filename = "app0:assets/images/loading/thumb0";
+	std::string completeName = "";
+	for(int fraL = 0 ; fraL < FRAMES_LOADING_IMAGE ; fraL++){
+		if(fraL < 9){
+			completeName = filename + "0"+ std::to_string(fraL+1) + ".png";
+			loadingAnim[fraL] = vita2d_load_PNG_file(completeName.c_str());
+		}else{
+			completeName = filename + std::to_string(fraL+1) + ".png";
+			loadingAnim[fraL] = vita2d_load_PNG_file(completeName.c_str());
+		}
+
+	}
 	
 	
 	
@@ -171,12 +189,38 @@ void VitaGUI::Draw(){
 		DrawLoginScreen();
 		
 	}else if(state == 1){
-		vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(114, 137, 217, 255));
-		//vita2d_draw_texture_rotate(loginFormImage, 128 , 64, loadingImageAngle);
-		vita2d_draw_texture_rotate(loadingImage, 480 , 247, loadingImageAngle);
-		//vita2d_pgf_draw_text(pgf, 150, 300, RGBA8(255,255,255,255), 2.0f, loadingString.c_str());
-		vita2d_font_draw_text(vita2dFont[20] , 320, 355, RGBA8(255,255,255,255), 20, loadingString.c_str());
-		loadingImageAngle += 0.08f;
+		// BG
+		
+		
+		
+
+		
+		framePassed++;
+		if(framePassed >= 2){
+			
+			loadingImageFrame++;
+			framePassed = 0;
+		}
+		
+		if(loadingImageFrame >= FRAMES_LOADING_IMAGE ){
+			loadingImageFrame = 0;
+		}else if(loadingImageFrame < 0){
+			loadingImageFrame = 0;
+		}
+		if(loadingAnim[loadingImageFrame] != NULL){
+			vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(39, 43, 47, 255));
+			// frame of anim
+			vita2d_draw_texture(loadingAnim[loadingImageFrame], 360 , 172);
+		
+		}else{
+			vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(95, 118, 198, 255));
+			vita2d_draw_texture_rotate(loadingImage, 480 , 247, loadingImageAngle);
+			loadingImageAngle += 0.25f;
+		}
+		// text
+		vita2d_font_draw_text(vita2dFont[25] , 300, 355, RGBA8(255,255,255,255), 25, loadingString.c_str());
+		
+
 		
 	}else if(state == 2){
 		
@@ -350,6 +394,10 @@ void VitaGUI::Draw(){
 		vita2d_draw_rectangle(0, 0, 960, 30, RGBA8(242, 101, 34, 163));
 		vita2d_draw_texture(statbarIconImage, 10, 7); // statbarIconImage = Vitacord-statbar-icon.png
 		
+		
+		// MESSAGEINPUT
+		vita2d_draw_texture(messageInputImage, 230, 473);
+		
 	}else if(state == 9){
 		vita2d_draw_rectangle(0, 0, 960, 544, RGBA8(114, 137, 217, 255));
 		int i = 0;
@@ -479,24 +527,28 @@ int VitaGUI::click(int x , int y){
 		if(x > DMICONX && x < DMICONX2 && y > DMICONY && y < DMICONY2){
 			return CLICKED_DM_ICON;
 		}
-		
-		for(int i = 0 ; i < guildBoxes.size() ; i++){
-			if( x  > guildBoxes[i].x && x  < guildBoxes[i].x + guildBoxes[i].w){
-				if( y > guildBoxes[i].y && y  < guildBoxes[i].y + guildBoxes[i].h){
-					return i;
+		if( y < 515  &&  y > 99){
+			for(int i = 0 ; i < guildBoxes.size() ; i++){
+				if( x  > guildBoxes[i].x && x  < guildBoxes[i].x + guildBoxes[i].w){
+					if( y > guildBoxes[i].y && y  < guildBoxes[i].y + guildBoxes[i].h){
+						return i;
+					}
 				}
 			}
 		}
+		
 	}else if(state == 3){
 		
 		if(x > DMICONX && x < DMICONX2 && y > DMICONY && y < DMICONY2){
 			return CLICKED_DM_ICON;
 		}
 		
-		for(int i = 0 ; i < channelBoxes.size() ; i++){
-			if( x  > channelBoxes[i].x && x  < channelBoxes[i].x + channelBoxes[i].w){
-				if( y  > channelBoxes[i].y && y  < channelBoxes[i].y + channelBoxes[i].h){
-					return i;
+		if( y < 515  &&  y > 99){
+			for(int i = 0 ; i < channelBoxes.size() ; i++){
+				if( x  > channelBoxes[i].x && x  < channelBoxes[i].x + channelBoxes[i].w){
+					if( y  > channelBoxes[i].y && y  < channelBoxes[i].y + channelBoxes[i].h){
+						return i;
+					}
 				}
 			}
 		}
@@ -509,41 +561,63 @@ int VitaGUI::click(int x , int y){
 		
 		
 		
-		
-		for(int i = 0 ; i < channelBoxes.size() ; i++){
-			if( x  > channelBoxes[i].x && x  < channelBoxes[i].x + channelBoxes[i].w){
-				if( y  > channelBoxes[i].y && y  < channelBoxes[i].y + channelBoxes[i].h){
-					return i;
+		if( y < 515  &&  y > 99){
+			for(int i = 0 ; i < channelBoxes.size() ; i++){
+				if( x  > channelBoxes[i].x && x  < channelBoxes[i].x + channelBoxes[i].w){
+					if( y  > channelBoxes[i].y && y  < channelBoxes[i].y + channelBoxes[i].h){
+						return i;
+					}
 				}
 			}
 		}
+		
+		if( x > inputboxMessageInput.x && y < inputboxMessageInput.x + inputboxMessageInput.w){
+			if( y > inputboxMessageInput.y && y < inputboxMessageInput.y + inputboxMessageInput.h){
+				return CLICKED_MESSAGE_INPUT;
+			}
+		}
+		
+		
 	}else if(state == 6){
 		
 		if(x > DMICONX && x < DMICONX2 && y > DMICONY && y < DMICONY2){
 			return CLICKED_DM_ICON;
 		}
 		
-		for(int i = 0 ; i < directMessageBoxes.size() ; i++){
-			if( x  > directMessageBoxes[i].x && x  < directMessageBoxes[i].x + directMessageBoxes[i].w){
-				if( y  > directMessageBoxes[i].y && y  < directMessageBoxes[i].y + directMessageBoxes[i].h){
-					return i;
+		if( y < 515  &&  y > 99){
+			for(int i = 0 ; i < directMessageBoxes.size() ; i++){
+				if( x  > directMessageBoxes[i].x && x  < directMessageBoxes[i].x + directMessageBoxes[i].w){
+					if( y  > directMessageBoxes[i].y && y  < directMessageBoxes[i].y + directMessageBoxes[i].h){
+						return i;
+					}
 				}
 			}
 		}
 	}else if(state == 7){
 		
+		debugNetPrintf(DEBUG, "state 7 check click %d  and %d \n"  , x , y);
+		
 		if(x > DMICONX && x < DMICONX2 && y > DMICONY && y < DMICONY2){
+			debugNetPrintf(DEBUG, "clicked dmicon\n");
 			return CLICKED_DM_ICON;
 		}
-		
-		for(int i = 0 ; i < directMessageBoxes.size() ; i++){
-			if( x  > directMessageBoxes[i].x && x  < directMessageBoxes[i].x + directMessageBoxes[i].w){
-				if( y  > directMessageBoxes[i].y && y  < directMessageBoxes[i].y + directMessageBoxes[i].h){
-					return i;
+		if( y < 515  &&  y > 99){
+			for(int i = 0 ; i < directMessageBoxes.size() ; i++){
+				if( x  > directMessageBoxes[i].x && x  < directMessageBoxes[i].x + directMessageBoxes[i].w){
+					if( y  > directMessageBoxes[i].y && y  < directMessageBoxes[i].y + directMessageBoxes[i].h){
+						debugNetPrintf(DEBUG, "clicked dmboxes\n");
+						return i;
+					}
 				}
 			}
 		}
 		
+		if( x > inputboxMessageInput.x && y < inputboxMessageInput.x + inputboxMessageInput.w){
+			if( y > inputboxMessageInput.y && y < inputboxMessageInput.y + inputboxMessageInput.h){
+				debugNetPrintf(DEBUG, "clicked mniput\n");
+				return CLICKED_MESSAGE_INPUT;
+			}
+		}
 		
 		// ? messages
 	}
@@ -576,11 +650,20 @@ void VitaGUI::SetState(int s){
 	debugNetPrintf(DEBUG, "SetState : %d\n" , state);
 	
 	if(state == 4){
-		setMessageBoxes();
 		messageScrollY = 0;
 		guildScrollY = 0;
 		directMessageMessagesScrollY = 0;
 		directMessageScrollY = 0;
+		setMessageBoxes();
+		messageScrollSet = false;
+	}else if(state == 7){
+		messageScrollY = 0;
+		guildScrollY = 0;
+		directMessageMessagesScrollY = 0;
+		directMessageScrollY = 0;
+		setDirectMessageMessagesBoxes();
+		directMessageMessagesScrollSet = false;
+		
 	}else{
 		messageScrollY = 0;
 		guildScrollY = 0;
@@ -651,6 +734,12 @@ bool VitaGUI::setMessageBoxes(){
 			messageBoxes.push_back(boxC);
 		}
 		messageScrollYMin =  -( allHeight - 352 ); //-( allHeight )
+		
+		if(!messageScrollSet){
+			messageScrollSet = true;
+			messageScrollY = messageScrollYMin;
+		}
+		
 		return true;
 	}
 	return false;
@@ -751,6 +840,13 @@ void VitaGUI::setDirectMessageMessagesBoxes(){
 			directMessageMessagesBoxes.push_back(boxC);
 		}
 		directMessageMessagesScrollYMin =  -( allHeight - 352 ); //-( allHeight )
+		
+		
+		if(!directMessageMessagesScrollSet){
+			directMessageMessagesScrollSet = true;
+			directMessageMessagesScrollY = directMessageMessagesScrollYMin;
+		}
+		
 
 	//}
 	

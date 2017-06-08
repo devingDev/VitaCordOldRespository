@@ -31,6 +31,14 @@ class DiscordApp{
 		void doLogin();
 		void getUserEmailInput();
 		void getUserPasswordInput();
+		
+		
+		
+		void SendChannelMessage();
+		void SendDirectMessage();
+		void JoinDMChannel(int index);
+		void LeaveDMChannel();
+		void JoinChannel(int index);
 	
 };
 
