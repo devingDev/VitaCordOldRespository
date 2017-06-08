@@ -26,7 +26,7 @@ class Discord{
 		typedef struct {
 			user author;
 			std::string content;
-			std::u32string contentUTF32;
+			//std::u32string contentUTF32;
 			std::string embed;
 			std::string attachment;
 			std::string mentions;
