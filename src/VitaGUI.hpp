@@ -31,6 +31,8 @@
 
 #define CLICKED_DM_ICON 50000
 
+#define MAX_EMOJI 2500;
+
 class VitaGUI{
 	public:
 		VitaGUI();
@@ -63,6 +65,7 @@ class VitaGUI{
 			vita2d_texture *icon;
 		} emoji_icon;
 		
+		std::vector<emoji_icon> emojis;
 		
 		void setUserInfo();
 	
@@ -102,7 +105,7 @@ class VitaGUI{
 		std::vector<box> directMessageBoxes;
 		std::vector<box> directMessageMessagesBoxes;
 		
-		std::vector<emoji_icon> emojis;
+		void loadEmojiFiles();
 		
 		int guildScrollX = 0;
 		int guildScrollY = 0;

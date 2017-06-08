@@ -79,17 +79,6 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   #FILE assets/font/opensansemoji.ttf assets/font/opensansemoji.ttf
   #FILE assets/font/seguiemj.pgf assets/font/seguiemj.pgf
   #FILE assets/font/seguiemj.ttf assets/font/seguiemj.ttf
-  FILE assets/font/droidsans.ttf assets/font/droidsans.ttf
-  FILE assets/emoji/emoji_1f354.png assets/emoji/emoji_1f354.png
-  FILE assets/emoji/emoji_1f35f.png assets/emoji/emoji_1f35f.png
-  FILE assets/images/Vitacord-statbar-icon.png assets/images/Vitacord-statbar-icon.png
-  FILE assets/images/Vitacord-sidebar-default-usericon.png assets/images/Vitacord-sidebar-default-usericon.png
-  FILE assets/images/Vitacord-messager-input.png assets/images/Vitacord-messager-input.png
-  FILE assets/images/Vitacord-DMIcon-8BIT.png assets/images/Vitacord-DMIcon-8BIT.png
-  FILE assets/images/Vitacord-Background-8BIT.png assets/images/Vitacord-Background-8BIT.png
-  FILE assets/images/Vitacord-LoginForm-8BIT.png assets/images/Vitacord-LoginForm-8BIT.png
-  FILE assets/images/Vitacord-Loading-8BIT.png assets/images/Vitacord-Loading-8BIT.png
-  FILE assets/images/Vitacord-GuildsBG-8BIT.png assets/images/Vitacord-GuildsBG-8BIT.png
   FILE sce_sys/icon0.png sce_sys/icon0.png
   FILE sce_sys/pic0.png sce_sys/pic0.png
   FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png

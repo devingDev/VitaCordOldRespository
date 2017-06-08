@@ -41,7 +41,6 @@ typedef struct{
 	int messageHeight;
 	std::string username;
 	std::string content;
-	
 }messagebox;
 
 

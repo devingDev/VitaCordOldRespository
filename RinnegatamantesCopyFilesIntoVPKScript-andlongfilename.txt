@@ -1,0 +1,1 @@
+7z a -tzip ../$(TARGET).vpk -r ..\build\sce_sys\* ..\build\eboot.bin 

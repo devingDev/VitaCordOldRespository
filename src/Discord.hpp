@@ -20,11 +20,13 @@ class Discord{
 		}user;
 		typedef struct{
 			int codepoint;
+			int index;
 			int x;
 		} message_emoji;
 		typedef struct {
 			user author;
 			std::string content;
+			std::u32string contentUTF32;
 			std::string embed;
 			std::string attachment;
 			std::string mentions;
@@ -113,6 +115,8 @@ class Discord{
 		void utf16_to_utf8(uint16_t *src, uint8_t *dst);
 		user client;
 		std::string email = "", password = "", code2fa , token , ticket , username , id , avatar , discriminator , phone;
+		bool refreshedMessages;
+	
 	
 	private:
 		VitaNet vitaNet;
