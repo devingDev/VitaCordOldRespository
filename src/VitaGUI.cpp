@@ -289,15 +289,19 @@ void VitaGUI::Draw(){
 		yPos = messageScrollY + 40;
 		for(int i =  0 ; i < messageBoxesAmount ; i++){
 			
+			debugNetPrintf(DEBUG, "calculating %d of %d\n", i, messageBoxesAmount);
 			if(yPos < MAX_DRAW_HEIGHT && yPos > MIN_DRAW_HEIGHT){
+				debugNetPrintf(DEBUG, "MESSAGE STEP 1\n");
 				height = messageBoxes[i].messageHeight;
+				debugNetPrintf(DEBUG, "MESSAGE STEP 2\n");
 				vita2d_draw_rectangle(240, yPos + height, 710, 2, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
+				debugNetPrintf(DEBUG, "MESSAGE STEP 3\n");
 				vita2d_draw_rectangle(240, yPos + height, 710, 1, RGBA8(51, 53, 55, 255)); // no need for a panel image
-				
+				debugNetPrintf(DEBUG, "MESSAGE STEP 4\n");
 					vita2d_font_draw_text(vita2dFont[15], 283, yPos + 26, RGBA8(255, 255, 255, 255), 15, messageBoxes[i].username.c_str());
-				
+				debugNetPrintf(DEBUG, "MESSAGE STEP 5\n");
 					vita2d_font_draw_text(vita2dFont[15], 293, yPos + 50, RGBA8(255, 255, 255, 255), 15, messageBoxes[i].content.c_str());
-				
+				debugNetPrintf(DEBUG, "MESSAGE STEP 6\n");
 				//vita2d_draw_texture( guildsBGImage , messageScrollX + 128 , messageScrollY + i * 128);
 				//vita2d_pgf_draw_text(pgf, messageScrollX + 256, messageScrollY + i * 128 + 96, RGBA8(255,255,255,255), 1.0f, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content.c_str());
 				//vita2d_font_draw_text(vita2dFont , messageScrollX + 150, messageScrollY + i * 128 + 32, RGBA8(255,255,255,255), MESSAGE_AUTHOR_TEXT_SIZE_PIXEL, discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username.c_str());
@@ -318,6 +322,7 @@ void VitaGUI::Draw(){
 			//}
 			
 			yPos += height; // add message height to yPos
+			debugNetPrintf(DEBUG, "Cycle complete.\n");
 		}
 		
 		// TOP sidepanel to hide guilds underneath

@@ -10,10 +10,10 @@ cd ..
 
 #works :D
 
-echo "packing assets into vpk"
-7z a build/vita_cord.vpk assets/
+#echo "packing assets into vpk"
+#7z a build/vita_cord.vpk assets/
 
-echo ""
+#echo ""
 echo "Finished vpk! ;-)"
 
 
