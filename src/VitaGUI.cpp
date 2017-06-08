@@ -564,8 +564,6 @@ void VitaGUI::SetState(int s){
 	if(state == 4){
 		setMessageBoxes();
 		messageScrollY = messageScrollYMin;
-		
-		messageScrollY = 0;
 		guildScrollY = 0;
 		directMessageMessagesScrollY = 0;
 		directMessageScrollY = 0;
