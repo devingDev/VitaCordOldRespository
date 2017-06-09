@@ -104,14 +104,21 @@ void DiscordApp::Start(){
 	vitaGUI.passDiscordPointer( &discord );
 	logSD("start program loop");
 	for(;;){
+		
+		
+		
+		
+		logSD("vitagui draw");
+		vitaGUI.Draw();
+		
 		logSD("vitapad read");
 		vitaPad.Read();
 		logSD("vitatouch read");
 		vitaTouch.readTouch();
 		
 		
-		//vitaGUI.analogScrollRight( vitaPad.right_analog_calibrated_x , -vitaPad.right_analog_calibrated_y );
-		//vitaGUI.analogScrollLeft( vitaPad.left_analog_calibrated_x , -vitaPad.left_analog_calibrated_y );
+		vitaGUI.analogScrollRight( vitaPad.right_analog_calibrated_x , -vitaPad.right_analog_calibrated_y );
+		vitaGUI.analogScrollLeft( vitaPad.left_analog_calibrated_x , -vitaPad.left_analog_calibrated_y );
 		
 		if(vitaTouch.clicking){
 			logSD("clicking check");
@@ -260,9 +267,6 @@ void DiscordApp::Start(){
 			discord.refreshCurrentDirectMessages();
 			
 		}
-		
-		logSD("vitagui draw");
-		vitaGUI.Draw();
 		
 	}
 	

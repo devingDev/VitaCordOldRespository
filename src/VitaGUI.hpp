@@ -118,10 +118,10 @@ class VitaGUI{
 		//std::vector<std::string> userNames;
 		
 		std::vector<inputbox> loginInputs;
-		std::vector<box> guildBoxes;
-		std::vector<channelbox> channelBoxes;
+		std::vector<guildBox> guildBoxes;
+		std::vector<channelBox> channelBoxes;
 		std::vector<messagebox> messageBoxes;
-		std::vector<box> directMessageBoxes;
+		std::vector<dmBox> directMessageBoxes;
 		std::vector<messagebox> directMessageMessagesBoxes;
 		
 		void loadEmojiFiles();

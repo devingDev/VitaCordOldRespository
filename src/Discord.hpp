@@ -9,6 +9,8 @@
 
 #include "VitaNet.hpp"
 
+#define PERMISSION_READ_MESSAGES 0x400 //1024
+
 
 class Discord{
 	public:
@@ -36,10 +38,10 @@ class Discord{
 			std::vector<message_emoji> emojis;
 		}message;
 		typedef struct{
-			long allow;
+			int allow;
 			std::string type;
 			std::string id;
-			long deny;
+			int deny;
 		} permission_overwrites;
 		typedef struct {
 			std::string name;
@@ -49,7 +51,7 @@ class Discord{
 			std::string type;
 			std::string id;
 			bool is_private;
-			bool readallowed;
+			bool readallowed = true;
 			
 			std::vector<permission_overwrites> permission_overwrites;
 			
@@ -57,11 +59,12 @@ class Discord{
 		}channel;
 		typedef struct {
 			bool owner;
-			long permissions;
+			int permissions;
 			std::string icon; 
 			std::string id;
 			std::string name;
 			std::vector<channel> channels;
+			std::vector<std::string> myroles;
 		}guild;
 		typedef struct {
 			std::string last_message_id;

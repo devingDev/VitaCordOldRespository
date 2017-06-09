@@ -43,14 +43,33 @@ typedef struct{
 	std::string content;
 }messagebox;
 
+typedef struct{
+	int x;
+	int y;
+	int w;
+	int h;
+	int dmIndex;
+	std::string name;
+}dmBox;
 
 typedef struct{
 	int x;
 	int y;
 	int w;
 	int h;
+	int channelIndex;
 	std::string name;
-}channelbox;
+}channelBox;
+
+
+typedef struct{
+	int x;
+	int y;
+	int w;
+	int h;
+	int guildIndex;
+	std::string name;
+}guildBox;
 
 
 #endif

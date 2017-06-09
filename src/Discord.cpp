@@ -57,10 +57,10 @@ bool Discord::sendMessage(std::string msg){
 
 bool Discord::refreshMessages(){
 	
-	debugNetPrintf(DEBUG , "checking time to refresh messages\n" );
+	//debugNetPrintf(DEBUG , "checking time to refresh messages\n" );
 	currentTimeMS = osGetTimeMS();
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS || forceRefreshMessages){
-		debugNetPrintf(DEBUG , "get new messages\n" );
+		//debugNetPrintf(DEBUG , "get new messages\n" );
 		
 		refreshingMessages = true;
 		getChannelMessages(currentChannel);
@@ -527,9 +527,55 @@ void * Discord::thread_loadData(void *arg){
 				discordPtr->loadedGuilds = true;
 			}
 		}else if(discordPtr->loadedGuilds && !discordPtr->loadedChannels){
+			
+			
+			
+			
+			
 			for(int i = 0; i < discordPtr->guildsAmount ; i++){
+				
+				
+				
+				std::string myRolesUrl ="https://discordapp.com/api/guilds/" + discordPtr->guilds[i].id + "/members/" + discordPtr->id;
+				VitaNet::http_response myRolesResponse = discordPtr->vitaNet.curlDiscordGet(myRolesUrl , token);
+				debugNetPrintf(DEBUG , "Roles response %d \n" , i);
+				debugNetPrintf(DEBUG , myRolesResponse.body.c_str());
+				if(myRolesResponse.httpcode == 200){
+					try{
+						nlohmann::json j_complete = nlohmann::json::parse(myRolesResponse.body);
+						if(!j_complete.is_null()){
+								
+							if(!j_complete["roles"].is_null()){
+								
+								discordPtr->guilds[i].myroles.clear();
+								int rolesAmount = j_complete["roles"].size();
+								for(int rol = 0; rol < rolesAmount ; rol++){
+									if(!j_complete["roles"][rol].is_null()){
+										std::string role = j_complete["roles"][rol].get<std::string>();
+										discordPtr->guilds[i].myroles.push_back(role);
+										
+									}
+									
+								}
+								
+							}
+								
+						}
+					}catch(const std::exception& e){
+						// nothing
+					}
+					
+				}
+				
+				
+				
+				
+				
+				
 				std::string channelUrl = "https://discordapp.com/api/guilds/" + discordPtr->guilds[i].id + "/channels";
 				VitaNet::http_response channelresponse = discordPtr->vitaNet.curlDiscordGet(channelUrl , token);
+				debugNetPrintf(DEBUG , "Channel response \n");
+				debugNetPrintf(DEBUG , channelresponse.body.c_str());
 				logSD(channelresponse.body);
 				if(channelresponse.httpcode == 200){
 					try{
@@ -591,37 +637,100 @@ void * Discord::thread_loadData(void *arg){
 										logSD(discordPtr->guilds[i].channels[c].last_message_id);
 									}
 									
-									//if(!j_complete[c]["permission_overwrites"].is_null()){
-									//	
-									//	int p = j_complete[c]["permission_overwrites"].size();
-									//	for(int per = 0; per < p; per++){
-									//		discordPtr->guilds[i].channels[c].permission_overwrites.push_back(permission_overwrites());
-									//		if(!j_complete[c]["permission_overwrites"]["allow"].is_null()){
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = j_complete[c]["permission_overwrites"]["allow"].get<long>();
-									//		}else{
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = 0;
-									//		}
-									//		if(!j_complete[c]["permission_overwrites"]["type"].is_null()){
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].type = j_complete[c]["permission_overwrites"]["type"].get<std::string>();
-									//		}else{
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].type = "role";
-									//		}
-									//		if(!j_complete[c]["permission_overwrites"]["id"].is_null()){
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].id = j_complete[c]["permission_overwrites"]["id"].get<std::string>();
-									//		}else{
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].id = "0";
-									//		}
-									//		if(!j_complete[c]["permission_overwrites"]["deny"].is_null()){
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = j_complete[c]["permission_overwrites"]["deny"].get<long>();
-									//		}else{
-									//			discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = 0;
-									//		}
-									//		
-									//		
-									//	}
-									//	
-									//	
-									//}
+									debugNetPrintf(DEBUG , "Checking permission_overwrites\n");
+									if(!j_complete[c]["permission_overwrites"].is_null()){
+										
+										debugNetPrintf(DEBUG , "permission_overwrites\n");
+										
+										int p = j_complete[c]["permission_overwrites"].size();
+										debugNetPrintf(DEBUG , "amount of permission_overwrites: %d\n" , p);
+										discordPtr->guilds[i].channels[c].permission_overwrites.clear();
+										for(int per = 0; per < p; per++){
+											debugNetPrintf(DEBUG , "Add new po\n");
+											discordPtr->guilds[i].channels[c].permission_overwrites.push_back(permission_overwrites());
+											debugNetPrintf(DEBUG , "check allow\n");
+											if(!j_complete[c]["permission_overwrites"][per]["allow"].is_null()){
+												debugNetPrintf(DEBUG , "adding allow\n");
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = j_complete[c]["permission_overwrites"][per]["allow"].get<int>();
+												debugNetPrintf(DEBUG , "adding allow\n");
+											}else{
+												debugNetPrintf(DEBUG , "no allow\n");
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].allow = 0;
+												debugNetPrintf(DEBUG , "no allow\n");
+											}
+											
+											debugNetPrintf(DEBUG , "check type\n");
+											if(!j_complete[c]["permission_overwrites"][per]["type"].is_null()){
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].type = j_complete[c]["permission_overwrites"][per]["type"].get<std::string>();
+											}else{
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].type = "role";
+											}
+											
+											
+											debugNetPrintf(DEBUG , "check id\n");
+											if(!j_complete[c]["permission_overwrites"][per]["id"].is_null()){
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].id = j_complete[c]["permission_overwrites"][per]["id"].get<std::string>();
+											}else{
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].id = "0";
+											}
+											
+											debugNetPrintf(DEBUG , "check deny\n");
+											if(!j_complete[c]["permission_overwrites"][per]["deny"].is_null()){
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = j_complete[c]["permission_overwrites"][per]["deny"].get<int>();
+											}else{
+												discordPtr->guilds[i].channels[c].permission_overwrites[per].deny = 0;
+											}
+											
+										}
+										
+										
+										// TODO : LEARN HOW TO REALLY CHECK PERMISSION !!!
+										//bool readAllowedForMeOnce = false; // if one role has read rest doesnt matter
+										//bool readDeniedForMeOnce = false;
+										//
+										//discordPtr->guilds[i].channels[c].readallowed = false;
+										//
+										//for(int permC = 0; permC < discordPtr->guilds[i].channels[c].permission_overwrites.size() ; permC++){
+										//	
+										//	// check role "@everyone" ( = guildid)
+										//	if(discordPtr->guilds[i].channels[c].permission_overwrites[permC].id == discordPtr->guilds[i].id){
+										//		if(!(discordPtr->guilds[i].channels[c].permission_overwrites[permC].deny & PERMISSION_READ_MESSAGES)){
+										//			readDeniedForMeOnce = true;
+										//		}else{
+										//			readAllowedForMeOnce = true;
+										//		}
+										//	}
+										//	
+										//	// check all roles i have
+										//	for(int myR = 0; myR < discordPtr->guilds[i].myroles.size() ; myR++){
+										//		if(discordPtr->guilds[i].channels[c].permission_overwrites[permC].id == discordPtr->guilds[i].myroles[myR]){
+										//			
+										//			if(!(discordPtr->guilds[i].channels[c].permission_overwrites[permC].deny & PERMISSION_READ_MESSAGES)){
+										//				readDeniedForMeOnce = true;
+										//			}else{
+										//				readAllowedForMeOnce = true;
+										//			}
+										//		}
+										//	}
+										//	
+										//	
+										//	
+										//	
+										//	
+										//}
+										//
+										//if(readAllowedForMeOnce){
+										//	discordPtr->guilds[i].channels[c].readallowed = true;
+										//}else if(readDeniedForMeOnce){
+										//	discordPtr->guilds[i].channels[c].readallowed = false;
+										//}else{
+										//	discordPtr->guilds[i].channels[c].readallowed = true;
+										//}
+										
+										
+									}else{
+										debugNetPrintf(DEBUG , "no permission_overwrites\n");
+									}
 									
 									
 									
