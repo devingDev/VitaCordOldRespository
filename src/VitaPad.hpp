@@ -4,6 +4,9 @@
 #include <psp2/ctrl.h>
 
 
+#define DEADZONE 25
+
+
 class VitaPad{
 	
 	public:
@@ -13,7 +16,7 @@ class VitaPad{
 		void Read();
 		bool up , right , down , left , cross , circle , triangle , square , lefttrigger , righttrigger , start , select, volup , voldown;
 		bool left_analog_moving , right_analog_moving;
-		int left_analog_x , left_analog_y , right_analog_x , right_analog_y;
+		int left_analog_calibrated_x , left_analog_calibrated_y , right_analog_calibrated_x , right_analog_calibrated_y;
 		unsigned char lx , ly , rx , ry;
 		
 	private:

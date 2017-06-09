@@ -44,5 +44,14 @@ typedef struct{
 }messagebox;
 
 
+typedef struct{
+	int x;
+	int y;
+	int w;
+	int h;
+	std::string name;
+}channelbox;
+
+
 #endif
 

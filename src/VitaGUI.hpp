@@ -45,6 +45,8 @@ class VitaGUI{
 		void RemoveRectangle(int index);
 		int scroll(int x , int y , int posx  , int posy);
 		int click(int x , int y);
+		int analogScrollRight(int x , int y);
+		int analogScrollLeft(int x , int y);
 		std::vector<std::string> loginTexts;
 		std::string loadingString = "";
 		
@@ -117,7 +119,7 @@ class VitaGUI{
 		
 		std::vector<inputbox> loginInputs;
 		std::vector<box> guildBoxes;
-		std::vector<box> channelBoxes;
+		std::vector<channelbox> channelBoxes;
 		std::vector<messagebox> messageBoxes;
 		std::vector<box> directMessageBoxes;
 		std::vector<messagebox> directMessageMessagesBoxes;
@@ -160,6 +162,8 @@ class VitaGUI{
 		
 		
 		float loadingImageAngle = 0;
+		int loadingAnimX = 360 ;
+		int loadingAnimY = 172;
 		int framePassed = 0;
 		int loadingImageFrame = 0;
 		vita2d_texture * loadingAnim[FRAMES_LOADING_IMAGE];

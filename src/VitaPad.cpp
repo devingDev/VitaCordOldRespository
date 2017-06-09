@@ -1,19 +1,20 @@
 
 #include <psp2/ctrl.h>
 #include "VitaPad.hpp"
+#include <math.h>
 
 VitaPad::VitaPad(){
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG_WIDE);
 	sceCtrlPeekBufferPositive(0, &vitapad, 1);
-	left_analog_calibration_x = vitapad.lx;
-	left_analog_calibration_y = vitapad.ly;
+	//left_analog_calibration_x = vitapad.lx;
+	//left_analog_calibration_y = vitapad.ly;
 }
 
 VitaPad::VitaPad(bool initstuff){
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG_WIDE);
 	sceCtrlPeekBufferPositive(0, &vitapad, 1);
-	left_analog_calibration_x = vitapad.lx;
-	left_analog_calibration_y = vitapad.ly;
+	//left_analog_calibration_x = vitapad.lx;
+	//left_analog_calibration_y = vitapad.ly;
 }
 
 
@@ -26,10 +27,10 @@ void VitaPad::Read(){
 	
 	select = start = up = right = down = left = lefttrigger = righttrigger = triangle = circle = cross = square = volup = voldown = false;
 	left_analog_moving = right_analog_moving = false;
-	left_analog_x =   0;
-	left_analog_y =   0;
-	right_analog_x =  0;
-	right_analog_y =  0;
+	left_analog_calibrated_x =   0;
+	left_analog_calibrated_y =   0;
+	right_analog_calibrated_x =  0;
+	right_analog_calibrated_y =  0;
 	
 	if(vitapad.buttons & SCE_CTRL_SELECT)
 		select = true;
@@ -69,11 +70,30 @@ void VitaPad::Read(){
 	rx = vitapad.rx;
 	ry = vitapad.ry;
 	 
-	 
-	left_analog_x = vitapad.lx - left_analog_calibration_x;
-	left_analog_y = vitapad.ly - left_analog_calibration_y;
-	right_analog_x = vitapad.rx - right_analog_calibration_x;
-	right_analog_y = vitapad.ry - right_analog_calibration_y;
+	
+	if(abs(vitapad.lx - left_analog_calibration_x) > DEADZONE){
+		left_analog_calibrated_x =  static_cast<int>((vitapad.lx - left_analog_calibration_x)/2);
+	}else{
+		left_analog_calibrated_x = 0;
+	}
+	if(abs(vitapad.ly - left_analog_calibration_y) > DEADZONE){
+		left_analog_calibrated_y =  static_cast<int>((vitapad.ly - left_analog_calibration_y)/2);
+	}else{
+		left_analog_calibrated_y = 0;
+	}
+	if(abs(vitapad.rx - right_analog_calibration_x) > DEADZONE){
+		right_analog_calibrated_x =  static_cast<int>((vitapad.rx - right_analog_calibration_x)/4);
+	}else{
+		right_analog_calibrated_x = 0;
+	}
+	if(abs(vitapad.ry - right_analog_calibration_y) > DEADZONE){
+		right_analog_calibrated_y =  static_cast<int>((vitapad.ry - right_analog_calibration_y) / 4);
+	}else{
+		right_analog_calibrated_y = 0;
+	}
+	
+	
+	
 	
 }
 

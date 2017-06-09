@@ -110,6 +110,9 @@ void DiscordApp::Start(){
 		vitaTouch.readTouch();
 		
 		
+		//vitaGUI.analogScrollRight( vitaPad.right_analog_calibrated_x , -vitaPad.right_analog_calibrated_y );
+		//vitaGUI.analogScrollLeft( vitaPad.left_analog_calibrated_x , -vitaPad.left_analog_calibrated_y );
+		
 		if(vitaTouch.clicking){
 			logSD("clicking check");
 			clicked = vitaGUI.click(vitaTouch.lastClickPoint.x , vitaTouch.lastClickPoint.y );
