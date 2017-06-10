@@ -23,10 +23,10 @@
 
 #define GUILD_HEIGHT 64
 #define CHANNEL_HEIGHT 64
-#define DMICONX 128
+#define DMICONX 146
 #define DMICONY 30
-#define DMICONX2 128+64
-#define DMICONY2 30+64
+#define DMICONX2 146+146
+#define DMICONY2 30+70
 
 
 #define FRAMES_LOADING_IMAGE 34
@@ -88,6 +88,9 @@ class VitaGUI{
 		void setUserInfo();
 	
 	private:
+		
+		void DrawStatusBar();
+		
 		Discord *discordPtr;
 		int currentFont = 0;
 		int lastState = 0;
@@ -108,6 +111,8 @@ class VitaGUI{
 		vita2d_texture *guildsBGImage;
 		vita2d_texture *dmIconImage;
 		vita2d_texture *statbarIconImage;
+		vita2d_texture *statbarBatteryImage;
+		vita2d_texture *statbarBatteryChargeImage;
 		vita2d_texture *sidepanelStateIconImage;
 		vita2d_texture *messageInputImage;
 		std::vector<rectangle> rectangles;
@@ -157,6 +162,7 @@ class VitaGUI{
 		bool messageScrollSet = false;
 		bool directMessageMessagesScrollSet = false;
 		
+		float batteryChargeCycle = 0;
 		
 		box inputboxMessageInput;
 		
