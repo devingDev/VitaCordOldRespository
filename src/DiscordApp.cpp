@@ -91,6 +91,7 @@ void DiscordApp::saveUserDataToFile(std::string mail , std::string pass , std::s
 	std::string userdata = mail + "\n" + pass + "\n" + _tok + "\n";
 	int fh = sceIoOpen("ux0:data/vitacord-userdata.txt", SCE_O_WRONLY | SCE_O_CREAT, 0777);
 	sceIoWrite(fh, userdata.c_str(), strlen(userdata.c_str()));
+	sceIoClose(fh);
 }
 
 
