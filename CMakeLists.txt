@@ -57,6 +57,7 @@ target_link_libraries(${SHORT_NAME}.elf
   SceDisplay_stub
   SceLibKernel_stub
   SceSysmodule_stub
+  ScePower_stub
   SceCommonDialog_stub
   ${CURL_LIBRARIES}
   ${OPENSSL_LIBRARIES}
@@ -124,5 +125,7 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE assets/images/loading/thumb032.png assets/images/loading/thumb032.png
   FILE assets/images/loading/thumb033.png assets/images/loading/thumb033.png
   FILE assets/images/loading/thumb034.png assets/images/loading/thumb034.png
+  FILE assets/images/Vitacord-statbar-battery.png assets/images/Vitacord-statbar-battery.png
+  FILE assets/images/Vitacord-statbar-battery-charge.png assets/images/Vitacord-statbar-battery-charge.png
 )
 
