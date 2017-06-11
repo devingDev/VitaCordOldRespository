@@ -42,7 +42,7 @@ class VitaGUI{
 		~VitaGUI();
 		void Draw();
 		void AddRectangle(float x , float y , float w , float h , unsigned int color);
-		void RemoveRectangle(int index);
+		void RemoveRectangle(unsigned int index);
 		int scroll(int x , int y , int posx  , int posy);
 		int click(int x , int y);
 		int analogScrollRight(int x , int y);

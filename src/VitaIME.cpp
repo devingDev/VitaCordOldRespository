@@ -120,7 +120,8 @@ int VitaIME::checkArray(char string[], int length) {
 }
 
 std::string VitaIME::getUserText(char title[] ){
-	return getUserText(title , "");
+	char emptytext[] = "";
+	return getUserText(title , emptytext);
 }
 
 
@@ -144,13 +145,13 @@ std::string VitaIME::getUserText(char title[] , char showtext[]) {
        
         SceCommonDialogStatus status = sceImeDialogGetStatus();
        
-        if (status == IME_DIALOG_RESULT_FINISHED) {
+        if (status == (SceCommonDialogStatus)IME_DIALOG_RESULT_FINISHED) {
             SceImeDialogResult result;
             memset(&result, 0, sizeof(SceImeDialogResult));
             sceImeDialogGetResult(&result);
  
             if (result.button == SCE_IME_DIALOG_BUTTON_CLOSE)
-                status = IME_DIALOG_RESULT_CANCELED;
+                status = (SceCommonDialogStatus)IME_DIALOG_RESULT_CANCELED;
             else
                 oslOskGetText(userText);
  
@@ -253,8 +254,11 @@ std::string VitaIME::getUserText(char title[] , char showtext[]) {
 
 
 VitaIME::VitaIME(){
+	
+	
+	
 	sceAppUtilInit(&(SceAppUtilInitParam){}, &(SceAppUtilBootParam){});
-    sceCommonDialogSetConfigParam(&(SceCommonDialogConfigParam){});
+	sceCommonDialogSetConfigParam(&(SceCommonDialogConfigParam){});
  
 
 }

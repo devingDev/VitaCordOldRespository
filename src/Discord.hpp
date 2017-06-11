@@ -42,7 +42,7 @@ class Discord{
 			std::string type;
 			std::string id;
 			int deny;
-		} permission_overwrites;
+		} permission_overwrite;
 		typedef struct {
 			std::string name;
 			std::string last_pin_timestamp;
@@ -53,7 +53,7 @@ class Discord{
 			bool is_private;
 			bool readallowed = true;
 			
-			std::vector<permission_overwrites> permission_overwrites;
+			std::vector<permission_overwrite> permission_overwrites;
 			
 			std::vector<message> messages;
 		}channel;

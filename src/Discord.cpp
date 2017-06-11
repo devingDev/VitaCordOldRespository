@@ -38,9 +38,10 @@ bool Discord::sendDirectMessage(std::string msg){
 	VitaNet::http_response senddmmessageresponse = vitaNet.curlDiscordPost(sendDMMessageUrl , postData , token);
 	if(senddmmessageresponse.httpcode == 200){
 		debugNetPrintf(DEBUG , "DM SENT!\n" );
-		
+		return true;
 	}
 	
+	return false;
 }
 
 bool Discord::sendMessage(std::string msg){
@@ -146,7 +147,7 @@ void Discord::parseMessageContentEmoji(message *m , std::string str){
 	//std::string hiStr = "";
 	//std::string loStr = "";
 	
-	int emojiCount = 0;
+	//int emojiCount = 0;
 	
 	// TODO : removeunicode escapes and only keep content + whitesapce
 	m->content = str;
@@ -155,7 +156,7 @@ void Discord::parseMessageContentEmoji(message *m , std::string str){
 	std::u32string utf32String = convert.from_bytes(str);;
 	//m->contentUTF32 = utf32String;
 	
-	for(int i = 0; i < utf32String.length() ; i++){
+	for(unsigned int i = 0; i < utf32String.length() ; i++){
 		
 		//for(int emo = 0; emo < emoList.size() ; emo++){
 		//	
@@ -647,7 +648,7 @@ void * Discord::thread_loadData(void *arg){
 										discordPtr->guilds[i].channels[c].permission_overwrites.clear();
 										for(int per = 0; per < p; per++){
 											debugNetPrintf(DEBUG , "Add new po\n");
-											discordPtr->guilds[i].channels[c].permission_overwrites.push_back(permission_overwrites());
+											discordPtr->guilds[i].channels[c].permission_overwrites.push_back(permission_overwrite());
 											debugNetPrintf(DEBUG , "check allow\n");
 											if(!j_complete[c]["permission_overwrites"][per]["allow"].is_null()){
 												debugNetPrintf(DEBUG , "adding allow\n");
@@ -853,6 +854,7 @@ void * Discord::thread_loadData(void *arg){
 	}
 	logSD("end of thread_loadData()");
 	pthread_exit(NULL);
+	return NULL;
 }
 
 
@@ -867,6 +869,7 @@ void * Discord::thread_refreshMessages(void *arg){
 	}
 	pthreadStarted = false;
 	pthread_exit(NULL);
+	return NULL;
 }
 
 void Discord::LeaveDirectMessageChannel(){
@@ -974,8 +977,9 @@ bool Discord::refreshDirectMessages(){
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
 		lastFetchTimeMS = osGetTimeMS();
 		getDirectMessageChannels();
-		
+		return true;
 	}
+	return false;
 }
 bool Discord::refreshCurrentDirectMessages(){
 	
@@ -983,9 +987,9 @@ bool Discord::refreshCurrentDirectMessages(){
 	if(currentTimeMS - lastFetchTimeMS > fetchTimeMS){
 		lastFetchTimeMS = osGetTimeMS();
 		getCurrentDirectMessages();
-		
+		return true;
 	}
-	
+	return false;
 }
 
 void Discord::getCurrentDirectMessages(){

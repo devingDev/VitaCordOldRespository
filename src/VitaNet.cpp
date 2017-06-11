@@ -16,7 +16,7 @@ struct stringcurl {
 };
 void init_string(struct stringcurl *s) {
   s->len = 0;
-  s->ptr = malloc(s->len+1);
+  s->ptr = (char*)malloc(s->len+1);
   if (s->ptr == NULL) {
     fprintf(stderr, "malloc() failed\n");
     exit(EXIT_FAILURE);
@@ -26,7 +26,7 @@ void init_string(struct stringcurl *s) {
 size_t writefunc(void *ptr, size_t size, size_t nmemb, struct stringcurl *s)
 {
   size_t new_len = s->len + size*nmemb;
-  s->ptr = realloc(s->ptr, new_len+1);
+  s->ptr = (char*)realloc(s->ptr, new_len+1);
   if (s->ptr == NULL) {
     fprintf(stderr, "realloc() failed\n");
     exit(EXIT_FAILURE);

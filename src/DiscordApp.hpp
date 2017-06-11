@@ -19,6 +19,11 @@ class DiscordApp{
 		void saveUserDataToFile(std::string m , std::string p , std::string t);
 		
 	private:
+		char emptyMessage[1] = "";
+		char emailTitle[14] = "Discord Email";
+		char passwordTitle[17] = "Discord Password";
+		char messageTitle[8] = "Message";
+		char get2facodeTitle[30] = "Enter your 2Factor Auth Code!";
 		VitaGUI vitaGUI;
 		Discord discord;
 		VitaIME vitaIME;
