@@ -859,7 +859,7 @@ bool VitaGUI::setMessageBoxes(){
 			boxC.y = messageScrollY + i * 64;
 			boxC.username = discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].author.username;
 			boxC.content = "";
-			boxC.lineCount = wordWrap( discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content , 60 , boxC.content);
+			boxC.lineCount = wordWrap( discordPtr->guilds[discordPtr->currentGuild].channels[discordPtr->currentChannel].messages[i].content , 80 , boxC.content);
 			textHeight = boxC.lineCount * vita2d_font_text_height(vita2dFont[15], 15, boxC.content.c_str());
 			boxC.messageHeight = max(64, textHeight + topMargin + bottomMargin);
 			allHeight += boxC.messageHeight;
@@ -884,51 +884,87 @@ bool VitaGUI::setMessageBoxes(){
 	return false;
 }
 
-int VitaGUI::wordWrap(std::string str, int width, std::string &out) {
+
+int VitaGUI::wordWrap(std::string str, unsigned int maxCharacters, std::string &out) {
+	if(str.length() < maxCharacters ) {
+		out = str;
+		return 1; // 1 or 0 ?
+		
+	}
+	out = "";
+	int breaks = str.length() / maxCharacters;
+	for(int i = 0 ; i < breaks+1; i++){
+		out += str.substr(i*maxCharacters, maxCharacters) + '\n';
+		
+	}
+	
+	return breaks;
+}
+
+/*int VitaGUI::wordWrap(std::string str, int width, std::string &out) {
    
     unsigned int curWidth = width;
     int lineCount = 1;
     while (curWidth < str.length()) {
         std::string::size_type spacePos = str.rfind(' ', curWidth);
-        if (spacePos == std::string::npos)
+        if (spacePos == std::string::npos){
             spacePos = str.find(' ', curWidth);
+		}
         if (spacePos != std::string::npos) {
-            str[spacePos] = '\n';
-            lineCount++;
-            curWidth = spacePos + width + 1;
-            }
-        }
+			str[spacePos] = '\n';
+			lineCount++;
+			curWidth = spacePos + width + 1;
+		}
+	}
     out = str.substr(0, str.size());
     return lineCount;
 
-
-//(std::string stringToWrap ,  int availableWidth , std::string &out ){
+}*/
+/*int VitaGUI::wordWrap(std::string stringToWrap ,  int availableWidth , std::string &out ){
 	
-	//int wordWidth = 0;
-	//int lineBreaks = 0;
-	//
-	//out="";
-	//std::istringstream iss{stringToWrap};
-	//// Read tokens from stream into vector (split at whitespace).
-	//std::vector<std::string> words{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
-	//
-	//int spaceLeft = availableWidth;
-	//for(int i = 0 ; i < words.size() ; i++){
-	//	wordWidth = vita2d_font_text_width(vita2dFontNormal, MESSAGE_CONTENT_TEXT_SIZE_PIXEL, words[i].c_str());
-	//	if(wordWidth + 1  > spaceLeft){
-	//		words[i] = '\n' + words[i];
-	//		lineBreaks++;
-	//		spaceLeft = availableWidth - wordWidth;
-	//	}else{
-	//		spaceLeft = spaceLeft - ( wordWidth + 1 );
-	//	}
-	//	out += words[i];
-	//}
-	//
-	//
-	//return lineBreaks;
+	int wordWidth = 0;
+	int lineBreaks = 0;
 	
-}
+	out="";
+	std::istringstream iss{stringToWrap};
+	// Read tokens from stream into vector (split at whitespace).
+	std::vector<std::string> words{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
+	
+	
+	
+	int spaceLeft = availableWidth;
+	for(unsigned int i = 0 ; i < words.size() ; i++){
+		
+		//wordWidth = vita2d_font_text_width(vita2dFontNormal, MESSAGE_CONTENT_TEXT_SIZE_PIXEL, words[i].c_str());
+		wordWidth = words[i].length();
+	
+		if(wordWidth > spaceLeft){
+			int wordBreaks = wordWidth / availableWidth;
+			for(int wB = 0; wB < wordBreaks; wB++){
+				words[i] = '\n' + words[i].substr(
+				
+				
+			}
+			
+			
+		}else if(wordWidth + 1  > spaceLeft){
+			words[i] = '\n' + words[i];
+			lineBreaks++;
+			spaceLeft = availableWidth - words[i].length();
+		}else{
+			spaceLeft = spaceLeft - ( words[i].length() + 1 );
+		}
+		out += words[i];
+		if(words[i] != " " && words[i].length() > 0){
+			out += " ";
+		}
+		
+	}
+	
+	
+	return lineBreaks;
+	
+}*/
 
 
 void VitaGUI::setDirectMessageBoxes(){
@@ -969,7 +1005,7 @@ void VitaGUI::setDirectMessageMessagesBoxes(){
 			boxC.y = directMessageMessagesScrollY + i * 64;
 			boxC.username = discordPtr->directMessages[discordPtr->currentDirectMessage].messages[i].author.username;
 			boxC.content = "";
-			boxC.lineCount = wordWrap( discordPtr->directMessages[discordPtr->currentDirectMessage].messages[i].content , 60 , boxC.content);
+			boxC.lineCount = wordWrap( discordPtr->directMessages[discordPtr->currentDirectMessage].messages[i].content , 80 , boxC.content);
 			textHeight = boxC.lineCount * vita2d_font_text_height(vita2dFont[15], 15, boxC.content.c_str());
 			boxC.messageHeight = max(64, textHeight + topMargin + bottomMargin);
 			allHeight += boxC.messageHeight;

@@ -5,15 +5,9 @@ cmake ..
 make -j4
 cd ..
 
-#not working >_>
-#7z a -tzip build/vita_cord.vpk -r assets/emoji/*
+cp build/vita_cord.vpk ./
 
-#works :D
-
-#echo "packing assets into vpk"
-#7z a build/vita_cord.vpk assets/
-
-#echo ""
-echo "Finished vpk! ;-)"
+echo ""
+echo "End of my buildscript!"
 
 

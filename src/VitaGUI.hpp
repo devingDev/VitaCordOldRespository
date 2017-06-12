@@ -177,7 +177,7 @@ class VitaGUI{
 		
 		int state = 0;  // 0 login , 1 loading , 2 guilds , 3 channels , 4 channellobby , 5 friends , 6 dms , 7 dmchannellobby , 15 settings , 85818764 stuff..
 	
-		int wordWrap(std::string str, int width, std::string &out);  // return value is amount of linebreaks
+		int wordWrap(std::string str, unsigned int maxCharacters, std::string &out);  // return value is amount of linebreaks
 		
 		std::string panelUsername , panelUserDiscriminator;
 		
