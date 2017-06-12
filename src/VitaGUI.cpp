@@ -1132,15 +1132,27 @@ void VitaGUI::DrawMessages(){
 	yPos = messageScrollY + 40;
 	for(unsigned int i =  0 ; i < messageBoxesAmount ; i++){
 		
-			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 1\n");
-			height = messageBoxes[i].messageHeight;
+		//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 1\n");
+		height = messageBoxes[i].messageHeight;
 		
 		//COMMENT debugNetPrintf(DEBUG, "calculating %d of %d\n", i, messageBoxesAmount);
 		if(yPos < MAX_DRAW_HEIGHT && yPos > MIN_DRAW_HEIGHT){
-			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 2\n");
-			vita2d_draw_rectangle(240, yPos + height, 710, 2, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
-			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 3\n");
-			vita2d_draw_rectangle(240, yPos + height, 710, 1, RGBA8(51, 53, 55, 255)); // no need for a panel image
+			
+			if(i == messageBoxesAmount-1){
+				
+				vita2d_draw_rectangle(242, yPos + height - 1, 706, 1, RGBA8(120, 115, 120, 255)); // after last message
+				vita2d_draw_rectangle(240, yPos + height , 710, 1, RGBA8(100, 100, 100, 255)); // 
+				vita2d_draw_rectangle(242, yPos + height + 1, 706, 1, RGBA8(120, 115, 120, 255)); // 
+			}else{
+				//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 2\n");
+				vita2d_draw_rectangle(242, yPos + height - 1, 706, 1, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
+				//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 3\n");
+				vita2d_draw_rectangle(240, yPos + height, 710, 1, RGBA8(51, 53, 55, 255)); // no need for a panel image
+				vita2d_draw_rectangle(242, yPos + height + 1, 706, 1, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
+				
+			}
+			
+			
 			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 4\n");
 				vita2d_font_draw_text(vita2dFont[15], 283, yPos + 26, RGBA8(255, 255, 255, 255), 15, messageBoxes[i].username.c_str());
 			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 5\n");
@@ -1168,6 +1180,7 @@ void VitaGUI::DrawMessages(){
 		yPos += height; // add message height to yPos
 		//COMMENT debugNetPrintf(DEBUG, "Cycle complete.\n");
 	}
+
 		
 }
 
@@ -1212,9 +1225,19 @@ void VitaGUI::DrawDirectMessageMessages(){
 		//COMMENT debugNetPrintf(DEBUG, "calculating %d of %d\n", i, messageBoxesAmount);
 		if(yPos < MAX_DRAW_HEIGHT && yPos > MIN_DRAW_HEIGHT){
 			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 2\n");
-			vita2d_draw_rectangle(240, yPos + height, 710, 2, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
-			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 3\n");
-			vita2d_draw_rectangle(240, yPos + height, 710, 1, RGBA8(51, 53, 55, 255)); // no need for a panel image
+			if(i == messageBoxesAmount-1){
+				
+				vita2d_draw_rectangle(242, yPos + height - 1, 706, 1, RGBA8(120, 115, 120, 255)); // after last message
+				vita2d_draw_rectangle(240, yPos + height , 710, 1, RGBA8(100, 100, 100, 255)); // 
+				vita2d_draw_rectangle(242, yPos + height + 1, 706, 1, RGBA8(120, 115, 120, 255)); // 
+			}else{
+				//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 2\n");
+				vita2d_draw_rectangle(242, yPos + height - 1, 706, 1, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
+				//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 3\n");
+				vita2d_draw_rectangle(240, yPos + height, 710, 1, RGBA8(51, 53, 55, 255)); // no need for a panel image
+				vita2d_draw_rectangle(242, yPos + height + 1, 706, 1, RGBA8(62, 65, 70, 255)); // two small lines to outline the message panel
+				
+			}
 			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 4\n");
 				vita2d_font_draw_text(vita2dFont[15], 283, yPos + 26, RGBA8(255, 255, 255, 255), 15, directMessageMessagesBoxes[i].username.c_str());
 			//COMMENT debugNetPrintf(DEBUG, "MESSAGE STEP 5\n");
